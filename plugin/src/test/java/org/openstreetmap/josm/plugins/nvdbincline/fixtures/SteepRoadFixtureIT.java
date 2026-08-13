@@ -144,12 +144,16 @@ class SteepRoadFixtureIT {
             assertNotNull(sug);
             assertTrue(sug.isApplicable());
             Map<String, String> tags = sug.tagsToAdd();
-            assertEquals("nvdb_estimate", tags.get("incline:source"));
+            assertEquals("nvdb_estimate", tags.get("source:incline"));
+            assertEquals(
+                    no.nvdbincline.core.tag.AppliedTags.WAY_INCLINE_KEYS,
+                    tags.keySet(),
+                    "way " + id + " must apply only allowlisted keys");
             assertTrue(tags.containsKey("fixme"), "missing fixme for way " + id);
-            assertTrue(
-                    tags.containsKey("incline") || tags.containsKey("incline:suggested"),
-                    "missing incline proposal for way " + id + ": " + tags.keySet());
-            // Sign of average must match recorded direction (tag may be split into segments).
+            assertTrue(tags.containsKey("incline"), "missing incline for way " + id + ": " + tags);
+            assertFalse(tags.containsKey("incline:source"));
+            assertFalse(tags.containsKey("incline:suggested"));
+            // Sign of average must match recorded direction.
             Expected exp = EXPECTED.get(id);
             double avg = sug.stats().averagePct();
             assertEquals(exp.sign, avg > 0 ? 1 : (avg < 0 ? -1 : 0));

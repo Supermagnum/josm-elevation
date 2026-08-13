@@ -61,7 +61,10 @@ class SafetyAnalyzerTest {
         assertTrue(signed.signConfirmed());
         assertEquals(MatchConfidence.HIGH, signed.confidence());
         assertEquals("curve", signed.tags().get("hazard"));
-        assertEquals("nvdb_sign", signed.tags().get("hazard:source"));
+        assertEquals("nvdb_sign", signed.tags().get("source:hazard"));
+        assertFalse(signed.tags().containsKey("hazard:source"));
+        assertEquals(
+                no.nvdbincline.core.tag.AppliedTags.HAZARD_KEYS, signed.tags().keySet());
     }
 
     @Test

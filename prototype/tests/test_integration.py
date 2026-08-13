@@ -72,9 +72,9 @@ def test_steep_and_flat_pipeline(tmp_path: Path):
     flat_tags = tags(ways[1001])
     steep_tags = tags(ways[1002])
     assert flat_tags.get("incline") == "0%"
-    assert flat_tags.get("incline:source") == "nvdb_estimate"
+    assert flat_tags.get("source:incline") == "nvdb_estimate"
     assert steep_tags.get("incline") in {"10%", "9%", "11%"}
-    assert steep_tags.get("incline:source") == "nvdb_estimate"
+    assert steep_tags.get("source:incline") == "nvdb_estimate"
     assert "fixme" in steep_tags
 
 

@@ -2,6 +2,7 @@ package org.openstreetmap.josm.plugins.nvdbincline.validator;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
 
+import no.nvdbincline.core.tag.AppliedTags;
 import org.openstreetmap.josm.data.osm.Way;
 import org.openstreetmap.josm.data.validation.OsmValidator;
 import org.openstreetmap.josm.data.validation.Severity;
@@ -9,7 +10,7 @@ import org.openstreetmap.josm.data.validation.Test;
 import org.openstreetmap.josm.data.validation.TestError;
 
 /**
- * Reminds mappers that incline:source=nvdb_estimate still needs field verification
+ * Reminds mappers that source:incline=nvdb_estimate still needs field verification
  * before a final upload.
  */
 public class NvdbEstimateValidator extends Test {
@@ -18,7 +19,8 @@ public class NvdbEstimateValidator extends Test {
     public NvdbEstimateValidator() {
         super(
                 tr("NVDB incline estimates"),
-                tr("Highlights ways tagged with incline:source=nvdb_estimate that still need field verification."));
+                tr(
+                        "Highlights ways tagged with source:incline=nvdb_estimate that still need field verification."));
     }
 
     public static void register() {
@@ -30,7 +32,7 @@ public class NvdbEstimateValidator extends Test {
         if (!isPrimitiveUsable(w)) {
             return;
         }
-        if (!"nvdb_estimate".equals(w.get("incline:source"))) {
+        if (!AppliedTags.INCLINE_SOURCE_VALUE.equals(w.get(AppliedTags.SOURCE_INCLINE))) {
             return;
         }
         errors.add(
@@ -39,7 +41,7 @@ public class NvdbEstimateValidator extends Test {
                                 tr("NVDB incline estimate"),
                                 tr(
                                         "Machine-suggested incline still present — verify in field before upload"
-                                                + " (fixme / incline:source=nvdb_estimate)."))
+                                                + " (fixme / source:incline=nvdb_estimate)."))
                         .primitives(w)
                         .build());
     }

@@ -118,13 +118,15 @@ class SteepRoadFixtureDumpTest {
                             + (z1 > z0));
             System.out.println(
                     "  incline_tag="
-                            + sug.tagsToAdd().getOrDefault(
-                                    "incline", sug.tagsToAdd().get("incline:suggested"))
+                            + sug.tagsToAdd().getOrDefault("incline", "?")
                             + " source="
-                            + sug.tagsToAdd().get("incline:source")
+                            + sug.tagsToAdd().get("source:incline")
                             + " fixme="
                             + (sug.tagsToAdd().containsKey("fixme")));
             System.out.println("  tags=" + sug.tagsToAdd());
+            if (sug.split()) {
+                System.out.println("  split suggested; detail=" + no.nvdbincline.core.tag.SuggestionTags.reviewDetail(sug));
+            }
         }
 
         List<ChainPoint> forTargets =

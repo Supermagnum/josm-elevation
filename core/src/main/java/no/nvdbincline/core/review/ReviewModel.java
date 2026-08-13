@@ -2,16 +2,21 @@ package no.nvdbincline.core.review;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import no.nvdbincline.core.model.ChainPoint;
 import no.nvdbincline.core.model.MatchConfidence;
 import no.nvdbincline.core.model.SafetyFinding;
 import no.nvdbincline.core.model.WaySuggestion;
+import no.nvdbincline.core.tag.AppliedTags;
 import no.nvdbincline.core.tag.InclineTags;
 
 /**
  * Review-dialog row model and accept/reject filtering — pure JVM, no Swing/JOSM.
  * Only accepted rows should be turned into edit commands by the plugin adapter.
+ *
+ * <p>{@link Row#tags} holds only applyable OSM keys. Match quality / estimates /
+ * split segment lists live on {@link Row#inclineAudit} for the UI.
  */
 public final class ReviewModel {
     public enum Kind {
@@ -38,12 +43,20 @@ public final class ReviewModel {
         public final long osmId;
         public final String summary;
         public final MatchConfidence confidence;
+        /** Tags that may be applied to the OSM layer (allowlisted keys only). */
         public final Map<String, String> tags;
         public final ChainPoint chainPoint;
         public final SafetyFinding safetyFinding;
         public final boolean signConfirmed;
         public final Double x;
         public final Double y;
+        /** True when gradient spread suggests the mapper should split the way in JOSM. */
+        public final boolean splitSuggested;
+        /**
+         * Structured review audit for incline rows (former incline:match_* /
+         * incline:estimated_* / split bookkeeping). Null for non-incline rows.
+         */
+        public final InclineAudit inclineAudit;
         public boolean accepted;
 
         public Row(
@@ -58,6 +71,8 @@ public final class ReviewModel {
                 boolean signConfirmed,
                 Double x,
                 Double y,
+                boolean splitSuggested,
+                InclineAudit inclineAudit,
                 boolean accepted) {
             this.kind = kind;
             this.section = section;
@@ -70,11 +85,51 @@ public final class ReviewModel {
             this.signConfirmed = signConfirmed;
             this.x = x;
             this.y = y;
+            this.splitSuggested = splitSuggested;
+            this.inclineAudit = inclineAudit;
             this.accepted = accepted;
             if (this.tags.containsKey("hazard") && !signConfirmed) {
                 throw new IllegalArgumentException(
                         "Review row must not carry hazard=* without sign confirmation");
             }
+            for (String key : this.tags.keySet()) {
+                if (AppliedTags.FORBIDDEN_LEGACY_KEYS.contains(key)) {
+                    throw new IllegalArgumentException(
+                            "Review row must not carry bookkeeping/legacy tag: " + key);
+                }
+            }
+        }
+
+        /** Convenience for non-incline rows (no audit payload). */
+        public Row(
+                Kind kind,
+                Section section,
+                long osmId,
+                String summary,
+                MatchConfidence confidence,
+                Map<String, String> tags,
+                ChainPoint chainPoint,
+                SafetyFinding safetyFinding,
+                boolean signConfirmed,
+                Double x,
+                Double y,
+                boolean splitSuggested,
+                boolean accepted) {
+            this(
+                    kind,
+                    section,
+                    osmId,
+                    summary,
+                    confidence,
+                    tags,
+                    chainPoint,
+                    safetyFinding,
+                    signConfirmed,
+                    x,
+                    y,
+                    splitSuggested,
+                    null,
+                    accepted);
         }
     }
 
@@ -94,6 +149,7 @@ public final class ReviewModel {
                 String existing = s.match().way().existingIncline().orElse("?");
                 String proposed =
                         s.segments().isEmpty() ? "?" : s.segments().get(0).inclineTag();
+                InclineAudit audit = InclineAudit.from(s);
                 model.rows.add(
                         new Row(
                                 Kind.DISCREPANCY,
@@ -111,28 +167,38 @@ public final class ReviewModel {
                                 false,
                                 null,
                                 null,
+                                false,
+                                audit,
                                 false));
                 continue;
             }
-            String incline =
-                    s.tagsToAdd().getOrDefault("incline", s.tagsToAdd().get("incline:suggested"));
+            Map<String, String> tags = s.tagsToAdd();
+            InclineAudit audit = InclineAudit.from(s);
+            String incline = tags.getOrDefault(AppliedTags.INCLINE, "?");
+            String summary =
+                    "incline="
+                            + incline
+                            + " ("
+                            + s.match().confidence().name().toLowerCase(Locale.ROOT)
+                            + ")"
+                            + (s.split() ? " — split suggested" : "")
+                            + "; "
+                            + (audit == null ? "" : audit.summaryLine());
             model.rows.add(
                     new Row(
                             Kind.WAY_TAGS,
                             Section.INCLINES,
                             s.match().way().id(),
-                            "incline="
-                                    + incline
-                                    + " ("
-                                    + s.match().confidence().name().toLowerCase()
-                                    + ")",
+                            summary,
                             s.match().confidence(),
-                            s.tagsToAdd(),
+                            tags,
                             null,
                             null,
                             false,
                             null,
                             null,
+                            s.split(),
+                            audit,
                             s.match().confidence() == MatchConfidence.HIGH));
         }
         for (ChainPoint cp : chainPoints) {
@@ -141,7 +207,10 @@ public final class ReviewModel {
                             Kind.CHAIN_NODE,
                             Section.CHAINS,
                             cp.wayId() == null ? 0 : cp.wayId(),
-                            "chain_advisory=" + cp.kind().tagValue() + " — " + cp.reason(),
+                            "chain_advisory="
+                                    + cp.kind().tagValue()
+                                    + " — "
+                                    + cp.reason(),
                             MatchConfidence.MEDIUM,
                             chainTags(cp),
                             cp,
@@ -149,6 +218,7 @@ public final class ReviewModel {
                             false,
                             cp.x(),
                             cp.y(),
+                            false,
                             false));
         }
         if (safetyFindings != null) {
@@ -202,6 +272,7 @@ public final class ReviewModel {
                 f.signConfirmed(),
                 f.x(),
                 f.y(),
+                false,
                 f.signConfirmed() && f.confidence() == MatchConfidence.HIGH);
     }
 
@@ -210,15 +281,7 @@ public final class ReviewModel {
                 cp.kind() == no.nvdbincline.core.model.ChainKind.REMOVE
                         ? InclineTags.CHAIN_NOTE_REMOVE
                         : InclineTags.CHAIN_NOTE_FIT;
-        return Map.of(
-                "note",
-                note,
-                "chain_advisory",
-                cp.kind().tagValue(),
-                "chain_advisory:source",
-                InclineTags.SOURCE,
-                "chain_advisory:reason",
-                cp.reason().length() > 250 ? cp.reason().substring(0, 250) : cp.reason());
+        return AppliedTags.chain(cp.kind().tagValue(), note);
     }
 
     public void acceptAllHighConfidence() {

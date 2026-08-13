@@ -5,12 +5,15 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import no.nvdbincline.core.model.ChainKind;
 import no.nvdbincline.core.model.ChainPoint;
 import no.nvdbincline.core.model.MatchConfidence;
 import no.nvdbincline.core.review.ReviewModel;
+import no.nvdbincline.core.tag.AppliedTags;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,7 +35,6 @@ import org.openstreetmap.josm.spi.preferences.Config;
 /**
  * Plugin tests against an in-memory DataSet.
  * Commands are undoable via UndoRedoHandler; nothing uploads.
- * Bootstraps JOSM preferences headlessly (no unpublished josm-tests jar).
  */
 class SuggestionApplierTest {
 
@@ -82,6 +84,7 @@ class SuggestionApplierTest {
                 false,
                 null,
                 null,
+                false,
                 accepted);
     }
 
@@ -99,6 +102,7 @@ class SuggestionApplierTest {
                 false,
                 cp.x(),
                 cp.y(),
+                false,
                 accepted);
     }
 
@@ -109,20 +113,14 @@ class SuggestionApplierTest {
                         way.getUniqueId(),
                         "incline=10%",
                         MatchConfidence.HIGH,
-                        Map.of(
-                                "incline",
-                                "10%",
-                                "incline:source",
-                                "nvdb_estimate",
-                                "fixme",
-                                "verify"),
+                        AppliedTags.incline("10%"),
                         true);
         ReviewModel.Row rejected =
                 wayRow(
                         way.getUniqueId(),
                         "should not apply",
                         MatchConfidence.LOW,
-                        Map.of("incline", "99%"),
+                        AppliedTags.incline("99%"),
                         false);
 
         List<Command> cmds =
@@ -139,16 +137,93 @@ class SuggestionApplierTest {
                         way.getUniqueId(),
                         "incline=8%",
                         MatchConfidence.HIGH,
-                        Map.of("incline", "8%", "incline:source", "nvdb_estimate"),
+                        AppliedTags.incline("8%"),
                         true);
         assertFalse(way.hasKey("incline"));
         int n = SuggestionApplier.applyAccepted(ds, List.of(row));
         assertEquals(1, n);
         assertEquals("8%", way.get("incline"));
-        assertEquals("nvdb_estimate", way.get("incline:source"));
+        assertEquals("nvdb_estimate", way.get(AppliedTags.SOURCE_INCLINE));
         assertTrue(UndoRedoHandler.getInstance().hasUndoCommands());
         UndoRedoHandler.getInstance().undo();
         assertFalse(way.hasKey("incline"));
+    }
+
+    @Test
+    void appliedInclineTagsAreExactlyAllowlistedKeys() {
+        Map<String, String> bloated = new java.util.LinkedHashMap<>(AppliedTags.incline("10%"));
+        // If bookkeeping ever sneaks into a row map, sanitize must drop it.
+        bloated.put("incline:match_confidence", "high");
+        bloated.put("incline:estimated_avg", "9.6%");
+        bloated.put("incline:split_recommended", "yes");
+        bloated.put("incline:source", "nvdb_estimate"); // legacy suffix form
+
+        // Row construction forbids forbidden keys — sanitize path tested via raw map filter:
+        Map<String, String> sanitized =
+                AppliedTags.retain(bloated, AppliedTags.WAY_INCLINE_KEYS);
+        assertEquals(AppliedTags.WAY_INCLINE_KEYS, sanitized.keySet());
+        assertFalse(sanitized.containsKey("incline:source"));
+        assertEquals("nvdb_estimate", sanitized.get(AppliedTags.SOURCE_INCLINE));
+
+        ReviewModel.Row row =
+                wayRow(
+                        way.getUniqueId(),
+                        "incline=10%",
+                        MatchConfidence.HIGH,
+                        AppliedTags.incline("10%"),
+                        true);
+        SuggestionApplier.applyAccepted(ds, List.of(row));
+
+        Set<String> pluginKeys = new LinkedHashSet<>();
+        for (String k : way.keySet()) {
+            if (k.startsWith("incline")
+                    || k.startsWith("source:")
+                    || k.equals("fixme")
+                    || k.equals("note")) {
+                pluginKeys.add(k);
+            }
+        }
+        assertEquals(AppliedTags.WAY_INCLINE_KEYS, pluginKeys);
+        assertFalse(way.hasKey("incline:source"));
+        assertFalse(way.hasKey("incline:match_confidence"));
+        assertEquals("nvdb_estimate", way.get(AppliedTags.SOURCE_INCLINE));
+    }
+
+    @Test
+    void appliedHazardTagsUseSourcePrefixNotSuffix() {
+        ReviewModel.Row signed =
+                new ReviewModel.Row(
+                        ReviewModel.Kind.CURVE_SIGNED,
+                        ReviewModel.Section.CURVES_SIGNED,
+                        1,
+                        "signed",
+                        MatchConfidence.HIGH,
+                        AppliedTags.hazard("curve", "ok", "verify"),
+                        null,
+                        null,
+                        true,
+                        228100.0,
+                        6952200.0,
+                        false,
+                        true);
+        Map<String, String> kept = SuggestionApplier.sanitizeTags(signed);
+        assertEquals(AppliedTags.HAZARD_KEYS, kept.keySet());
+        assertEquals("nvdb_sign", kept.get(AppliedTags.SOURCE_HAZARD));
+        assertFalse(kept.containsKey("hazard:source"));
+
+        int before = ds.getNodes().size();
+        List<Command> cmds = SuggestionApplier.buildCommands(ds, List.of(signed));
+        assertEquals(1, cmds.size());
+        cmds.get(0).executeCommand();
+        assertEquals(before + 1, ds.getNodes().size());
+        Node added =
+                ds.getNodes().stream()
+                        .filter(n -> "curve".equals(n.get("hazard")))
+                        .findFirst()
+                        .orElseThrow();
+        assertEquals(AppliedTags.HAZARD_KEYS, Set.copyOf(added.keySet()));
+        assertEquals("nvdb_sign", added.get(AppliedTags.SOURCE_HAZARD));
+        assertFalse(added.hasKey("hazard:source"));
     }
 
     @Test
@@ -157,7 +232,7 @@ class SuggestionApplierTest {
         ReviewModel.Row row =
                 chainRow(
                         way.getUniqueId(),
-                        Map.of("note", "test", "chain_advisory", "fit"),
+                        AppliedTags.chain("fit", "test"),
                         new ChainPoint(228100, 6952200, ChainKind.FIT, "test", way.getUniqueId()),
                         true);
         List<Command> cmds = SuggestionApplier.buildCommands(ds, List.of(row));
@@ -175,11 +250,11 @@ class SuggestionApplierTest {
                         way.getUniqueId(),
                         "incline=10%",
                         MatchConfidence.HIGH,
-                        Map.of("incline", "10%", "incline:source", "nvdb_estimate"),
+                        AppliedTags.incline("10%"),
                         true);
         SuggestionApplier.applyAccepted(ds, List.of(row));
         assertEquals("5%", way.get("incline"));
-        assertEquals("nvdb_estimate", way.get("incline:source"));
+        assertEquals("nvdb_estimate", way.get(AppliedTags.SOURCE_INCLINE));
     }
 
     @Test
@@ -191,12 +266,13 @@ class SuggestionApplierTest {
                         1,
                         "adv",
                         MatchConfidence.LOW,
-                        Map.of("safety_advisory", "sharp_curve", "note", "n"),
+                        AppliedTags.safetyAdvisory("sharp_curve", "n"),
                         null,
                         null,
                         false,
                         1.0,
                         2.0,
+                        false,
                         true);
         assertFalse(SuggestionApplier.sanitizeTags(unsigned).containsKey("hazard"));
 
@@ -207,21 +283,16 @@ class SuggestionApplierTest {
                         1,
                         "signed",
                         MatchConfidence.HIGH,
-                        Map.of(
-                                "hazard",
-                                "curve",
-                                "hazard:source",
-                                "nvdb_sign",
-                                "note",
-                                "ok"),
+                        AppliedTags.hazard("curve", "ok", "verify"),
                         null,
                         null,
                         true,
                         1.0,
                         2.0,
+                        false,
                         true);
         Map<String, String> kept = SuggestionApplier.sanitizeTags(signed);
         assertEquals("curve", kept.get("hazard"));
-        assertEquals("nvdb_sign", kept.get("hazard:source"));
+        assertEquals("nvdb_sign", kept.get(AppliedTags.SOURCE_HAZARD));
     }
 }

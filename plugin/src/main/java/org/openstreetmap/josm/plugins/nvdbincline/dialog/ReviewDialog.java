@@ -3,10 +3,12 @@ package org.openstreetmap.josm.plugins.nvdbincline.dialog;
 import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.util.List;
+import java.util.Locale;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -14,11 +16,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import no.nvdbincline.core.review.InclineAudit;
 import no.nvdbincline.core.review.ReviewModel;
 
 /**
  * Review UI: every proposed change is listed with an accept checkbox.
- * Sections separate inclines, sign-confirmed curves, and advisories.
+ * Incline audit fields (match quality, raw estimates, split segments) are
+ * shown as columns / tooltips — never written as OSM tags.
  */
 public final class ReviewDialog {
     private ReviewDialog() {}
@@ -33,11 +38,12 @@ public final class ReviewDialog {
         TableModel tableModel = new TableModel(model.rows());
         JTable table = new JTable(tableModel);
         table.setFillsViewportHeight(true);
-        table.getColumnModel().getColumn(0).setMaxWidth(60);
-        table.getColumnModel().getColumn(1).setPreferredWidth(140);
-        table.getColumnModel().getColumn(2).setPreferredWidth(100);
-        table.getColumnModel().getColumn(3).setPreferredWidth(100);
-        table.getColumnModel().getColumn(4).setPreferredWidth(420);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        int[] widths = {55, 110, 90, 90, 90, 70, 70, 110, 100, 360};
+        for (int i = 0; i < widths.length && i < table.getColumnModel().getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setPreferredWidth(widths[i]);
+        }
+        table.setDefaultRenderer(Object.class, new AuditTooltipRenderer());
 
         JLabel summary =
                 new JLabel(
@@ -45,7 +51,8 @@ public final class ReviewDialog {
                                 "<html>Matched ways: <b>{0}</b> &nbsp; Unmatched: <b>{1}</b><br/>"
                                         + "<b>Confirmed by sign</b> rows may suggest <code>hazard=*</code>. "
                                         + "Geometry/accident advisories never get <code>hazard=*</code> "
-                                        + "(OSM requires a posted sign). Never uploads.</html>",
+                                        + "(OSM requires a posted sign). Hover a row for full match/estimate detail. "
+                                        + "Never uploads.</html>",
                                 matched,
                                 unmatched));
 
@@ -92,17 +99,50 @@ public final class ReviewDialog {
         dialog.getContentPane().add(north, BorderLayout.NORTH);
         dialog.getContentPane().add(new JScrollPane(table), BorderLayout.CENTER);
         dialog.getContentPane().add(buttons, BorderLayout.SOUTH);
-        dialog.setPreferredSize(new Dimension(1000, 520));
+        dialog.setPreferredSize(new Dimension(1280, 560));
         dialog.pack();
         dialog.setLocationRelativeTo(parent);
         dialog.setVisible(true);
         return confirmed[0];
     }
 
+    private static final class AuditTooltipRenderer extends DefaultTableCellRenderer {
+        @Override
+        public Component getTableCellRendererComponent(
+                JTable table,
+                Object value,
+                boolean isSelected,
+                boolean hasFocus,
+                int row,
+                int column) {
+            Component c =
+                    super.getTableCellRendererComponent(
+                            table, value, isSelected, hasFocus, row, column);
+            if (table.getModel() instanceof TableModel tm) {
+                ReviewModel.Row r = tm.rows.get(row);
+                if (r.inclineAudit != null) {
+                    setToolTipText("<html>" + r.inclineAudit.detailTooltip().replace("\n", "<br/>") + "</html>");
+                } else {
+                    setToolTipText(r.summary);
+                }
+            }
+            return c;
+        }
+    }
+
     private static final class TableModel extends AbstractTableModel {
         private final List<ReviewModel.Row> rows;
         private final String[] cols = {
-            tr("Accept"), tr("Section"), tr("Kind"), tr("Confidence"), tr("Summary")
+            tr("Accept"),
+            tr("Section"),
+            tr("Kind"),
+            tr("Confidence"),
+            tr("Method"),
+            tr("H(m)"),
+            tr("Proposed"),
+            tr("Raw avg/max"),
+            tr("Split"),
+            tr("Detail")
         };
 
         TableModel(List<ReviewModel.Row> rows) {
@@ -137,6 +177,7 @@ public final class ReviewDialog {
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
             ReviewModel.Row r = rows.get(rowIndex);
+            InclineAudit a = r.inclineAudit;
             return switch (columnIndex) {
                 case 0 -> r.accepted;
                 case 1 -> sectionLabel(r.section);
@@ -144,9 +185,30 @@ public final class ReviewDialog {
                 case 3 ->
                         r.confidence == null
                                 ? ""
-                                : r.confidence.name().toLowerCase()
+                                : r.confidence.name().toLowerCase(Locale.ROOT)
                                         + (r.signConfirmed ? " (sign)" : "");
-                case 4 -> "id " + r.osmId + ": " + r.summary;
+                case 4 -> a == null ? "" : a.matchMethod();
+                case 5 ->
+                        a == null || a.matchHausdorffM() == null
+                                ? ""
+                                : String.format(Locale.ROOT, "%.1f", a.matchHausdorffM());
+                case 6 -> a == null ? "" : a.suggestedIncline();
+                case 7 ->
+                        a == null
+                                ? ""
+                                : String.format(
+                                        Locale.ROOT,
+                                        "%.1f%% / %.1f%%",
+                                        a.estimatedAvgPct(),
+                                        a.estimatedMaxSustainedPct());
+                case 8 ->
+                        r.splitSuggested
+                                ? tr("Split suggested")
+                                : (a != null && a.splitRecommended() ? tr("Split suggested") : "");
+                case 9 ->
+                        a != null && a.suggestedSegments() != null && a.splitRecommended()
+                                ? "id " + r.osmId + ": segments " + a.suggestedSegments()
+                                : "id " + r.osmId + ": " + r.summary;
                 default -> "";
             };
         }

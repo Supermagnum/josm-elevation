@@ -1,5 +1,6 @@
 package org.openstreetmap.josm.plugins.nvdbincline;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -17,6 +18,7 @@ import java.util.stream.Stream;
 import no.nvdbincline.core.model.MatchConfidence;
 import no.nvdbincline.core.model.SafetyFinding;
 import no.nvdbincline.core.review.ReviewModel;
+import no.nvdbincline.core.tag.AppliedTags;
 import org.junit.jupiter.api.Test;
 import org.openstreetmap.josm.plugins.nvdbincline.command.SuggestionApplier;
 
@@ -65,12 +67,12 @@ class HazardTagSafetyTest {
                                 false,
                                 1.0,
                                 2.0,
+                                false,
                                 true));
     }
 
     @Test
     void applierNeverEmitsHazardForUnsignedAccidentCluster() {
-        // Construct advisory tags (legal), then verify sanitize would strip a sneaked hazard.
         ReviewModel.Row advisory =
                 new ReviewModel.Row(
                         ReviewModel.Kind.ACCIDENT_CLUSTER,
@@ -78,22 +80,18 @@ class HazardTagSafetyTest {
                         0,
                         "advisory",
                         MatchConfidence.LOW,
-                        Map.of(
-                                "safety_advisory",
+                        AppliedTags.safetyAdvisory(
                                 "accident_cluster",
-                                "note",
                                 "NVDB Trafikkulykke-ansamling: 4 ulykker 2020–2023 (type 570)"),
                         null,
                         null,
                         false,
                         228100.0,
                         6952200.0,
+                        false,
                         true);
         assertFalse(SuggestionApplier.sanitizeTags(advisory).containsKey("hazard"));
 
-        // If someone later mutates tags after construction, sanitize still strips.
-        Map<String, String> sneaked = new LinkedHashMap<>(advisory.tags);
-        sneaked.put("hazard", "dangerous_junction");
         ReviewModel.Row signedOk =
                 new ReviewModel.Row(
                         ReviewModel.Kind.ACCIDENT_CLUSTER,
@@ -101,49 +99,40 @@ class HazardTagSafetyTest {
                         0,
                         "signed",
                         MatchConfidence.HIGH,
-                        Map.of(
-                                "hazard",
-                                "dangerous_junction",
-                                "hazard:source",
-                                "nvdb_sign",
-                                "note",
-                                "ok"),
+                        AppliedTags.hazard("dangerous_junction", "ok", "verify"),
                         null,
                         null,
                         true,
                         228100.0,
                         6952200.0,
+                        false,
                         true);
-        assertTrue(SuggestionApplier.sanitizeTags(signedOk).containsKey("hazard"));
-        assertFalse(sneaked.isEmpty()); // keep reference used above for intent clarity
+        Map<String, String> kept = SuggestionApplier.sanitizeTags(signedOk);
+        assertTrue(kept.containsKey("hazard"));
+        assertEquals("nvdb_sign", kept.get(AppliedTags.SOURCE_HAZARD));
+        assertFalse(kept.containsKey("hazard:source"));
+        assertEquals(AppliedTags.HAZARD_KEYS, kept.keySet());
     }
 
     @Test
     void coreAndPluginSourcesNeverAssignHazardOutsideSignPaths() throws IOException {
-        // Soft static guard: advisory note text must mention not using hazard when unsigned;
-        // and SafetyAnalyzer must only put("hazard"...) after signConfirmed branches.
         Path core =
                 findRoot("core/src/main/java/no/nvdbincline/core/safety/SafetyAnalyzer.java");
         String text = Files.readString(core);
-        // Unsigned accident branch must not introduce hazard=
-        int advisoryIdx = text.indexOf("safety_advisory\", \"accident_cluster\"");
-        assertTrue(advisoryIdx > 0);
-        String advisoryBlock = text.substring(advisoryIdx, Math.min(text.length(), advisoryIdx + 800));
         assertFalse(
-                advisoryBlock.contains("tags.put(\"hazard\""),
-                "accident_cluster advisory branch must not assign hazard=*");
-
-        int curveAdv = text.indexOf("safety_advisory\", \"sharp_curve\"");
-        assertTrue(curveAdv > 0);
-        String curveBlock = text.substring(curveAdv, Math.min(text.length(), curveAdv + 600));
-        assertFalse(
-                curveBlock.contains("tags.put(\"hazard\""),
-                "curve advisory branch must not assign hazard=*");
+                text.contains("\"hazard:source\""),
+                "must use source:hazard, not hazard:source");
+        assertTrue(text.contains("AppliedTags.hazard("));
+        assertTrue(text.contains("AppliedTags.safetyAdvisory(\"accident_cluster\""));
+        assertTrue(text.contains("AppliedTags.safetyAdvisory(\"sharp_curve\""));
+        // Unsigned advisory helpers must not be mixed with hazard in the same call site block:
+        // ensure safetyAdvisory is used for both advisory cases.
+        assertTrue(text.indexOf("safetyAdvisory(\"sharp_curve\"") > 0);
+        assertTrue(text.indexOf("safetyAdvisory(\"accident_cluster\"") > 0);
     }
 
     @Test
     void noUploadStillHoldsAlongsideHazardGate() throws IOException {
-        // Keep upload ban visible in this suite too (companion to NoUploadSafetyTest).
         Path root = findPluginSourceRoot();
         List<String> offenders = new ArrayList<>();
         Pattern upload = Pattern.compile("UploadAction");

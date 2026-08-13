@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import no.nvdbincline.core.geo.Utm33;
 import no.nvdbincline.core.review.ReviewModel;
+import no.nvdbincline.core.tag.AppliedTags;
 import org.openstreetmap.josm.command.AddCommand;
 import org.openstreetmap.josm.command.ChangePropertyCommand;
 import org.openstreetmap.josm.command.Command;
@@ -22,6 +24,7 @@ import org.openstreetmap.josm.data.osm.Way;
  * with UndoRedoHandler. Never uploads.
  *
  * <p>{@code hazard=*} is only emitted when the review row is sign-confirmed.
+ * Only allowlisted OSM keys are written — no match/estimate bookkeeping tags.
  */
 public final class SuggestionApplier {
     private SuggestionApplier() {}
@@ -85,16 +88,38 @@ public final class SuggestionApplier {
     }
 
     /**
-     * Strip {@code hazard=*} unless the row is sign-confirmed. This is the
-     * hard safety gate for accident-cluster / geometry-only findings.
+     * Strip {@code hazard=*} unless sign-confirmed, then retain only allowlisted
+     * OSM keys for the row kind (drops bookkeeping and legacy {@code *:source}
+     * suffix forms).
      */
     public static Map<String, String> sanitizeTags(ReviewModel.Row row) {
         Map<String, String> tags = new LinkedHashMap<>(row.tags);
         if (tags.containsKey("hazard") && !row.signConfirmed) {
             tags.remove("hazard");
+            tags.remove(AppliedTags.SOURCE_HAZARD);
             tags.remove("hazard:source");
         }
-        return tags;
+        return AppliedTags.retain(tags, allowedKeys(row.kind));
+    }
+
+    static Set<String> allowedKeys(ReviewModel.Kind kind) {
+        return switch (kind) {
+            case WAY_TAGS -> AppliedTags.WAY_INCLINE_KEYS;
+            case CHAIN_NODE -> AppliedTags.CHAIN_KEYS;
+            case CURVE_SIGNED, JUNCTION_SIGNED -> AppliedTags.HAZARD_KEYS;
+            case ACCIDENT_CLUSTER ->
+                    // Sign-confirmed clusters carry hazard keys; unsigned carry advisory keys.
+                    // Retain is intersection with whatever is present after hazard strip.
+                    union(AppliedTags.HAZARD_KEYS, AppliedTags.SAFETY_ADVISORY_KEYS);
+            case CURVE_ADVISORY -> AppliedTags.SAFETY_ADVISORY_KEYS;
+            case DISCREPANCY -> Set.of();
+        };
+    }
+
+    private static Set<String> union(Set<String> a, Set<String> b) {
+        java.util.LinkedHashSet<String> out = new java.util.LinkedHashSet<>(a);
+        out.addAll(b);
+        return Set.copyOf(out);
     }
 
     private static boolean isNodeKind(ReviewModel.Kind kind) {

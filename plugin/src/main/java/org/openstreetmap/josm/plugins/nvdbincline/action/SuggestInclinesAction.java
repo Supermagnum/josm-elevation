@@ -127,8 +127,9 @@ public class SuggestInclinesAction extends JosmAction {
                     MainApplication.getMainFrame(),
                     tr(
                             "Applied {0} suggestion(s) as undoable edits.\n"
-                                    + "Check incline:source=nvdb_estimate / hazard:source=nvdb_sign / advisories.\n"
+                                    + "Check source:incline=nvdb_estimate / source:hazard=nvdb_sign / advisories.\n"
                                     + "hazard=* is only applied when an NVDB warning sign matched.\n"
+                                    + "Split suggestions are review-UI only — split ways yourself in JOSM if needed.\n"
                                     + "Upload manually from JOSM if you choose to. This plugin never uploads.",
                             applied),
                     tr("NVDB incline"),

@@ -4,32 +4,32 @@
   <node id='-26133' action='modify' visible='true' lat='61.52721531052' lon='10.15918045636'>
     <tag k='fixme' v='NVDB-sign-backed hazard=dangerous_junction suggestion; verify posted sign on site.' />
     <tag k='hazard' v='dangerous_junction' />
-    <tag k='hazard:source' v='nvdb_sign' />
     <tag k='note' v='NVDB skilt 124 - Farlig vegkryss (Farlig vegkryss). Verifiser skilt i felt før behold.' />
+    <tag k='source:hazard' v='nvdb_sign' />
   </node>
   <node id='-26134' action='modify' visible='true' lat='61.53097532452' lon='10.15915712095'>
     <tag k='fixme' v='NVDB-sign-backed hazard=dangerous_junction suggestion; verify posted sign on site.' />
     <tag k='hazard' v='dangerous_junction' />
-    <tag k='hazard:source' v='nvdb_sign' />
     <tag k='note' v='NVDB skilt 124 - Farlig vegkryss (Farlig vegkryss). Verifiser skilt i felt før behold.' />
+    <tag k='source:hazard' v='nvdb_sign' />
   </node>
   <node id='-26135' action='modify' visible='true' lat='61.5310011751' lon='10.14940969167'>
     <tag k='fixme' v='NVDB-sign-backed hazard=dangerous_junction suggestion; verify posted sign on site.' />
     <tag k='hazard' v='dangerous_junction' />
-    <tag k='hazard:source' v='nvdb_sign' />
     <tag k='note' v='NVDB skilt 124 - Farlig vegkryss (Farlig vegkryss). Verifiser skilt i felt før behold.' />
+    <tag k='source:hazard' v='nvdb_sign' />
   </node>
   <node id='-26136' action='modify' visible='true' lat='61.53168410589' lon='10.14400411266'>
     <tag k='fixme' v='NVDB-sign-backed hazard=dangerous_junction suggestion; verify posted sign on site.' />
     <tag k='hazard' v='dangerous_junction' />
-    <tag k='hazard:source' v='nvdb_sign' />
     <tag k='note' v='NVDB skilt 124 - Farlig vegkryss (Farlig vegkryss). Verifiser skilt i felt før behold.' />
+    <tag k='source:hazard' v='nvdb_sign' />
   </node>
   <node id='-26137' action='modify' visible='true' lat='61.53402197045' lon='10.15772299479'>
     <tag k='fixme' v='NVDB-sign-backed hazard=dangerous_junction suggestion; verify posted sign on site.' />
     <tag k='hazard' v='dangerous_junction' />
-    <tag k='hazard:source' v='nvdb_sign' />
     <tag k='note' v='NVDB skilt 124 - Farlig vegkryss (Farlig vegkryss). Verifiser skilt i felt før behold.' />
+    <tag k='source:hazard' v='nvdb_sign' />
   </node>
   <node id='1289150864' timestamp='2024-06-18T09:45:16Z' uid='352869' user='Hans Wurst' visible='true' version='6' changeset='152839553' lat='61.53143' lon='10.146449'>
     <tag k='bus' v='yes' />
@@ -6156,13 +6156,8 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='-4%' />
-    <tag k='incline:estimated_avg' v='-1.4%' />
-    <tag k='incline:estimated_max_sustained' v='-4.1%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.3' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361806810' timestamp='2025-03-07T17:26:16Z' uid='3497659' user='NKA' visible='true' version='5' changeset='163336793'>
     <nd ref='7078058311' />
@@ -6243,17 +6238,10 @@
     <nd ref='7078087341' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
-    <tag k='incline:estimated_avg' v='7.2%' />
-    <tag k='incline:estimated_max_sustained' v='-11.8%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='1.0' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
-    <tag k='incline:split_recommended' v='yes' />
-    <tag k='incline:suggested' v='7%' />
-    <tag k='incline:suggested_segments' v='12%;8%;7%;4%;-12%' />
+    <tag k='incline' v='7%' />
     <tag k='name' v='Gillebergsvegen' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361806861' action='modify' timestamp='2019-12-22T18:17:30Z' uid='3497659' user='NKA' visible='true' version='3' changeset='78741121'>
     <nd ref='7078058369' />
@@ -6305,17 +6293,10 @@
     <nd ref='7078087217' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
-    <tag k='incline:estimated_avg' v='7.7%' />
-    <tag k='incline:estimated_max_sustained' v='16.0%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='1.5' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
-    <tag k='incline:split_recommended' v='yes' />
-    <tag k='incline:suggested' v='8%' />
-    <tag k='incline:suggested_segments' v='6%;16%;16%;14%;20%;16%;11%;6%;3%;7%;4%;-4%;-3%' />
+    <tag k='incline' v='8%' />
     <tag k='name' v='Granlundsvegen' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361806947' action='modify' timestamp='2023-03-06T21:38:42Z' uid='665677' user='FennecusZerda' visible='true' version='4' changeset='133380649'>
     <nd ref='7078058355' />
@@ -6354,17 +6335,10 @@
     <nd ref='7078073592' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
-    <tag k='incline:estimated_avg' v='0.6%' />
-    <tag k='incline:estimated_max_sustained' v='14.6%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.8' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
-    <tag k='incline:split_recommended' v='yes' />
-    <tag k='incline:suggested' v='1%' />
-    <tag k='incline:suggested_segments' v='-10%;-9%;-7%;-4%;0%;7%;-6%;2%;2%;11%;15%' />
+    <tag k='incline' v='1%' />
     <tag k='name' v='Nedre Kolstadrovegen' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361806951' timestamp='2019-12-22T18:17:30Z' uid='3497659' user='NKA' visible='true' version='3' changeset='78741121'>
     <nd ref='7078077401' />
@@ -6400,18 +6374,11 @@
     <nd ref='7078059577' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='residential' />
-    <tag k='incline:estimated_avg' v='8.7%' />
-    <tag k='incline:estimated_max_sustained' v='12.2%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='2.0' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
-    <tag k='incline:split_recommended' v='yes' />
-    <tag k='incline:suggested' v='9%' />
-    <tag k='incline:suggested_segments' v='11%;12%;9%;6%' />
+    <tag k='incline' v='9%' />
     <tag k='maxspeed' v='30' />
     <tag k='name' v='Rognvegen' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361806998' action='modify' timestamp='2023-02-02T21:11:46Z' uid='3497659' user='NKA' visible='true' version='6' changeset='132019300'>
     <nd ref='7078059529' />
@@ -6448,18 +6415,11 @@
     <nd ref='10602396645' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='residential' />
-    <tag k='incline:estimated_avg' v='4.6%' />
-    <tag k='incline:estimated_max_sustained' v='15.5%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='2.5' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
-    <tag k='incline:split_recommended' v='yes' />
-    <tag k='incline:suggested' v='5%' />
-    <tag k='incline:suggested_segments' v='12%;5%;7%;6%;8%;16%' />
+    <tag k='incline' v='5%' />
     <tag k='maxspeed' v='30' />
     <tag k='name' v='Skalykkja' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807000' action='modify' timestamp='2019-12-22T18:17:30Z' uid='3497659' user='NKA' visible='true' version='4' changeset='78741121'>
     <nd ref='7078058113' />
@@ -6528,17 +6488,10 @@
     <nd ref='7078058175' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='residential' />
-    <tag k='incline:estimated_avg' v='9.0%' />
-    <tag k='incline:estimated_max_sustained' v='14.5%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.3' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
-    <tag k='incline:split_recommended' v='yes' />
-    <tag k='incline:suggested' v='9%' />
-    <tag k='incline:suggested_segments' v='11%;10%;13%;12%;12%;13%;12%;12%;15%;10%;9%;3%;10%' />
+    <tag k='incline' v='9%' />
     <tag k='name' v='Skarven' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807008' action='modify' timestamp='2023-07-27T09:25:33Z' uid='665677' user='FennecusZerda' visible='true' version='7' changeset='139076407'>
     <nd ref='7078149435' />
@@ -6633,19 +6586,12 @@
     <nd ref='7078058113' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='secondary' />
-    <tag k='incline:estimated_avg' v='-8.6%' />
-    <tag k='incline:estimated_max_sustained' v='-14.7%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.3' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
-    <tag k='incline:split_recommended' v='yes' />
-    <tag k='incline:suggested' v='-9%' />
-    <tag k='incline:suggested_segments' v='-10%;-5%;-6%;-10%;-12%;-12%;-15%' />
+    <tag k='incline' v='-9%' />
     <tag k='maxspeed' v='40' />
     <tag k='name' v='Vekkomsvegen' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
     <tag k='ref' v='2570' />
+    <tag k='source:incline' v='nvdb_estimate' />
     <tag k='surface' v='asphalt' />
   </way>
   <way id='361807066' action='modify' timestamp='2019-12-22T18:17:30Z' uid='3497659' user='NKA' visible='true' version='4' changeset='78741121'>
@@ -6665,16 +6611,9 @@
     <nd ref='7078087157' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
-    <tag k='incline:estimated_avg' v='-6.4%' />
-    <tag k='incline:estimated_max_sustained' v='-15.8%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.2' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
-    <tag k='incline:split_recommended' v='yes' />
-    <tag k='incline:suggested' v='-6%' />
-    <tag k='incline:suggested_segments' v='-18%;-15%;-11%;3%' />
+    <tag k='incline' v='-6%' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807067' action='modify' timestamp='2019-12-22T18:17:30Z' uid='3497659' user='NKA' visible='true' version='6' changeset='78741121'>
     <nd ref='7078087286' />
@@ -6694,16 +6633,9 @@
     <nd ref='3662328804' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
-    <tag k='incline:estimated_avg' v='-0.1%' />
-    <tag k='incline:estimated_max_sustained' v='-10.3%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='3.4' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
-    <tag k='incline:split_recommended' v='yes' />
-    <tag k='incline:suggested' v='0%' />
-    <tag k='incline:suggested_segments' v='-12%;-6%;-4%;2%;2%;7%' />
+    <tag k='incline' v='0%' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807087' action='modify' timestamp='2019-12-22T18:17:30Z' uid='3497659' user='NKA' visible='true' version='4' changeset='78741121'>
     <nd ref='7078058340' />
@@ -6730,13 +6662,8 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='-15%' />
-    <tag k='incline:estimated_avg' v='-11.7%' />
-    <tag k='incline:estimated_max_sustained' v='-15.0%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.3' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807088' action='modify' timestamp='2019-12-22T18:17:30Z' uid='3497659' user='NKA' visible='true' version='4' changeset='78741121'>
     <nd ref='7078079569' />
@@ -6758,13 +6685,8 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='15%' />
-    <tag k='incline:estimated_avg' v='13.1%' />
-    <tag k='incline:estimated_max_sustained' v='14.7%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='2.5' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807121' action='modify' timestamp='2019-12-22T18:17:30Z' uid='3497659' user='NKA' visible='true' version='3' changeset='78741121'>
     <nd ref='7078058360' />
@@ -6791,16 +6713,9 @@
     <nd ref='7078087257' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
-    <tag k='incline:estimated_avg' v='6.3%' />
-    <tag k='incline:estimated_max_sustained' v='-16.5%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='5.6' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
-    <tag k='incline:split_recommended' v='yes' />
-    <tag k='incline:suggested' v='6%' />
-    <tag k='incline:suggested_segments' v='16%;7%;-22%;-16%' />
+    <tag k='incline' v='6%' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807126' timestamp='2023-03-06T21:38:42Z' uid='665677' user='FennecusZerda' visible='true' version='6' changeset='133380649'>
     <nd ref='7078078007' />
@@ -6837,13 +6752,8 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='10%' />
-    <tag k='incline:estimated_avg' v='9.5%' />
-    <tag k='incline:estimated_max_sustained' v='9.5%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.7' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807218' action='modify' timestamp='2023-02-02T21:11:46Z' uid='3497659' user='NKA' visible='true' version='5' changeset='132019300'>
     <nd ref='7078059581' />
@@ -6863,14 +6773,9 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='5%' />
-    <tag k='incline:estimated_avg' v='1.8%' />
-    <tag k='incline:estimated_max_sustained' v='5.3%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.3' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='name' v='Kvenndalsvegen' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807224' action='modify' timestamp='2019-12-22T18:17:30Z' uid='3497659' user='NKA' visible='true' version='3' changeset='78741121'>
     <nd ref='7078079560' />
@@ -6881,13 +6786,8 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='3%' />
-    <tag k='incline:estimated_avg' v='2.9%' />
-    <tag k='incline:estimated_max_sustained' v='2.9%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.9' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807226' action='modify' timestamp='2023-07-27T09:25:33Z' uid='665677' user='FennecusZerda' visible='true' version='5' changeset='139076407'>
     <nd ref='7078070515' />
@@ -6900,13 +6800,8 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='-5%' />
-    <tag k='incline:estimated_avg' v='-3.7%' />
-    <tag k='incline:estimated_max_sustained' v='-4.8%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.3' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807227' action='modify' timestamp='2019-12-22T18:17:30Z' uid='3497659' user='NKA' visible='true' version='3' changeset='78741121'>
     <nd ref='7078079556' />
@@ -6917,13 +6812,8 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='5%' />
-    <tag k='incline:estimated_avg' v='5.6%' />
-    <tag k='incline:estimated_max_sustained' v='5.4%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.2' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807229' action='modify' timestamp='2019-12-22T18:17:30Z' uid='3497659' user='NKA' visible='true' version='5' changeset='78741121'>
     <nd ref='7078115812' />
@@ -6933,13 +6823,8 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='2%' />
-    <tag k='incline:estimated_avg' v='2.0%' />
-    <tag k='incline:estimated_max_sustained' v='2.0%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.3' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807233' action='modify' timestamp='2019-12-22T18:17:30Z' uid='3497659' user='NKA' visible='true' version='4' changeset='78741121'>
     <nd ref='7078079537' />
@@ -6949,13 +6834,8 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='3%' />
-    <tag k='incline:estimated_avg' v='3.2%' />
-    <tag k='incline:estimated_max_sustained' v='3.4%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.3' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807235' action='modify' timestamp='2019-12-22T18:17:30Z' uid='3497659' user='NKA' visible='true' version='4' changeset='78741121'>
     <nd ref='7078079569' />
@@ -6968,13 +6848,8 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='6%' />
-    <tag k='incline:estimated_avg' v='5.1%' />
-    <tag k='incline:estimated_max_sustained' v='6.3%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='2.6' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807301' timestamp='2020-03-27T17:25:12Z' uid='7392967' user='FredrikEdler' visible='true' version='4' changeset='82726425'>
     <nd ref='7335543014' />
@@ -6992,16 +6867,9 @@
     <nd ref='7078087352' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
-    <tag k='incline:estimated_avg' v='6.3%' />
-    <tag k='incline:estimated_max_sustained' v='11.2%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.3' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
-    <tag k='incline:split_recommended' v='yes' />
-    <tag k='incline:suggested' v='6%' />
-    <tag k='incline:suggested_segments' v='1%;12%;11%' />
+    <tag k='incline' v='6%' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807311' action='modify' timestamp='2019-12-22T18:17:30Z' uid='3497659' user='NKA' visible='true' version='4' changeset='78741121'>
     <nd ref='7078087168' />
@@ -7015,13 +6883,8 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='-5%' />
-    <tag k='incline:estimated_avg' v='-5.4%' />
-    <tag k='incline:estimated_max_sustained' v='-5.4%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.3' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807351' action='modify' timestamp='2023-02-02T21:11:46Z' uid='3497659' user='NKA' visible='true' version='6' changeset='132019300'>
     <nd ref='7078059566' />
@@ -7034,13 +6897,8 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='2%' />
-    <tag k='incline:estimated_avg' v='-0.0%' />
-    <tag k='incline:estimated_max_sustained' v='1.8%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='1.0' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807355' action='modify' timestamp='2019-12-22T18:17:30Z' uid='3497659' user='NKA' visible='true' version='5' changeset='78741121'>
     <nd ref='7078082943' />
@@ -7054,13 +6912,8 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='2%' />
-    <tag k='incline:estimated_avg' v='-1.0%' />
-    <tag k='incline:estimated_max_sustained' v='2.2%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='6.7' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807419' action='modify' timestamp='2019-12-22T18:17:30Z' uid='3497659' user='NKA' visible='true' version='4' changeset='78741121'>
     <nd ref='7078082962' />
@@ -7074,13 +6927,8 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='5%' />
-    <tag k='incline:estimated_avg' v='3.7%' />
-    <tag k='incline:estimated_max_sustained' v='5.3%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.3' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807421' timestamp='2019-12-22T18:17:30Z' uid='3497659' user='NKA' visible='true' version='4' changeset='78741121'>
     <nd ref='7078087277' />
@@ -7106,13 +6954,8 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='-4%' />
-    <tag k='incline:estimated_avg' v='-2.1%' />
-    <tag k='incline:estimated_max_sustained' v='-4.1%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.3' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807427' action='modify' timestamp='2019-12-22T18:17:30Z' uid='3497659' user='NKA' visible='true' version='4' changeset='78741121'>
     <nd ref='7078058315' />
@@ -7125,13 +6968,8 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='6%' />
-    <tag k='incline:estimated_avg' v='5.9%' />
-    <tag k='incline:estimated_max_sustained' v='5.9%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='1.6' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807467' action='modify' timestamp='2019-12-22T18:17:30Z' uid='3497659' user='NKA' visible='true' version='5' changeset='78741121'>
     <nd ref='3662327805' />
@@ -7144,16 +6982,9 @@
     <nd ref='7078087135' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
-    <tag k='incline:estimated_avg' v='6.5%' />
-    <tag k='incline:estimated_max_sustained' v='13.3%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.3' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
-    <tag k='incline:split_recommended' v='yes' />
-    <tag k='incline:suggested' v='6%' />
-    <tag k='incline:suggested_segments' v='13%;11%;5%;2%' />
+    <tag k='incline' v='6%' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807471' action='modify' timestamp='2019-12-22T18:17:30Z' uid='3497659' user='NKA' visible='true' version='4' changeset='78741121'>
     <nd ref='7078082900' />
@@ -7167,16 +6998,9 @@
     <nd ref='7078082908' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
-    <tag k='incline:estimated_avg' v='4.1%' />
-    <tag k='incline:estimated_max_sustained' v='7.4%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='1.1' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
-    <tag k='incline:split_recommended' v='yes' />
-    <tag k='incline:suggested' v='4%' />
-    <tag k='incline:suggested_segments' v='8%;5%;1%' />
+    <tag k='incline' v='4%' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807472' action='modify' timestamp='2019-12-22T18:17:30Z' uid='3497659' user='NKA' visible='true' version='5' changeset='78741121'>
     <nd ref='7078059538' />
@@ -7189,13 +7013,8 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='-6%' />
-    <tag k='incline:estimated_avg' v='-4.6%' />
-    <tag k='incline:estimated_max_sustained' v='-5.7%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.3' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807476' action='modify' timestamp='2019-12-22T18:17:30Z' uid='3497659' user='NKA' visible='true' version='5' changeset='78741121'>
     <nd ref='7078087342' />
@@ -7209,13 +7028,8 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='-10%' />
-    <tag k='incline:estimated_avg' v='-2.1%' />
-    <tag k='incline:estimated_max_sustained' v='-9.6%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.3' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361807508' action='modify' timestamp='2019-12-22T18:17:30Z' uid='3497659' user='NKA' visible='true' version='4' changeset='78741121'>
     <nd ref='7078061705' />
@@ -7230,16 +7044,9 @@
     <nd ref='7078061714' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
-    <tag k='incline:estimated_avg' v='-6.7%' />
-    <tag k='incline:estimated_max_sustained' v='-11.1%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.3' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
-    <tag k='incline:split_recommended' v='yes' />
-    <tag k='incline:suggested' v='-7%' />
-    <tag k='incline:suggested_segments' v='-7%;-7%;-12%;-10%;-5%' />
+    <tag k='incline' v='-7%' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='361987913' timestamp='2023-05-06T08:32:17Z' uid='3497659' user='NKA' visible='true' version='5' changeset='135767615'>
     <nd ref='7078057977' />
@@ -7374,16 +7181,9 @@
     <nd ref='7078087475' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
-    <tag k='incline:estimated_avg' v='16.4%' />
-    <tag k='incline:estimated_max_sustained' v='22.2%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='1.7' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
-    <tag k='incline:split_recommended' v='yes' />
-    <tag k='incline:suggested' v='16%' />
-    <tag k='incline:suggested_segments' v='13%;16%;18%;24%;19%' />
+    <tag k='incline' v='16%' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='380148688' action='modify' timestamp='2023-05-11T05:09:28Z' uid='3497659' user='NKA' visible='true' version='5' changeset='135959384'>
     <nd ref='7078058175' />
@@ -7453,19 +7253,12 @@
     <nd ref='7078149435' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='secondary' />
-    <tag k='incline:estimated_avg' v='-1.3%' />
-    <tag k='incline:estimated_max_sustained' v='11.3%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.3' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
-    <tag k='incline:split_recommended' v='yes' />
-    <tag k='incline:suggested' v='-1%' />
-    <tag k='incline:suggested_segments' v='11%;7%;4%;-2%;-5%;-9%;-7%;-10%;-10%' />
+    <tag k='incline' v='-1%' />
     <tag k='maxspeed' v='60' />
     <tag k='name' v='Vekkomsvegen' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
     <tag k='ref' v='2570' />
+    <tag k='source:incline' v='nvdb_estimate' />
     <tag k='surface' v='asphalt' />
   </way>
   <way id='446577270' timestamp='2019-12-22T18:17:30Z' uid='3497659' user='NKA' visible='true' version='2' changeset='78741121'>
@@ -8213,13 +8006,8 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='-10%' />
-    <tag k='incline:estimated_avg' v='-7.1%' />
-    <tag k='incline:estimated_max_sustained' v='-9.9%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.3' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='757906418' action='modify' timestamp='2019-12-22T18:17:20Z' uid='3497659' user='NKA' visible='true' version='1' changeset='78741031'>
     <nd ref='7078069926' />
@@ -8231,13 +8019,8 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='-4%' />
-    <tag k='incline:estimated_avg' v='-1.8%' />
-    <tag k='incline:estimated_max_sustained' v='-4.0%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.3' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='757907237' action='modify' timestamp='2023-05-11T05:09:28Z' uid='3497659' user='NKA' visible='true' version='2' changeset='135959384'>
     <nd ref='7078111775' />
@@ -8348,19 +8131,12 @@
     <nd ref='7078149412' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='secondary' />
-    <tag k='incline:estimated_avg' v='7.3%' />
-    <tag k='incline:estimated_max_sustained' v='14.8%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.3' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
-    <tag k='incline:split_recommended' v='yes' />
-    <tag k='incline:suggested' v='7%' />
-    <tag k='incline:suggested_segments' v='10%;9%;1%;8%;2%;7%;3%;16%;12%;7%;7%;10%;12%;9%;10%;9%;9%;10%;10%;7%;10%' />
+    <tag k='incline' v='7%' />
     <tag k='maxspeed' v='60' />
     <tag k='name' v='Friisvegen' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
     <tag k='ref' v='2204' />
+    <tag k='source:incline' v='nvdb_estimate' />
     <tag k='surface' v='asphalt' />
   </way>
   <way id='757907650' action='modify' timestamp='2019-12-22T18:17:20Z' uid='3497659' user='NKA' visible='true' version='1' changeset='78741031'>
@@ -8375,13 +8151,8 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='13%' />
-    <tag k='incline:estimated_avg' v='11.7%' />
-    <tag k='incline:estimated_max_sustained' v='13.3%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='5.3' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='757907934' timestamp='2026-04-08T15:23:49Z' uid='3497659' user='NKA' visible='true' version='2' changeset='181055878'>
     <nd ref='7078087321' />
@@ -8435,16 +8206,11 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='secondary' />
     <tag k='incline' v='-11%' />
-    <tag k='incline:estimated_avg' v='-10.2%' />
-    <tag k='incline:estimated_max_sustained' v='-11.4%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.2' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='maxspeed' v='40' />
     <tag k='name' v='Vekkomsvegen' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
     <tag k='ref' v='2570' />
+    <tag k='source:incline' v='nvdb_estimate' />
     <tag k='surface' v='asphalt' />
   </way>
   <way id='938700607' timestamp='2021-05-04T06:16:45Z' uid='3497659' user='NKA' visible='true' version='1' changeset='104097148'>
@@ -11255,14 +11021,9 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='-3%' />
-    <tag k='incline:estimated_avg' v='-2.7%' />
-    <tag k='incline:estimated_max_sustained' v='-2.7%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.9' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='name' v='Skalykkja' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='1152262717' timestamp='2023-03-06T21:38:42Z' uid='665677' user='FennecusZerda' visible='true' version='1' changeset='133380649'>
     <nd ref='7078078029' />
@@ -11291,17 +11052,10 @@
     <nd ref='10872946391' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
-    <tag k='incline:estimated_avg' v='-6.5%' />
-    <tag k='incline:estimated_max_sustained' v='-10.7%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.3' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
-    <tag k='incline:split_recommended' v='yes' />
-    <tag k='incline:suggested' v='-7%' />
-    <tag k='incline:suggested_segments' v='-4%;-11%' />
+    <tag k='incline' v='-7%' />
     <tag k='name' v='Millestuguvegen' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='1192605131' timestamp='2023-07-27T09:25:33Z' uid='665677' user='FennecusZerda' visible='true' version='1' changeset='139076407'>
     <nd ref='11070853006' />
@@ -11338,13 +11092,8 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='-1%' />
-    <tag k='incline:estimated_avg' v='-0.5%' />
-    <tag k='incline:estimated_max_sustained' v='-0.6%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='14.2' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <way id='1251248328' timestamp='2024-02-16T17:48:32Z' uid='3497659' user='NKA' visible='true' version='1' changeset='147542622'>
     <nd ref='11631418784' />
@@ -13555,14 +13304,9 @@
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='-17%' />
-    <tag k='incline:estimated_avg' v='-14.7%' />
-    <tag k='incline:estimated_max_sustained' v='-17.0%' />
-    <tag k='incline:match_confidence' v='high' />
-    <tag k='incline:match_hausdorff_m' v='0.3' />
-    <tag k='incline:match_method' v='geometry' />
-    <tag k='incline:source' v='nvdb_estimate' />
     <tag k='name' v='Gillebergsvegen' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
   </way>
   <relation id='1244991' timestamp='2026-07-25T15:33:38Z' uid='103253' user='gormur' visible='true' version='587' changeset='186352863'>
     <member type='way' ref='211348430' role='' />

@@ -55,7 +55,13 @@ def test_write_osm_well_formed(tmp_path: Path):
     way_el = root.find("way")
     tags = {t.get("k"): t.get("v") for t in way_el.findall("tag")}
     assert tags["incline"] == "10%"
-    assert tags["incline:source"] == "nvdb_estimate"
+    assert tags["source:incline"] == "nvdb_estimate"
+    assert set(k for k in tags if k.startswith("incline") or k.startswith("source:") or k in ("fixme", "note")) <= {
+        "incline",
+        "source:incline",
+        "fixme",
+        "note",
+    }
     assert any(
         t.get("k") == "chain_advisory" for n in root.findall("node") for t in n.findall("tag")
     )

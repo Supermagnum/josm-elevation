@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import no.nvdbincline.core.model.Coord;
 import no.nvdbincline.core.model.GradientStats;
@@ -57,7 +56,7 @@ class SuggestionTagsTest {
     }
 
     @Test
-    void splitSuggestedUsesWholeWayAverage() {
+    void forWayEmitsOnlyAllowlistedKeysWithSourcePrefix() {
         MatchResult m = match(way("tertiary", 200), MatchConfidence.HIGH, 4.0);
         GradientStats st = stats(5.7, 11.0);
         WaySuggestion sug =
@@ -80,39 +79,39 @@ class SuggestionTagsTest {
                         null,
                         Map.of());
         Map<String, String> tags = SuggestionTags.forWay(sug);
-        assertEquals(InclineTags.formatIncline(5.7), tags.get("incline:suggested"));
-        assertEquals("2%;8%", tags.get("incline:suggested_segments"));
-        assertTrue(tags.get("incline:estimated_avg").contains("."));
-        assertFalse(tags.get("incline:estimated_avg").contains(","));
+        assertEquals(AppliedTags.WAY_INCLINE_KEYS, tags.keySet());
+        assertEquals(InclineTags.formatIncline(5.7), tags.get(AppliedTags.INCLINE));
+        assertEquals(AppliedTags.INCLINE_SOURCE_VALUE, tags.get(AppliedTags.SOURCE_INCLINE));
+        assertFalse(tags.containsKey("incline:source"));
+        assertFalse(tags.containsKey("incline:suggested"));
+        assertFalse(tags.containsKey("incline:split_recommended"));
+        assertFalse(tags.containsKey("incline:estimated_avg"));
+        assertTrue(SuggestionTags.reviewDetail(sug).contains("segments"));
+        assertTrue(SuggestionTags.reviewDetail(sug).contains("2%"));
     }
 
     @Test
-    void estimatedAvgUsesRootLocale() {
-        Locale prev = Locale.getDefault();
-        try {
-            Locale.setDefault(Locale.forLanguageTag("nb-NO"));
-            MatchResult m = match(way("primary", 200), MatchConfidence.HIGH, 3.0);
-            WaySuggestion sug =
-                    new WaySuggestion(
-                            m,
-                            List.of(),
-                            stats(9.6, 12.0),
-                            List.of(
-                                    new SegmentSuggestion(
-                                            0,
-                                            200,
-                                            9.6,
-                                            12.0,
-                                            "10%",
-                                            new Coord(0, 0),
-                                            new Coord(200, 0))),
-                            false,
-                            null,
-                            Map.of());
-            String avg = SuggestionTags.forWay(sug).get("incline:estimated_avg");
-            assertEquals("9.6%", avg);
-        } finally {
-            Locale.setDefault(prev);
-        }
+    void nonSplitUsesSegmentIncline() {
+        MatchResult m = match(way("primary", 200), MatchConfidence.HIGH, 3.0);
+        WaySuggestion sug =
+                new WaySuggestion(
+                        m,
+                        List.of(),
+                        stats(9.6, 12.0),
+                        List.of(
+                                new SegmentSuggestion(
+                                        0,
+                                        200,
+                                        9.6,
+                                        12.0,
+                                        "10%",
+                                        new Coord(0, 0),
+                                        new Coord(200, 0))),
+                        false,
+                        null,
+                        Map.of());
+        Map<String, String> tags = SuggestionTags.forWay(sug);
+        assertEquals("10%", tags.get(AppliedTags.INCLINE));
+        assertEquals(AppliedTags.WAY_INCLINE_KEYS, tags.keySet());
     }
 }

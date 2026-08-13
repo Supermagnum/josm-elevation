@@ -16,6 +16,7 @@ from nvdb_incline.config import (
     SUGGESTION_NOTE,
 )
 from nvdb_incline.geo import utm_to_lonlat
+from nvdb_incline.gradient import format_incline
 from nvdb_incline.models import ChainPoint, WaySuggestion
 
 
@@ -90,11 +91,6 @@ def write_osm(
                         ),
                     },
                 )
-                ET.SubElement(
-                    node,
-                    "tag",
-                    {"k": "incline:suggested_split", "v": seg.incline_tag},
-                )
 
     for cp in chain_points:
         lon, lat = utm_to_lonlat(cp.x, cp.y)
@@ -115,12 +111,7 @@ def write_osm(
             note_text = CHAIN_NOTE_FIT + " / " + CHAIN_NOTE_REMOVE
         ET.SubElement(node, "tag", {"k": "note", "v": note_text})
         ET.SubElement(node, "tag", {"k": "chain_advisory", "v": cp.kind})
-        ET.SubElement(node, "tag", {"k": "chain_advisory:source", "v": "nvdb_estimate"})
-        ET.SubElement(node, "tag", {"k": "chain_advisory:reason", "v": cp.reason[:250]})
-        if cp.way_id is not None:
-            ET.SubElement(
-                node, "tag", {"k": "chain_advisory:way", "v": str(cp.way_id)}
-            )
+        ET.SubElement(node, "tag", {"k": "source:chain_advisory", "v": "nvdb_estimate"})
 
     path.parent.mkdir(parents=True, exist_ok=True)
     rough = ET.tostring(osm, encoding="utf-8")
@@ -129,27 +120,17 @@ def write_osm(
 
 
 def build_way_tags(sug: WaySuggestion) -> dict[str, str]:
-    """Machine-suggested tags for a matched way (does not include existing tags)."""
+    """Applied OSM tags for a matched way (bookkeeping stays off-tag)."""
     if not sug.segments:
         return {}
-    primary = sug.segments[0]
-    tags = {
-        "incline:source": "nvdb_estimate",
-        "incline:match_confidence": sug.match.confidence,
-        "incline:match_method": sug.match.method,
-        "incline:estimated_avg": f"{sug.stats.average_pct:.1f}%",
-        "incline:estimated_max_sustained": f"{sug.stats.max_sustained_pct:.1f}%",
+    incline = (
+        format_incline(sug.stats.average_pct)
+        if sug.split
+        else sug.segments[0].incline_tag
+    )
+    return {
+        "incline": incline,
+        "source:incline": "nvdb_estimate",
         "note": SUGGESTION_NOTE,
         "fixme": SUGGESTION_FIXME,
     }
-    if sug.match.hausdorff_m is not None:
-        tags["incline:match_hausdorff_m"] = f"{sug.match.hausdorff_m:.1f}"
-    if sug.split:
-        tags["incline:split_recommended"] = "yes"
-        tags["incline:suggested"] = primary.incline_tag
-        parts = ";".join(s.incline_tag for s in sug.segments)
-        tags["incline:suggested_segments"] = parts
-    else:
-        # Practical max incline for the segment (OSM convention), not the average.
-        tags["incline"] = primary.incline_tag
-    return tags

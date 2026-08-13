@@ -1,7 +1,6 @@
 package no.nvdbincline.core.safety;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -12,12 +11,13 @@ import no.nvdbincline.core.model.MatchConfidence;
 import no.nvdbincline.core.model.NvdbPointFeature;
 import no.nvdbincline.core.model.OsmWayGeom;
 import no.nvdbincline.core.model.SafetyFinding;
-import no.nvdbincline.core.tag.InclineTags;
+import no.nvdbincline.core.tag.AppliedTags;
 
 /**
  * Cross-check geometric curves and accident clusters against NVDB warning signs.
  *
- * OSM {@code hazard=*} is only emitted when a matching NVDB sign is present.
+ * <p>OSM {@code hazard=*} is only emitted when a matching NVDB sign is present.
+ * Applied tags use {@code source:hazard} (not {@code hazard:source}).
  */
 public final class SafetyAnalyzer {
     /** NVDB Skiltplate */
@@ -50,20 +50,23 @@ public final class SafetyAnalyzer {
 
         for (CurveFeature curve : curves) {
             NvdbPointFeature sign =
-                    nearestMatchingSign(curve.x(), curve.y(), signs, CURVE_SIGN_CODES, settings.signMatchRadiusM);
+                    nearestMatchingSign(
+                            curve.x(),
+                            curve.y(),
+                            signs,
+                            CURVE_SIGN_CODES,
+                            settings.signMatchRadiusM);
             if (sign != null) {
                 usedSigns.add(sign.objectId());
-                Map<String, String> tags = new LinkedHashMap<>();
-                tags.put("hazard", "curve");
-                tags.put("hazard:source", "nvdb_sign");
-                tags.put(
-                        "note",
+                String note =
                         "NVDB skilt "
                                 + sign.skiltnummer()
                                 + " (Farlig sving) ved geometrisk skarp kurve R≈"
                                 + String.format(Locale.ROOT, "%.0f", curve.radiusM())
-                                + " m. Verifiser skilt i felt før behold.");
-                tags.put("fixme", "NVDB-sign-backed hazard=curve suggestion; verify posted sign on site.");
+                                + " m. Verifiser skilt i felt før behold.";
+                String fixme =
+                        "NVDB-sign-backed hazard=curve suggestion; verify posted sign on site.";
+                Map<String, String> tags = AppliedTags.hazard("curve", note, fixme);
                 out.add(
                         new SafetyFinding(
                                 SafetyFinding.Kind.CURVE_SIGNED,
@@ -82,15 +85,12 @@ public final class SafetyAnalyzer {
                                 null,
                                 curve.radiusM()));
             } else {
-                Map<String, String> tags = new LinkedHashMap<>();
-                tags.put("safety_advisory", "sharp_curve");
-                tags.put(
-                        "note",
+                String note =
                         "Foreslatt skarp kurve (NVDB/OSM-geometri, R≈"
                                 + String.format(Locale.ROOT, "%.0f", curve.radiusM())
                                 + " m). Ingen NVDB Farlig-sving-skilt funnet i nærheten — "
-                                + "IKKE hazard=* (krever skilt). Verifiser i felt.");
-                tags.put("safety_advisory:source", InclineTags.SOURCE);
+                                + "IKKE hazard=* (krever skilt). Verifiser i felt.";
+                Map<String, String> tags = AppliedTags.safetyAdvisory("sharp_curve", note);
                 out.add(
                         new SafetyFinding(
                                 SafetyFinding.Kind.CURVE_ADVISORY,
@@ -109,7 +109,6 @@ public final class SafetyAnalyzer {
             }
         }
 
-        // Standalone junction hazard signs (not necessarily at a detected curve).
         for (NvdbPointFeature sign : signs) {
             if (usedSigns.contains(sign.objectId())) {
                 continue;
@@ -117,17 +116,14 @@ public final class SafetyAnalyzer {
             if (!isCodeMatch(sign.skiltnummer(), JUNCTION_SIGN_CODES)) {
                 continue;
             }
-            Map<String, String> tags = new LinkedHashMap<>();
-            tags.put("hazard", "dangerous_junction");
-            tags.put("hazard:source", "nvdb_sign");
-            tags.put(
-                    "note",
+            String note =
                     "NVDB skilt "
                             + sign.skiltnummer()
-                            + " (Farlig vegkryss). Verifiser skilt i felt før behold.");
-            tags.put(
-                    "fixme",
-                    "NVDB-sign-backed hazard=dangerous_junction suggestion; verify posted sign on site.");
+                            + " (Farlig vegkryss). Verifiser skilt i felt før behold.";
+            String fixme =
+                    "NVDB-sign-backed hazard=dangerous_junction suggestion; verify posted sign on site.";
+            Map<String, String> tags =
+                    AppliedTags.hazard("dangerous_junction", note, fixme);
             out.add(
                     new SafetyFinding(
                             SafetyFinding.Kind.JUNCTION_SIGNED,
@@ -155,24 +151,25 @@ public final class SafetyAnalyzer {
                             settings.signMatchRadiusM);
             NvdbPointFeature curveSign =
                     nearestMatchingSign(
-                            cluster.x, cluster.y, signs, CURVE_SIGN_CODES, settings.signMatchRadiusM);
+                            cluster.x,
+                            cluster.y,
+                            signs,
+                            CURVE_SIGN_CODES,
+                            settings.signMatchRadiusM);
             String dateRange = cluster.dateFrom + "–" + cluster.dateTo;
             if (junctionSign != null) {
-                Map<String, String> tags = new LinkedHashMap<>();
-                tags.put("hazard", "dangerous_junction");
-                tags.put("hazard:source", "nvdb_sign");
-                tags.put(
-                        "note",
+                String note =
                         "NVDB skilt "
                                 + junctionSign.skiltnummer()
                                 + " ved ulykkesansamling ("
                                 + cluster.count
                                 + " Trafikkulykke "
                                 + dateRange
-                                + ", NVDB type 570). Verifiser skilt i felt.");
-                tags.put(
-                        "fixme",
-                        "NVDB-sign-backed hazard=dangerous_junction; accident cluster is context only.");
+                                + ", NVDB type 570). Verifiser skilt i felt.";
+                String fixme =
+                        "NVDB-sign-backed hazard=dangerous_junction; accident cluster is context only.";
+                Map<String, String> tags =
+                        AppliedTags.hazard("dangerous_junction", note, fixme);
                 out.add(
                         new SafetyFinding(
                                 SafetyFinding.Kind.ACCIDENT_CLUSTER,
@@ -190,18 +187,17 @@ public final class SafetyAnalyzer {
                                 dateRange,
                                 0));
             } else if (curveSign != null) {
-                Map<String, String> tags = new LinkedHashMap<>();
-                tags.put("hazard", "curve");
-                tags.put("hazard:source", "nvdb_sign");
-                tags.put(
-                        "note",
+                String note =
                         "NVDB skilt "
                                 + curveSign.skiltnummer()
                                 + " ved ulykkesansamling ("
                                 + cluster.count
                                 + " Trafikkulykke "
                                 + dateRange
-                                + "). Verifiser skilt i felt.");
+                                + "). Verifiser skilt i felt.";
+                String fixme =
+                        "NVDB-sign-backed hazard=curve; accident cluster is context only.";
+                Map<String, String> tags = AppliedTags.hazard("curve", note, fixme);
                 out.add(
                         new SafetyFinding(
                                 SafetyFinding.Kind.ACCIDENT_CLUSTER,
@@ -216,19 +212,15 @@ public final class SafetyAnalyzer {
                                 dateRange,
                                 0));
             } else {
-                Map<String, String> tags = new LinkedHashMap<>();
-                tags.put("safety_advisory", "accident_cluster");
-                tags.put(
-                        "note",
+                String note =
                         "NVDB Trafikkulykke-ansamling: "
                                 + cluster.count
                                 + " ulykker "
                                 + dateRange
                                 + " (type 570). Ingen matchende fareskilt i nærheten — "
-                                + "IKKE hazard=* (krever skilt/offisiell merking). Vurder lokalkunnskap.");
-                tags.put("safety_advisory:source", "nvdb_trafikkulykke");
-                tags.put("safety_advisory:count", String.valueOf(cluster.count));
-                tags.put("safety_advisory:period", dateRange);
+                                + "IKKE hazard=* (krever skilt/offisiell merking). Vurder lokalkunnskap.";
+                Map<String, String> tags =
+                        AppliedTags.safetyAdvisory("accident_cluster", note);
                 out.add(
                         new SafetyFinding(
                                 SafetyFinding.Kind.ACCIDENT_CLUSTER,
@@ -277,9 +269,11 @@ public final class SafetyAnalyzer {
             return false;
         }
         String n = skiltnummer.trim();
-        // Accept "100.1", "100.1 - Farlig sving…", etc.
         for (String code : codes) {
-            if (n.equals(code) || n.startsWith(code + " ") || n.startsWith(code + " -") || n.startsWith(code + "-")) {
+            if (n.equals(code)
+                    || n.startsWith(code + " ")
+                    || n.startsWith(code + " -")
+                    || n.startsWith(code + "-")) {
                 return true;
             }
         }

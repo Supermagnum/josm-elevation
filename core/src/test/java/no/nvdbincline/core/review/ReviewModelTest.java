@@ -15,6 +15,7 @@ import no.nvdbincline.core.model.OsmWayGeom;
 import no.nvdbincline.core.model.Polyline;
 import no.nvdbincline.core.model.SegmentSuggestion;
 import no.nvdbincline.core.model.WaySuggestion;
+import no.nvdbincline.core.tag.AppliedTags;
 import org.junit.jupiter.api.Test;
 
 class ReviewModelTest {
@@ -44,13 +45,7 @@ class ReviewModelTest {
                 List.of(seg),
                 false,
                 null,
-                Map.of(
-                        "incline",
-                        "10%",
-                        "incline:source",
-                        "nvdb_estimate",
-                        "incline:match_confidence",
-                        conf.name().toLowerCase()));
+                AppliedTags.incline("10%"));
     }
 
     @Test
