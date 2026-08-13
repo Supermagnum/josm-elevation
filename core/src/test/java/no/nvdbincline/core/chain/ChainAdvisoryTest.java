@@ -1,5 +1,6 @@
 package no.nvdbincline.core.chain;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -77,7 +78,25 @@ class ChainAdvisoryTest {
                                 new ChainPoint(10, 0, ChainKind.FIT, "b", null),
                                 new ChainPoint(200, 0, ChainKind.REMOVE, "c", null)),
                         50);
-        assertTrue(clustered.size() == 2);
+        assertEquals(2, clustered.size());
+    }
+
+    @Test
+    void clusterKeepsFitAndRemoveSeparateWhenNearby() {
+        var clustered =
+                ChainAdvisory.cluster(
+                        List.of(
+                                new ChainPoint(0, 0, ChainKind.FIT, "climb", null),
+                                new ChainPoint(5, 0, ChainKind.REMOVE, "descent", null)),
+                        50);
+        assertEquals(2, clustered.size());
+        Set<ChainKind> kinds = new HashSet<>();
+        for (ChainPoint p : clustered) {
+            kinds.add(p.kind());
+            assertFalse(p.kind() == ChainKind.FIT_REMOVE);
+        }
+        assertTrue(kinds.contains(ChainKind.FIT));
+        assertTrue(kinds.contains(ChainKind.REMOVE));
     }
 
     @Test

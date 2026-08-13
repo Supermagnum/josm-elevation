@@ -1,6 +1,7 @@
 package org.openstreetmap.josm.plugins.nvdbincline.command;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import no.nvdbincline.core.geo.Utm33;
@@ -19,6 +20,8 @@ import org.openstreetmap.josm.data.osm.Way;
 /**
  * Turns accepted review rows into ordinary JOSM Commands and registers them
  * with UndoRedoHandler. Never uploads.
+ *
+ * <p>{@code hazard=*} is only emitted when the review row is sign-confirmed.
  */
 public final class SuggestionApplier {
     private SuggestionApplier() {}
@@ -37,32 +40,42 @@ public final class SuggestionApplier {
         Command seq =
                 commands.size() == 1
                         ? commands.get(0)
-                        : new SequenceCommand("NVDB incline suggestions (review-only)", commands);
+                        : new SequenceCommand(
+                                "NVDB incline/safety suggestions (review-only)", commands);
         UndoRedoHandler.getInstance().add(seq);
         return accepted.size();
     }
 
-    /** Package-visible for tests: build commands without registering them. */
+    /** Build commands without registering them. */
     public static List<Command> buildCommands(DataSet ds, List<ReviewModel.Row> accepted) {
         List<Command> commands = new ArrayList<>();
         for (ReviewModel.Row row : accepted) {
+            Map<String, String> tags = sanitizeTags(row);
             if (row.kind == ReviewModel.Kind.WAY_TAGS) {
                 OsmPrimitive prim = findWay(ds, row.osmId);
-                if (prim == null || row.tags.isEmpty()) {
+                if (prim == null || tags.isEmpty()) {
                     continue;
                 }
-                // Do not overwrite an existing incline=*
-                Map<String, String> tags = new java.util.LinkedHashMap<>(row.tags);
                 if (prim.hasKey("incline")) {
+                    tags = new LinkedHashMap<>(tags);
                     tags.remove("incline");
                 }
                 if (!tags.isEmpty()) {
-                    commands.add(new ChangePropertyCommand(java.util.List.of(prim), tags));
+                    commands.add(new ChangePropertyCommand(List.of(prim), tags));
                 }
-            } else if (row.kind == ReviewModel.Kind.CHAIN_NODE && row.chainPoint != null) {
-                double[] lonlat = Utm33.utmToLonLat(row.chainPoint.x(), row.chainPoint.y());
+            } else if (isNodeKind(row.kind)) {
+                Double x = row.x;
+                Double y = row.y;
+                if (row.chainPoint != null) {
+                    x = row.chainPoint.x();
+                    y = row.chainPoint.y();
+                }
+                if (x == null || y == null || tags.isEmpty()) {
+                    continue;
+                }
+                double[] lonlat = Utm33.utmToLonLat(x, y);
                 Node node = new Node(new LatLon(lonlat[1], lonlat[0]));
-                for (Map.Entry<String, String> e : row.tags.entrySet()) {
+                for (Map.Entry<String, String> e : tags.entrySet()) {
                     node.put(e.getKey(), e.getValue());
                 }
                 commands.add(new AddCommand(ds, node));
@@ -71,15 +84,30 @@ public final class SuggestionApplier {
         return commands;
     }
 
+    /**
+     * Strip {@code hazard=*} unless the row is sign-confirmed. This is the
+     * hard safety gate for accident-cluster / geometry-only findings.
+     */
+    public static Map<String, String> sanitizeTags(ReviewModel.Row row) {
+        Map<String, String> tags = new LinkedHashMap<>(row.tags);
+        if (tags.containsKey("hazard") && !row.signConfirmed) {
+            tags.remove("hazard");
+            tags.remove("hazard:source");
+        }
+        return tags;
+    }
+
+    private static boolean isNodeKind(ReviewModel.Kind kind) {
+        return kind == ReviewModel.Kind.CHAIN_NODE
+                || kind == ReviewModel.Kind.CURVE_SIGNED
+                || kind == ReviewModel.Kind.CURVE_ADVISORY
+                || kind == ReviewModel.Kind.JUNCTION_SIGNED
+                || kind == ReviewModel.Kind.ACCIDENT_CLUSTER;
+    }
+
     private static Way findWay(DataSet ds, long id) {
         for (Way w : ds.getWays()) {
-            if (w.getUniqueId() == id || w.getOsmId() == id) {
-                return w;
-            }
-        }
-        // Newly created / negative ids in downloaded data use uniqueId
-        for (Way w : ds.getWays()) {
-            if (w.getId() == id) {
+            if (w.getUniqueId() == id || w.getOsmId() == id || w.getId() == id) {
                 return w;
             }
         }

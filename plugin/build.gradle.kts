@@ -7,6 +7,8 @@ plugins {
 
 dependencies {
     implementation(project(":core"))
+    // Must be packed: JOSM loads the plugin jar in isolation (no Gradle runtime classpath).
+    packIntoJar(project(":core"))
     packIntoJar("com.fasterxml.jackson.core:jackson-databind:2.17.2")
 
     testImplementation(platform("org.junit:junit-bom:5.10.2"))
@@ -31,6 +33,8 @@ josm {
 tasks.jar {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
     archiveBaseName.set("nvdb_incline")
+    // packIntoJar expands the core jar; without this, clean/rebuild can pack a stale/missing artifact.
+    dependsOn(":core:jar")
 }
 
 tasks.test {

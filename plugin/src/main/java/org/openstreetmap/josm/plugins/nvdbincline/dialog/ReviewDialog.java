@@ -18,7 +18,7 @@ import no.nvdbincline.core.review.ReviewModel;
 
 /**
  * Review UI: every proposed change is listed with an accept checkbox.
- * Nothing is applied until the user confirms; only checked rows become Commands.
+ * Sections separate inclines, sign-confirmed curves, and advisories.
  */
 public final class ReviewDialog {
     private ReviewDialog() {}
@@ -27,23 +27,25 @@ public final class ReviewDialog {
      * @return true if the user confirmed Apply selected
      */
     public static boolean show(Frame parent, ReviewModel model, int matched, int unmatched) {
-        JDialog dialog = new JDialog(parent, tr("Review NVDB incline suggestions"), true);
+        JDialog dialog = new JDialog(parent, tr("Review NVDB suggestions"), true);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         TableModel tableModel = new TableModel(model.rows());
         JTable table = new JTable(tableModel);
         table.setFillsViewportHeight(true);
         table.getColumnModel().getColumn(0).setMaxWidth(60);
-        table.getColumnModel().getColumn(1).setPreferredWidth(80);
+        table.getColumnModel().getColumn(1).setPreferredWidth(140);
         table.getColumnModel().getColumn(2).setPreferredWidth(100);
-        table.getColumnModel().getColumn(3).setPreferredWidth(420);
+        table.getColumnModel().getColumn(3).setPreferredWidth(100);
+        table.getColumnModel().getColumn(4).setPreferredWidth(420);
 
         JLabel summary =
                 new JLabel(
                         tr(
                                 "<html>Matched ways: <b>{0}</b> &nbsp; Unmatched: <b>{1}</b><br/>"
-                                        + "Suggestions are machine estimates (<code>incline:source=nvdb_estimate</code>). "
-                                        + "Accept only what you can verify. This plugin never uploads.</html>",
+                                        + "<b>Confirmed by sign</b> rows may suggest <code>hazard=*</code>. "
+                                        + "Geometry/accident advisories never get <code>hazard=*</code> "
+                                        + "(OSM requires a posted sign). Never uploads.</html>",
                                 matched,
                                 unmatched));
 
@@ -90,7 +92,7 @@ public final class ReviewDialog {
         dialog.getContentPane().add(north, BorderLayout.NORTH);
         dialog.getContentPane().add(new JScrollPane(table), BorderLayout.CENTER);
         dialog.getContentPane().add(buttons, BorderLayout.SOUTH);
-        dialog.setPreferredSize(new Dimension(900, 480));
+        dialog.setPreferredSize(new Dimension(1000, 520));
         dialog.pack();
         dialog.setLocationRelativeTo(parent);
         dialog.setVisible(true);
@@ -100,7 +102,7 @@ public final class ReviewDialog {
     private static final class TableModel extends AbstractTableModel {
         private final List<ReviewModel.Row> rows;
         private final String[] cols = {
-            tr("Accept"), tr("Kind"), tr("Confidence"), tr("Summary")
+            tr("Accept"), tr("Section"), tr("Kind"), tr("Confidence"), tr("Summary")
         };
 
         TableModel(List<ReviewModel.Row> rows) {
@@ -137,9 +139,14 @@ public final class ReviewDialog {
             ReviewModel.Row r = rows.get(rowIndex);
             return switch (columnIndex) {
                 case 0 -> r.accepted;
-                case 1 -> r.kind.name();
-                case 2 -> r.confidence == null ? "" : r.confidence.name().toLowerCase();
-                case 3 -> "way/node " + r.osmId + ": " + r.summary;
+                case 1 -> sectionLabel(r.section);
+                case 2 -> r.kind.name();
+                case 3 ->
+                        r.confidence == null
+                                ? ""
+                                : r.confidence.name().toLowerCase()
+                                        + (r.signConfirmed ? " (sign)" : "");
+                case 4 -> "id " + r.osmId + ": " + r.summary;
                 default -> "";
             };
         }
@@ -150,6 +157,16 @@ public final class ReviewDialog {
                 rows.get(rowIndex).accepted = b;
                 fireTableCellUpdated(rowIndex, columnIndex);
             }
+        }
+
+        private static String sectionLabel(ReviewModel.Section s) {
+            return switch (s) {
+                case INCLINES -> tr("Inclines");
+                case CHAINS -> tr("Snow chains");
+                case CURVES_SIGNED -> tr("Curves (confirmed by sign)");
+                case CURVES_ADVISORY -> tr("Curves (geometry-only)");
+                case ACCIDENTS -> tr("Accident clusters");
+            };
         }
     }
 }

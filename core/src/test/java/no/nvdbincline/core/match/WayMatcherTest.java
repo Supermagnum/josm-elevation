@@ -75,4 +75,25 @@ class WayMatcherTest {
         assertEquals(MatchConfidence.LOW, result.matches.get(0).confidence());
         assertEquals("nearest-fallback", result.matches.get(0).method());
     }
+
+    @Test
+    void longOsmWayMatchesOverlappingShortNvdbSegments() {
+        // OSM way ~300 m; NVDB sequence continues far beyond (common for veglenkesekvens).
+        List<Coord> osm =
+                List.of(new Coord(0, 0), new Coord(100, 0), new Coord(200, 0), new Coord(300, 0));
+        List<NvdbLink> links =
+                List.of(
+                        link(1, List.of(new Coord(0, 1, 10), new Coord(100, 1, 12))),
+                        link(1, List.of(new Coord(100, 1, 12), new Coord(200, 1, 14))),
+                        link(1, List.of(new Coord(200, 1, 14), new Coord(300, 1, 16))),
+                        // Far continuation of the same sequence — must not inflate distance.
+                        link(1, List.of(new Coord(5000, 1, 20), new Coord(5200, 1, 22))));
+        var result = WayMatcher.match(List.of(way(99, osm, null)), links, new WayMatcher.Settings());
+        assertEquals(1, result.matches.size());
+        assertTrue(
+                result.matches.get(0).confidence() == MatchConfidence.HIGH
+                        || result.matches.get(0).confidence() == MatchConfidence.MEDIUM,
+                "expected usable confidence, got " + result.matches.get(0).confidence());
+        assertEquals(3, result.matches.get(0).links().size());
+    }
 }

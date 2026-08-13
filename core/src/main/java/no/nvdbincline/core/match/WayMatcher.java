@@ -86,57 +86,141 @@ public final class WayMatcher {
             String id = way.nvdbId().get();
             List<NvdbLink> links = byId.get(id);
             if (links != null && !links.isEmpty()) {
-                Polyline concat = concat(links);
-                double hd = way.line().hausdorffDistance(concat);
-                return new MatchResult(
-                        way, links, MatchConfidence.HIGH, "nvdb:id", hd, "fast-path join on nvdb:id");
+                List<NvdbLink> near = overlappingLinks(way.line(), links, settings);
+                if (near.isEmpty()) {
+                    near = links;
+                }
+                return resultFromLinks(way, near, "nvdb:id", "fast-path join on nvdb:id", settings);
             }
         }
         if (usable.isEmpty()) {
             return null;
         }
 
-        List<Scored> scored = new ArrayList<>();
-        for (NvdbLink lk : usable) {
-            double hd = way.line().hausdorffDistance(lk.line());
-            if (hd > settings.nearestFallbackM * 1.5) {
-                continue;
-            }
-            double score = score(way.line(), lk.line(), hd, settings);
-            scored.add(new Scored(score, hd, lk));
-        }
-        if (scored.isEmpty()) {
+        List<NvdbLink> overlapping = overlappingLinks(way.line(), usable, settings);
+        if (overlapping.isEmpty()) {
             return null;
         }
-        scored.sort((a, b) -> Double.compare(b.score, a.score));
-        NvdbLink best = scored.get(0).link;
-        List<NvdbLink> sameSeq = new ArrayList<>();
-        for (Scored s : scored) {
-            if (s.link.veglenkesekvensId() == best.veglenkesekvensId()) {
-                sameSeq.add(s.link);
-            }
-        }
-        List<NvdbLink> links = sameSeq.isEmpty() ? List.of(best) : sameSeq;
-        Polyline concat = concat(links);
-        double concatHd = way.line().hausdorffDistance(concat);
-        double bestScore = scored.get(0).score;
 
-        if (concatHd <= settings.hausdorffHighM && bestScore >= 0.55) {
-            return new MatchResult(way, links, MatchConfidence.HIGH, "geometry", concatHd, "");
+        // Score individual overlapping links; keep all overlapping links for elevation coverage
+        // (a single OSM way often spans multiple NVDB veglenkesekvenser).
+        List<Scored> scored = new ArrayList<>();
+        for (NvdbLink lk : overlapping) {
+            double sep = lk.line().minDistance(way.line());
+            double score = score(way.line(), lk.line(), sep, settings);
+            scored.add(new Scored(score, sep, lk));
         }
-        if (concatHd <= settings.hausdorffMediumM && bestScore >= 0.35) {
-            return new MatchResult(way, links, MatchConfidence.MEDIUM, "geometry", concatHd, "");
+        scored.sort((a, b) -> Double.compare(b.score, a.score));
+        MatchResult built =
+                resultFromLinks(way, overlapping, "geometry", "", settings);
+        if (built == null) {
+            // Soft fallback: still return LOW if any overlap exists within fallback distance.
+            Polyline concat = concat(overlapping);
+            double frac = way.line().coverageFraction(concat, settings.nearestFallbackM);
+            if (frac >= 0.5) {
+                double median = median(way.line().vertexDistancesTo(concat));
+                return new MatchResult(
+                        way,
+                        overlapping,
+                        MatchConfidence.LOW,
+                        "nearest-fallback",
+                        median,
+                        "partial NVDB coverage ("
+                                + String.format(java.util.Locale.ROOT, "%.0f%%", 100 * frac)
+                                + " of vertices within fallback)");
+            }
+            return null;
         }
-        if (concatHd <= settings.nearestFallbackM) {
+        // Preserve score-based method note when geometry path used.
+        if (scored.get(0).score < 0.35 && built.confidence() != MatchConfidence.LOW) {
+            return new MatchResult(
+                    way,
+                    built.links(),
+                    built.confidence(),
+                    built.method(),
+                    built.hausdorffM(),
+                    built.notes());
+        }
+        return built;
+    }
+
+    private static MatchResult resultFromLinks(
+            OsmWayGeom way,
+            List<NvdbLink> links,
+            String method,
+            String notes,
+            Settings settings) {
+        Polyline concat = concat(links);
+        double fracHigh = way.line().coverageFraction(concat, settings.hausdorffHighM);
+        double fracMed = way.line().coverageFraction(concat, settings.hausdorffMediumM);
+        double[] dists = way.line().vertexDistancesTo(concat);
+        double median = median(dists);
+        double p90 = percentile(dists, 0.90);
+
+        // Prefer coverage fraction: mountain ways often overhang NVDB at one end.
+        if (fracHigh >= 0.90 && median <= settings.hausdorffHighM) {
+            return new MatchResult(way, links, MatchConfidence.HIGH, method, p90, notes);
+        }
+        if (fracMed >= 0.70 && median <= settings.hausdorffMediumM) {
+            return new MatchResult(way, links, MatchConfidence.MEDIUM, method, p90, notes);
+        }
+        if (fracMed >= 0.50 && median <= settings.nearestFallbackM) {
             return new MatchResult(
                     way,
                     links,
                     MatchConfidence.LOW,
-                    "nearest-fallback",
-                    concatHd,
-                    "no confident overlap; nearest NVDB link within fallback distance");
+                    method.equals("nvdb:id") ? method : "nearest-fallback",
+                    p90,
+                    notes.isBlank()
+                            ? "partial NVDB coverage"
+                            : notes);
         }
         return null;
+    }
+
+    /**
+     * NVDB segments that overlap this OSM way: at least half their vertices lie within
+     * the medium buffer, or the geometries come within {@code hausdorffHighM}.
+     */
+    private static List<NvdbLink> overlappingLinks(
+            Polyline way, List<NvdbLink> links, Settings settings) {
+        List<NvdbLink> out = new ArrayList<>();
+        for (NvdbLink lk : links) {
+            if (isFootLike(lk)) {
+                continue;
+            }
+            double frac = lk.line().coverageFraction(way, settings.hausdorffMediumM);
+            if (frac >= 0.5
+                    || lk.line().minDistance(way) <= settings.nearestFallbackM) {
+                out.add(lk);
+            }
+        }
+        return out;
+    }
+
+    private static boolean isFootLike(NvdbLink lk) {
+        String tv = lk.typeVeg() == null ? "" : lk.typeVeg().toLowerCase(java.util.Locale.ROOT);
+        return tv.contains("gang") || tv.contains("fortau") || tv.contains("trapp");
+    }
+
+    private static double median(double[] values) {
+        if (values.length == 0) {
+            return Double.POSITIVE_INFINITY;
+        }
+        double[] sorted = values.clone();
+        java.util.Arrays.sort(sorted);
+        return sorted[sorted.length / 2];
+    }
+
+    private static double percentile(double[] values, double p) {
+        if (values.length == 0) {
+            return Double.POSITIVE_INFINITY;
+        }
+        double[] sorted = values.clone();
+        java.util.Arrays.sort(sorted);
+        int idx = (int) Math.round(p * (sorted.length - 1));
+        idx = Math.max(0, Math.min(sorted.length - 1, idx));
+        return sorted[idx];
     }
 
     private static double score(Polyline osm, Polyline nvdb, double hausdorffM, Settings settings) {

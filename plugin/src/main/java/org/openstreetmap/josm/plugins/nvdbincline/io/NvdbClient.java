@@ -114,6 +114,121 @@ public class NvdbClient {
         return all;
     }
 
+    /**
+     * Fetch NVDB vegobjekter of a given type for a WGS84 bbox (points with geometry).
+     * Used for Skiltplate (96) and Trafikkulykke (570).
+     */
+    public List<no.nvdbincline.core.model.NvdbPointFeature> fetchVegobjektPoints(
+            long typeId, double minLon, double minLat, double maxLon, double maxLat)
+            throws IOException, InterruptedException {
+        double[] a = Utm33.lonLatToUtm(minLon, minLat);
+        double[] b = Utm33.lonLatToUtm(maxLon, maxLat);
+        double minX = Math.min(a[0], b[0]);
+        double minY = Math.min(a[1], b[1]);
+        double maxX = Math.max(a[0], b[0]);
+        double maxY = Math.max(a[1], b[1]);
+        String kartutsnitt =
+                String.format(Locale.ROOT, "%s,%s,%s,%s", minX, minY, maxX, maxY);
+
+        List<no.nvdbincline.core.model.NvdbPointFeature> all = new ArrayList<>();
+        String start = null;
+        int page = 0;
+        while (true) {
+            StringBuilder q = new StringBuilder();
+            q.append("srid=5973&antall=1000&inkluderAntall=false&inkluder=egenskaper,geometri&kartutsnitt=")
+                    .append(URLEncoder.encode(kartutsnitt, StandardCharsets.UTF_8));
+            if (start != null) {
+                q.append("&start=").append(URLEncoder.encode(start, StandardCharsets.UTF_8));
+            }
+            String url = baseUrl + "/vegobjekter/api/v4/vegobjekter/" + typeId + "?" + q;
+            JsonNode root = getJson(url, "vegobjekt_" + typeId + "_p" + page + "_" + hash(kartutsnitt));
+            JsonNode objekter = root.get("objekter");
+            if (objekter == null || !objekter.isArray() || objekter.isEmpty()) {
+                break;
+            }
+            for (JsonNode obj : objekter) {
+                no.nvdbincline.core.model.NvdbPointFeature pt = parsePointFeature(typeId, obj);
+                if (pt != null) {
+                    all.add(pt);
+                }
+            }
+            JsonNode neste = root.path("metadata").path("neste").path("start");
+            if (neste.isMissingNode() || neste.isNull() || neste.asText().isBlank()) {
+                break;
+            }
+            start = neste.asText();
+            page++;
+            if (page > 200) {
+                break;
+            }
+        }
+        return all;
+    }
+
+    /** Parse a vegobjekt point (also used by fixture tests). */
+    public static no.nvdbincline.core.model.NvdbPointFeature parsePointFeature(
+            long typeId, JsonNode obj) {
+        JsonNode geom = obj.get("geometri");
+        if (geom == null || !geom.has("wkt")) {
+            return null;
+        }
+        String wkt = geom.get("wkt").asText();
+        double x;
+        double y;
+        try {
+            if (wkt.toUpperCase(Locale.ROOT).contains("LINESTRING")) {
+                Polyline line = WktParser.parseLineString(wkt);
+                x = line.get(0).x();
+                y = line.get(0).y();
+            } else {
+                // POINT Z (x y z) or POINT (x y)
+                String body = wkt.substring(wkt.indexOf('(') + 1, wkt.lastIndexOf(')')).trim();
+                String[] parts = body.split("\\s+");
+                x = Double.parseDouble(parts[0]);
+                y = Double.parseDouble(parts[1]);
+            }
+        } catch (RuntimeException e) {
+            return null;
+        }
+        String skiltnummer = null;
+        String dateIso = null;
+        String label = "";
+        JsonNode props = obj.get("egenskaper");
+        if (props != null && props.isArray()) {
+            for (JsonNode p : props) {
+                int id = p.path("id").asInt(0);
+                String name = p.path("navn").asText("").toLowerCase(Locale.ROOT);
+                String verdi =
+                        p.has("verdi")
+                                ? p.get("verdi").asText()
+                                : (p.has("enum_verdi")
+                                        ? p.path("enum_verdi").path("verdi").asText("")
+                                        : "");
+                // Skiltnummer property id 5530; Trafikkulykke date 5055
+                if (id == 5530 || name.contains("skiltnummer")) {
+                    skiltnummer = verdi;
+                }
+                if (id == 5055 || name.contains("ulykkesdato") || name.equals("dato")) {
+                    dateIso = verdi;
+                }
+                if (name.equals("navn") && !verdi.isBlank()) {
+                    label = verdi;
+                }
+            }
+        }
+        if (label.isBlank() && skiltnummer != null) {
+            label = skiltnummer;
+        }
+        return new no.nvdbincline.core.model.NvdbPointFeature(
+                typeId,
+                obj.path("id").asLong(0),
+                x,
+                y,
+                label,
+                dateIso,
+                skiltnummer);
+    }
+
     /** Parse NVDB link JSON (also used by fixture-based tests). */
     public static NvdbLink parseLink(JsonNode obj) {
         JsonNode geom = obj.get("geometri");

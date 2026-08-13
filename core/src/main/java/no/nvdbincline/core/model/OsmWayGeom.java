@@ -1,6 +1,5 @@
 package no.nvdbincline.core.model;
 
-import java.util.List;
 import java.util.Optional;
 
 /** OSM highway way geometry in projected metres (node order defines incline sign). */
@@ -11,6 +10,7 @@ public final class OsmWayGeom {
     private final String name;
     private final String nvdbId;
     private final String existingIncline;
+    private final Integer speedLimitKph;
 
     public OsmWayGeom(
             long id,
@@ -19,12 +19,27 @@ public final class OsmWayGeom {
             String name,
             String nvdbId,
             String existingIncline) {
+        this(id, line, highway, name, nvdbId, existingIncline, null);
+    }
+
+    public OsmWayGeom(
+            long id,
+            Polyline line,
+            String highway,
+            String name,
+            String nvdbId,
+            String existingIncline,
+            Integer speedLimitKph) {
+        if (line == null) {
+            throw new IllegalArgumentException("line is null");
+        }
         this.id = id;
-        this.line = ObjectsRequire.nonNull(line, "line");
+        this.line = line;
         this.highway = highway;
         this.name = name;
         this.nvdbId = nvdbId;
         this.existingIncline = existingIncline;
+        this.speedLimitKph = speedLimitKph;
     }
 
     public long id() {
@@ -51,12 +66,7 @@ public final class OsmWayGeom {
         return Optional.ofNullable(existingIncline).filter(s -> !s.isBlank());
     }
 
-    private static final class ObjectsRequire {
-        static <T> T nonNull(T v, String name) {
-            if (v == null) {
-                throw new IllegalArgumentException(name + " is null");
-            }
-            return v;
-        }
+    public Integer speedLimitKph() {
+        return speedLimitKph;
     }
 }

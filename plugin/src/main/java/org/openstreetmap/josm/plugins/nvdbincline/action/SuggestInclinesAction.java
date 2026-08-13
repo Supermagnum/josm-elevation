@@ -18,8 +18,12 @@ import org.openstreetmap.josm.plugins.nvdbincline.io.LayerAdapter;
 import org.openstreetmap.josm.plugins.nvdbincline.io.NvdbClient;
 import no.nvdbincline.core.SuggestionEngine;
 import no.nvdbincline.core.model.NvdbLink;
+import no.nvdbincline.core.model.NvdbPointFeature;
 import no.nvdbincline.core.model.OsmWayGeom;
+import no.nvdbincline.core.model.SafetyFinding;
 import no.nvdbincline.core.review.ReviewModel;
+import no.nvdbincline.core.safety.SafetyAnalyzer;
+import org.openstreetmap.josm.tools.Logging;
 import org.openstreetmap.josm.tools.Shortcut;
 
 /**
@@ -68,13 +72,43 @@ public class SuggestInclinesAction extends JosmAction {
             double[] bbox = LayerAdapter.bboxLonLat(ds);
             NvdbClient client = new NvdbClient();
             List<NvdbLink> links = client.fetchSegmentedLinks(bbox[0], bbox[1], bbox[2], bbox[3]);
+            List<NvdbPointFeature> signs = List.of();
+            List<NvdbPointFeature> accidents = List.of();
+            try {
+                signs =
+                        client.fetchVegobjektPoints(
+                                SafetyAnalyzer.TYPE_SKILTPLATE,
+                                bbox[0],
+                                bbox[1],
+                                bbox[2],
+                                bbox[3]);
+            } catch (Exception signEx) {
+                Logging.warn(
+                        "NVDB sign fetch failed (continuing without signs): " + signEx.getMessage());
+            }
+            try {
+                accidents =
+                        client.fetchVegobjektPoints(
+                                SafetyAnalyzer.TYPE_TRAFIKKULYKKE,
+                                bbox[0],
+                                bbox[1],
+                                bbox[2],
+                                bbox[3]);
+            } catch (Exception accidentEx) {
+                Logging.warn(
+                        "NVDB accident fetch failed (continuing without accidents): "
+                                + accidentEx.getMessage());
+            }
             SuggestionEngine.Output out =
                     SuggestionEngine.run(ways, links, new SuggestionEngine.Config());
-            ReviewModel model = ReviewModel.fromEngine(out.suggestions, out.chainPoints);
+            List<SafetyFinding> safety =
+                    SafetyAnalyzer.analyze(ways, signs, accidents, new SafetyAnalyzer.Settings());
+            ReviewModel model =
+                    ReviewModel.fromEngine(out.suggestions, out.chainPoints, safety);
             if (model.rows().isEmpty()) {
                 JOptionPane.showMessageDialog(
                         MainApplication.getMainFrame(),
-                        tr("No suggestions for this layer (no NVDB matches or no elevation)."),
+                        tr("No suggestions for this layer."),
                         tr("NVDB incline"),
                         JOptionPane.INFORMATION_MESSAGE);
                 return;
@@ -93,18 +127,23 @@ public class SuggestInclinesAction extends JosmAction {
                     MainApplication.getMainFrame(),
                     tr(
                             "Applied {0} suggestion(s) as undoable edits.\n"
-                                    + "Review tags (look for incline:source=nvdb_estimate / fixme),\n"
-                                    + "then upload manually from JOSM if you choose to.\n"
-                                    + "This plugin never uploads.",
+                                    + "Check incline:source=nvdb_estimate / hazard:source=nvdb_sign / advisories.\n"
+                                    + "hazard=* is only applied when an NVDB warning sign matched.\n"
+                                    + "Upload manually from JOSM if you choose to. This plugin never uploads.",
                             applied),
                     tr("NVDB incline"),
                     JOptionPane.INFORMATION_MESSAGE);
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
+            // NoClassDefFoundError etc. are Errors — still show a usable message.
             JOptionPane.showMessageDialog(
                     MainApplication.getMainFrame(),
-                    tr("Failed: {0}", ex.getMessage()),
+                    tr(
+                            "Failed: {0}\n\n{1}",
+                            ex.getClass().getSimpleName(),
+                            ex.getMessage() == null ? ex.toString() : ex.getMessage()),
                     tr("NVDB incline"),
                     JOptionPane.ERROR_MESSAGE);
+            Logging.error(ex);
         }
     }
 

@@ -64,11 +64,48 @@ class SuggestionApplierTest {
         UndoRedoHandler.getInstance().clean();
     }
 
+    private static ReviewModel.Row wayRow(
+            long osmId,
+            String summary,
+            MatchConfidence confidence,
+            Map<String, String> tags,
+            boolean accepted) {
+        return new ReviewModel.Row(
+                ReviewModel.Kind.WAY_TAGS,
+                ReviewModel.Section.INCLINES,
+                osmId,
+                summary,
+                confidence,
+                tags,
+                null,
+                null,
+                false,
+                null,
+                null,
+                accepted);
+    }
+
+    private static ReviewModel.Row chainRow(
+            long osmId, Map<String, String> tags, ChainPoint cp, boolean accepted) {
+        return new ReviewModel.Row(
+                ReviewModel.Kind.CHAIN_NODE,
+                ReviewModel.Section.CHAINS,
+                osmId,
+                "chain_advisory=" + tags.getOrDefault("chain_advisory", "?"),
+                MatchConfidence.MEDIUM,
+                tags,
+                cp,
+                null,
+                false,
+                cp.x(),
+                cp.y(),
+                accepted);
+    }
+
     @Test
     void onlyAcceptedRowsProduceCommands() {
         ReviewModel.Row accepted =
-                new ReviewModel.Row(
-                        ReviewModel.Kind.WAY_TAGS,
+                wayRow(
                         way.getUniqueId(),
                         "incline=10%",
                         MatchConfidence.HIGH,
@@ -79,16 +116,13 @@ class SuggestionApplierTest {
                                 "nvdb_estimate",
                                 "fixme",
                                 "verify"),
-                        null,
                         true);
         ReviewModel.Row rejected =
-                new ReviewModel.Row(
-                        ReviewModel.Kind.WAY_TAGS,
+                wayRow(
                         way.getUniqueId(),
                         "should not apply",
                         MatchConfidence.LOW,
                         Map.of("incline", "99%"),
-                        null,
                         false);
 
         List<Command> cmds =
@@ -101,13 +135,11 @@ class SuggestionApplierTest {
     @Test
     void applyIsUndoable() {
         ReviewModel.Row row =
-                new ReviewModel.Row(
-                        ReviewModel.Kind.WAY_TAGS,
+                wayRow(
                         way.getUniqueId(),
                         "incline=8%",
                         MatchConfidence.HIGH,
                         Map.of("incline", "8%", "incline:source", "nvdb_estimate"),
-                        null,
                         true);
         assertFalse(way.hasKey("incline"));
         int n = SuggestionApplier.applyAccepted(ds, List.of(row));
@@ -123,11 +155,8 @@ class SuggestionApplierTest {
     void chainNodeAddsNewNode() {
         int before = ds.getNodes().size();
         ReviewModel.Row row =
-                new ReviewModel.Row(
-                        ReviewModel.Kind.CHAIN_NODE,
+                chainRow(
                         way.getUniqueId(),
-                        "chain_advisory=fit",
-                        MatchConfidence.MEDIUM,
                         Map.of("note", "test", "chain_advisory", "fit"),
                         new ChainPoint(228100, 6952200, ChainKind.FIT, "test", way.getUniqueId()),
                         true);
@@ -142,16 +171,57 @@ class SuggestionApplierTest {
     void doesNotOverwriteExistingIncline() {
         way.put("incline", "5%");
         ReviewModel.Row row =
-                new ReviewModel.Row(
-                        ReviewModel.Kind.WAY_TAGS,
+                wayRow(
                         way.getUniqueId(),
                         "incline=10%",
                         MatchConfidence.HIGH,
                         Map.of("incline", "10%", "incline:source", "nvdb_estimate"),
-                        null,
                         true);
         SuggestionApplier.applyAccepted(ds, List.of(row));
         assertEquals("5%", way.get("incline"));
         assertEquals("nvdb_estimate", way.get("incline:source"));
+    }
+
+    @Test
+    void sanitizeKeepsHazardOnlyWhenSignConfirmed() {
+        ReviewModel.Row unsigned =
+                new ReviewModel.Row(
+                        ReviewModel.Kind.CURVE_ADVISORY,
+                        ReviewModel.Section.CURVES_ADVISORY,
+                        1,
+                        "adv",
+                        MatchConfidence.LOW,
+                        Map.of("safety_advisory", "sharp_curve", "note", "n"),
+                        null,
+                        null,
+                        false,
+                        1.0,
+                        2.0,
+                        true);
+        assertFalse(SuggestionApplier.sanitizeTags(unsigned).containsKey("hazard"));
+
+        ReviewModel.Row signed =
+                new ReviewModel.Row(
+                        ReviewModel.Kind.CURVE_SIGNED,
+                        ReviewModel.Section.CURVES_SIGNED,
+                        1,
+                        "signed",
+                        MatchConfidence.HIGH,
+                        Map.of(
+                                "hazard",
+                                "curve",
+                                "hazard:source",
+                                "nvdb_sign",
+                                "note",
+                                "ok"),
+                        null,
+                        null,
+                        true,
+                        1.0,
+                        2.0,
+                        true);
+        Map<String, String> kept = SuggestionApplier.sanitizeTags(signed);
+        assertEquals("curve", kept.get("hazard"));
+        assertEquals("nvdb_sign", kept.get("hazard:source"));
     }
 }

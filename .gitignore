@@ -17,6 +17,7 @@ dist/
 prototype/.cache/
 *.osm
 !**/fixtures/**/*.osm
+!test-files/**/*.osm
 .python-version
 plugin/build/
 core/build/

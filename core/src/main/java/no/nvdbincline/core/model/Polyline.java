@@ -47,21 +47,65 @@ public final class Polyline {
 
     /** Discrete Hausdorff distance between vertex sets (upper bound of true Hausdorff). */
     public double hausdorffDistance(Polyline other) {
-        return Math.max(directedHausdorff(this, other), directedHausdorff(other, this));
+        return Math.max(directedHausdorff(other), other.directedHausdorff(this));
     }
 
-    private static double directedHausdorff(Polyline a, Polyline b) {
+    /**
+     * One-sided Hausdorff: max over this polyline's vertices of min distance to {@code other}.
+     * Use this for "does {@code other} cover this geometry" when lengths differ.
+     */
+    public double directedHausdorff(Polyline other) {
         double max = 0;
-        for (Coord p : a.points) {
-            double min = Double.POSITIVE_INFINITY;
-            for (int i = 1; i < b.size(); i++) {
-                min = Math.min(min, distancePointToSegment(p, b.get(i - 1), b.get(i)));
-            }
-            if (min > max) {
-                max = min;
+        for (Coord p : points) {
+            double d = minDistanceTo(p, other);
+            if (d > max) {
+                max = d;
             }
         }
         return max;
+    }
+
+    /** Minimum distance from any vertex of this polyline to {@code other}. */
+    public double minDistance(Polyline other) {
+        double best = Double.POSITIVE_INFINITY;
+        for (Coord p : points) {
+            best = Math.min(best, minDistanceTo(p, other));
+        }
+        for (Coord p : other.points) {
+            best = Math.min(best, minDistanceTo(p, this));
+        }
+        return best;
+    }
+
+    /** Per-vertex distance from this polyline to {@code other} (along this polyline's vertices). */
+    public double[] vertexDistancesTo(Polyline other) {
+        double[] out = new double[points.size()];
+        for (int i = 0; i < points.size(); i++) {
+            out[i] = minDistanceTo(points.get(i), other);
+        }
+        return out;
+    }
+
+    /** Fraction of this polyline's vertices within {@code bufferM} of {@code other}. */
+    public double coverageFraction(Polyline other, double bufferM) {
+        if (points.isEmpty()) {
+            return 0;
+        }
+        int inside = 0;
+        for (Coord p : points) {
+            if (minDistanceTo(p, other) <= bufferM) {
+                inside++;
+            }
+        }
+        return (double) inside / points.size();
+    }
+
+    private static double minDistanceTo(Coord p, Polyline line) {
+        double min = Double.POSITIVE_INFINITY;
+        for (int i = 1; i < line.size(); i++) {
+            min = Math.min(min, distancePointToSegment(p, line.get(i - 1), line.get(i)));
+        }
+        return min;
     }
 
     private static double distancePointToSegment(Coord p, Coord a, Coord b) {

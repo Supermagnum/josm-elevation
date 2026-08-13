@@ -3,6 +3,8 @@ package no.nvdbincline.core.chain;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import no.nvdbincline.core.gradient.GradientCalculator;
 import no.nvdbincline.core.model.ChainKind;
@@ -38,6 +40,19 @@ public final class ChainAdvisory {
     }
 
     public static List<ChainPoint> cluster(List<ChainPoint> points, double clusterM) {
+        // Cluster only same-kind points so we never emit fit;remove hybrids.
+        Map<ChainKind, List<ChainPoint>> byKind = new java.util.LinkedHashMap<>();
+        for (ChainPoint p : points) {
+            byKind.computeIfAbsent(p.kind(), k -> new ArrayList<>()).add(p);
+        }
+        List<ChainPoint> out = new ArrayList<>();
+        for (List<ChainPoint> kindPoints : byKind.values()) {
+            out.addAll(clusterSameKind(kindPoints, clusterM));
+        }
+        return out;
+    }
+
+    private static List<ChainPoint> clusterSameKind(List<ChainPoint> points, double clusterM) {
         List<ChainPoint> remaining = new ArrayList<>(points);
         List<ChainPoint> out = new ArrayList<>();
         while (!remaining.isEmpty()) {
@@ -80,23 +95,15 @@ public final class ChainAdvisory {
                     rep = p;
                 }
             }
-            Set<ChainKind> kinds = new HashSet<>();
             Set<String> reasons = new HashSet<>();
             for (ChainPoint p : group) {
-                kinds.add(p.kind());
                 reasons.add(p.reason());
-            }
-            ChainKind kind;
-            if (kinds.size() == 1) {
-                kind = kinds.iterator().next();
-            } else {
-                kind = ChainKind.FIT_REMOVE;
             }
             out.add(
                     new ChainPoint(
                             rep.x(),
                             rep.y(),
-                            kind,
+                            rep.kind(),
                             String.join("; ", reasons.stream().sorted().toList()),
                             rep.wayId()));
         }
@@ -122,7 +129,10 @@ public final class ChainAdvisory {
                                 xy.y(),
                                 ChainKind.FIT,
                                 String.format(
-                                        "sustained climb %.1f%% over %.0fm", mean, s[1] - s[0]),
+                                        Locale.ROOT,
+                                        "sustained climb %.1f%% over %.0fm",
+                                        mean,
+                                        s[1] - s[0]),
                                 wayId));
             } else if (mean <= -settings.chainGradientPct) {
                 Coord xy = GradientCalculator.xyAt(profile, s[1]);
@@ -132,8 +142,10 @@ public final class ChainAdvisory {
                                 xy.y(),
                                 ChainKind.REMOVE,
                                 String.format(
+                                        Locale.ROOT,
                                         "end of sustained descent %.1f%% over %.0fm",
-                                        mean, s[1] - s[0]),
+                                        mean,
+                                        s[1] - s[0]),
                                 wayId));
             }
         }

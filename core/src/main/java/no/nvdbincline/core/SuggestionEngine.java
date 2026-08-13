@@ -75,6 +75,8 @@ public final class SuggestionEngine {
                                 m, profile, stats, split.segments, split.split, skip, Map.of());
                 discrepancies.add(sug);
                 suggestions.add(sug);
+            } else if (!SuggestionTags.isInclineEligible(m, stats)) {
+                // Profile still usable for snow-chain heuristics; no incline review row.
             } else {
                 tags = SuggestionTags.forWay(sug);
                 sug =

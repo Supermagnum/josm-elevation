@@ -45,6 +45,7 @@ public final class LayerAdapter {
             if (nvdb == null) {
                 nvdb = w.get("nvdb:veglenkesekvensid");
             }
+            Integer speed = parseMaxspeed(w.get("maxspeed"));
             out.add(
                     new OsmWayGeom(
                             w.getUniqueId(),
@@ -52,9 +53,31 @@ public final class LayerAdapter {
                             hw,
                             w.getName(),
                             nvdb,
-                            w.get("incline")));
+                            w.get("incline"),
+                            speed));
         }
         return out;
+    }
+
+    static Integer parseMaxspeed(String raw) {
+        if (raw == null || raw.isBlank()) {
+            return null;
+        }
+        String s = raw.trim().toLowerCase();
+        if (s.contains("mph")) {
+            return null;
+        }
+        try {
+            // take leading integer (handles "80", "80;50")
+            String num = s.split("[^0-9]")[0];
+            if (num.isBlank()) {
+                return null;
+            }
+            int v = Integer.parseInt(num);
+            return v > 0 && v < 200 ? v : null;
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 
     /** Returns minLon, minLat, maxLon, maxLat. */
