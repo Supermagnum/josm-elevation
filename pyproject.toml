@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nvdb-incline"
+version = "0.1.0"
+description = "Review-only NVDB elevation to OSM incline=* suggestions for Norwegian roads. Never uploads."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "ISC"}
+authors = [{name = "nvdb-incline contributors"}]
+dependencies = [
+    "requests>=2.31",
+    "shapely>=2.0",
+    "pyproj>=3.6",
+    "click>=8.1",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.4",
+    "pytest-socket>=0.6",
+]
+
+[project.scripts]
+nvdb-incline = "nvdb_incline.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = "--disable-socket --allow-unix-socket -q"
+testpaths = ["tests"]
+pythonpath = ["src"]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]

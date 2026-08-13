@@ -1,0 +1,57 @@
+{
+  "version": 0.6,
+  "generator": "fixture",
+  "elements": [
+    {
+      "type": "node",
+      "id": 40001,
+      "lat": 62.6483405,
+      "lon": 9.7891238,
+      "version": 1
+    },
+    {
+      "type": "node",
+      "id": 40002,
+      "lat": 62.648355,
+      "lon": 9.7895123,
+      "version": 1
+    },
+    {
+      "type": "node",
+      "id": 40003,
+      "lat": 62.6483695,
+      "lon": 9.7899009,
+      "version": 1
+    },
+    {
+      "type": "node",
+      "id": 40004,
+      "lat": 62.6483839,
+      "lon": 9.7902894,
+      "version": 1
+    },
+    {
+      "type": "node",
+      "id": 40005,
+      "lat": 62.6483984,
+      "lon": 9.790678,
+      "version": 1
+    },
+    {
+      "type": "way",
+      "id": 3001,
+      "nodes": [
+        40001,
+        40002,
+        40003,
+        40004,
+        40005
+      ],
+      "tags": {
+        "highway": "residential",
+        "name": "UtenMatch"
+      },
+      "version": 1
+    }
+  ]
+}
