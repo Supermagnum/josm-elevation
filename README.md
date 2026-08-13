@@ -20,6 +20,22 @@ JOSM plugin that helps Norwegian OSM mappers suggest `incline=*` tags, snow-chai
 | `plugin` | JOSM adapter: menu entry, NVDB HTTP client + cache, review dialog, Commands, validator. |
 | `prototype/` | Earlier Python CLI (algorithm reference only; not needed to build or run the plugin). |
 
+## APIs used
+
+The plugin is **read-only**. All remote HTTP from the plugin itself goes to Statens vegvesen's [NVDB API Les](https://nvdbapiles.atlas.vegvesen.no) (`https://nvdbapiles.atlas.vegvesen.no`). OSM ways come from the active JOSM edit layer (already downloaded by JOSM); this plugin does not call the OSM API or Overpass.
+
+| API | Base / path | Used for |
+|-----|-------------|----------|
+| NVDB Vegnett v4 | `GET /vegnett/api/v4/veglenkesekvenser/segmentert` | 3D segmented road-link geometry for incline estimates |
+| NVDB Vegobjekter v4 | `GET /vegobjekter/api/v4/vegobjekter/96` | Skiltplate (warning signs: Farlig sving / Farlig vegkryss) |
+| NVDB Vegobjekter v4 | `GET /vegobjekter/api/v4/vegobjekter/570` | Trafikkulykke (accident points for clustering) |
+
+Queries use SRID 5973 and a UTM `kartutsnitt` derived from the layer bbox. Responses are cached under JOSM's cache directory (`nvdb_incline`). Client: `NvdbClient`.
+
+**Not used by the plugin:** OSM map/changeset/write API, OAuth, Overpass.
+
+The optional `prototype/` CLI additionally calls Overpass (`https://overpass-api.de/api/interpreter`) plus NVDB Datakatalog (`/datakatalog/api/v1/vegobjekttyper`) and kommuner (`/omrader/api/v4/kommuner`). `tools/capture_fixtures.py` talks only to JOSM Remote Control on localhost.
+
 ## Requirements
 
 - JDK 17+ (build emits Java 17 bytecode; JDK 21 works)
