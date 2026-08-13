@@ -1,7 +1,7 @@
-.PHONY: test install
-
-install:
-	python3 -m pip install -e ".[test]"
+.PHONY: test build
 
 test:
-	python3 -m pytest --disable-socket --allow-unix-socket
+	./gradlew test
+
+build:
+	./gradlew build
