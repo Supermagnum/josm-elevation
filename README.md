@@ -22,17 +22,22 @@ JOSM plugin that helps Norwegian OSM mappers suggest `incline=*` tags, snow-chai
 
 ## APIs used
 
-The plugin is **read-only**. All remote HTTP from the plugin itself goes to Statens vegvesen's [NVDB API Les](https://nvdbapiles.atlas.vegvesen.no) (`https://nvdbapiles.atlas.vegvesen.no`). OSM ways come from the active JOSM edit layer (already downloaded by JOSM); this plugin does not call the OSM API or Overpass.
+The plugin is **read-only** toward OpenStreetMap (never uploads). NVDB HTTP goes to
+Statens vegvesen's [NVDB API Les](https://nvdbapiles.atlas.vegvesen.no).
 
-| API | Base / path | Used for |
+| API / data | Base / path | Used for |
 |-----|-------------|----------|
-| NVDB Vegnett v4 | `GET /vegnett/api/v4/veglenkesekvenser/segmentert` | 3D segmented road-link geometry for incline estimates |
-| NVDB Vegobjekter v4 | `GET /vegobjekter/api/v4/vegobjekter/96` | Skiltplate (warning signs: Farlig sving / Farlig vegkryss) |
-| NVDB Vegobjekter v4 | `GET /vegobjekter/api/v4/vegobjekter/570` | Trafikkulykke (accident points for clustering) |
+| NVDB Vegnett v4 | `GET /vegnett/api/v4/veglenkesekvenser/segmentert` | 3D segmented road-link geometry (`kartutsnitt` bbox **or** `kommune=`) |
+| NVDB Vegobjekter v4 | `GET /vegobjekter/api/v4/vegobjekter/96` | Skiltplate (warning signs) |
+| NVDB Vegobjekter v4 | `GET /vegobjekter/api/v4/vegobjekter/570` | Trafikkulykke |
+| Geofabrik Norway PBF | `https://download.geofabrik.de/europe/norway-latest.osm.pbf` | **Kommune mode only** — local offline OSM extract (~1.3 GB; user-triggered download) |
+| Kartverket boundaries | Bundled from Geonorge “Administrative enheter kommuner” GeoJSON EPSG:4258 | Kommune polygon clip (not NVDB-link bbox) |
+| OSM map API | `api.openstreetmap.org` via JOSM | **Bbox mode only** (optional); not used for kommune mode |
 
-Queries use SRID 5973 and a UTM `kartutsnitt` derived from the layer bbox. Responses are cached under JOSM's cache directory (`nvdb_incline`). Client: `NvdbClient`.
+**Kommune name list** is a bundled static snapshot (`kommuner_2024-01-01.json` from Regjeringen) — refresh with `tools/refresh_kommune_list.py`.
 
-**Not used by the plugin:** OSM map/changeset/write API, OAuth, Overpass.
+**Kommune boundaries** are a bundled simplified Kartverket snapshot
+(`kommune_boundaries_2026-01-01.json`) — refresh with `tools/refresh_kommune_boundaries.py`.
 
 The optional `prototype/` CLI additionally calls Overpass (`https://overpass-api.de/api/interpreter`) plus NVDB Datakatalog (`/datakatalog/api/v1/vegobjekttyper`) and kommuner (`/omrader/api/v4/kommuner`). `tools/capture_fixtures.py` talks only to JOSM Remote Control on localhost.
 
@@ -57,20 +62,58 @@ Details: [`docs/build-and-dependencies.md`](docs/build-and-dependencies.md).
 1. `./gradlew :plugin:dist`
 2. Copy `plugin/build/dist/nvdb_incline.jar` into the JOSM plugins directory (Linux current: `~/.local/share/JOSM/plugins/`; see build doc for macOS/Windows/legacy).
 3. Fully restart JOSM; enable **nvdb_incline** if needed.
-4. **More tools → Suggest inclines from NVDB…**
+4. Open **Data → Suggest inclines from NVDB…** (also under **More tools**; shortcut Alt+Shift+N)
+
+## Screenshots
+
+Kommune-mode flow (Ringebu example):
+
+**Download local Norway extract** (Geofabrik `.osm.pbf`, ~1.3 GB — one-time / on refresh):
+
+![Downloading Norway OSM extract](screenshots/download.png)
+
+**Reading the local extract** while clipping to the kommune boundary:
+
+![Reading local Norway OSM extract](screenshots/reading.png)
+
+**Area dialog with local extract ready** (By kommune, Kartverket boundary, NVDB `kommune=`):
+
+![By kommune — Ringebu with local OSM data ready](screenshots/ringebu1.png)
+
+**Review NVDB suggestions** (accept/reject before any tags are applied):
+
+![Review NVDB incline suggestions](screenshots/ready.png)
+
+**Suggestions applied** to the edit layer (undoable; plugin never uploads):
+
+![NVDB suggestions applied in JOSM](screenshots/analysis-complete.png)
 
 ## Review-before-apply workflow
 
 1. Download an area in JOSM that contains Norwegian `highway=*` ways (many already carry `nvdb:id` from Elveg).
-2. **More tools → Suggest inclines from NVDB…**
-3. The plugin reads the active edit layer and fetches, for that bbox (cached under JOSM's cache directory):
+2. **Data → Suggest inclines from NVDB…** (or **More tools**; Alt+Shift+N)
+3. Choose an **area mode** in the selection dialog (opened from this menu — not from File → Download):
+   - **By kommune** — requires a local Geofabrik Norway `.osm.pbf` (Set up / refresh in the dialog; ~1.3 GB). Clips highways with Kartverket kommune polygons, then fetches NVDB with `kommune=`. Does **not** call the OSM API (avoids 509 bandwidth limits and bbox border leakage).
+   - **Current edit layer** — existing behaviour (NVDB bbox = layer envelope).
+   - **Custom bounding box** — WGS84 min/max; optional OSM download; NVDB queried with `kartutsnitt`.
+4. The plugin fetches (cached under JOSM's cache directory):
    - NVDB segmented road-link geometry (3D) for inclines
    - NVDB Skiltplate (type **96**) for Farlig sving / Farlig vegkryss codes
    - NVDB Trafikkulykke (type **570**) for accident clustering
-4. A **review dialog** lists every proposal in sections (inclines, snow chains, curves confirmed by sign, geometry-only curves, accident clusters). Tick only what you accept. Shortcut: “Accept all high-confidence”.
-5. **Apply selected** registers undoable edits using only the tags in [Applied OSM tags](#applied-osm-tags-reference) below.
-6. Spot-check against imagery, signs, and local knowledge. Existing `incline=*` is never overwritten (shown as discrepancies only). Dubious track/path matches and absurd grades are filtered before they reach the review list. When a split is useful, the review dialog shows a **Split suggested** badge — splitting is done with JOSM's own tools, not via OSM tags.
-7. Upload manually from JOSM only after that review. Ctrl+Z undoes plugin edits like any other change.
+5. A **review dialog** lists every proposal in sections (inclines, snow chains, curves confirmed by sign, geometry-only curves, accident clusters). Tick only what you accept. Shortcut: “Accept all high-confidence”.
+6. **Apply selected** registers undoable edits using only the tags in [Applied OSM tags](#applied-osm-tags-reference) below. After a kommune run, local completion stats update automatically.
+7. Spot-check against imagery, signs, and local knowledge. Existing `incline=*` is never overwritten (shown as discrepancies only). Dubious track/path matches and absurd grades are filtered before they reach the review list. When a split is useful, the review dialog shows a **Split suggested** badge — splitting is done with JOSM's own tools, not via OSM tags.
+8. Upload manually from JOSM only after that review. Ctrl+Z undoes plugin edits like any other change.
+
+## Kommune completion tracking (local only)
+
+When you work **By kommune**, the plugin keeps a personal progress file under the JOSM preferences directory (`…/nvdb_incline/kommune_completion.json`):
+
+- Matched / accepted / rejected / pending counts and last-run time for that kommunenummer
+- Optional “dismiss unmatched”, “mark done anyway”, and “reopen”
+- **Never uploaded, never shared** — this does not track what other contributors have done; it is a personal checklist only
+
+A kommune is treated as done when every matched incline decision is accepted or rejected, unmatched triage is dismissed (or zero), unless you override manually.
 
 ## Applied OSM tags reference
 
@@ -157,7 +200,8 @@ Ways with `source:incline=nvdb_estimate` get a validator reminder so unfinished 
 ## Safety constraints
 
 - No `UploadAction`, no OSM changeset/write API calls, no OAuth
-- Working OSM data comes from the active JOSM layer; remote reads are NVDB only (no Overpass in this plugin)
+- Working OSM data comes from the active JOSM layer, or (kommune mode) a local Geofabrik Norway extract clipped by Kartverket polygons; NVDB is fetched over HTTP (no Overpass in this plugin)
+- Kommune completion JSON is local bookkeeping only (preferences dir) — never uploaded or shared
 - `hazard=*` only after NVDB sign confirmation; geometry/accident advisories stay `note=*` / `safety_advisory=*`
 - Safety regression tests run on every `./gradlew test`
 
@@ -167,7 +211,7 @@ The Python CLI under `prototype/` was an earlier standalone experiment. See `pro
 
 ## Developer tools
 
-`tools/capture_fixtures.py` drives a running JOSM Remote Control session to load/export steep-road OSM fixtures (never uploads). See `tools/README.md` and [`docs/debugging.md`](docs/debugging.md).
+`tools/capture_fixtures.py` drives a running JOSM Remote Control session to load/export steep-road OSM fixtures (never uploads). `tools/refresh_kommune_list.py` refreshes the bundled kommune snapshot. See `tools/README.md` and [`docs/debugging.md`](docs/debugging.md).
 
 ## License
 
