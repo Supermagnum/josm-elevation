@@ -2,6 +2,40 @@
 
 These scripts are **not** part of the JOSM plugin and are **not** wired into CI.
 
+## `refresh_kommune_boundaries.py`
+
+Download Kartverket / Geonorge “Administrative enheter kommuner” GeoJSON (EPSG:4258
+land-wide zip) and rewrite the bundled resource
+`core/src/main/resources/no/nvdbincline/core/kommune/kommune_boundaries_YYYY-MM-DD.json`.
+
+Verified URL (2026-08):
+`https://nedlasting.geonorge.no/geonorge/Basisdata/Kommuner/GeoJSON/Basisdata_0000_Norge_4258_Kommuner_GeoJSON.zip`
+
+```bash
+pip install requests pytest
+python tools/refresh_kommune_boundaries.py
+python tools/refresh_kommune_boundaries.py --zip /path/to/local.zip
+pytest tools/tests/test_refresh_kommune_boundaries.py
+```
+
+## `refresh_kommune_list.py`
+
+Re-download Regjeringen’s official kommune number/name spreadsheet and rewrite the
+bundled plugin resource
+`core/src/main/resources/no/nvdbincline/core/kommune/kommuner_YYYY-MM-DD.json`.
+
+The plugin **never** fetches that xlsx at runtime — only this script does, on demand.
+
+```bash
+pip install requests openpyxl pytest
+python tools/refresh_kommune_list.py
+# or from a local file:
+python tools/refresh_kommune_list.py --xlsx /path/to/file.xlsx --effective-date 2024-01-01
+```
+
+Headers are matched by name (`kommunenummer` / `kommunenavn` or Regjeringen’s
+`Kommune` column), not by column index.
+
 ## `capture_fixtures.py`
 
 Drive a running JOSM (Remote Control on port 8111) to load the steep-road
@@ -47,6 +81,6 @@ Writes (by default under `tests/fixtures/steep_roads/osm/`):
 ### Tests (no live JOSM)
 
 ```bash
-pip install requests pytest
+pip install requests openpyxl pytest
 python -m pytest tools/tests -q
 ```

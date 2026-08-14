@@ -96,4 +96,37 @@ class WayMatcherTest {
                 "expected usable confidence, got " + result.matches.get(0).confidence());
         assertEquals(3, result.matches.get(0).links().size());
     }
+
+    @Test
+    void spatialIndexIgnoresDistantLinks() {
+        List<Coord> osm = List.of(new Coord(0, 0), new Coord(100, 0));
+        List<NvdbLink> links = new java.util.ArrayList<>();
+        links.add(link(1, List.of(new Coord(0, 1, 5), new Coord(100, 1, 8))));
+        for (int i = 0; i < 200; i++) {
+            double x = 10_000 + i * 200;
+            links.add(link(1000 + i, List.of(new Coord(x, 0, 0), new Coord(x + 50, 0, 1))));
+        }
+        var result = WayMatcher.match(List.of(way(5, osm, null)), links, new WayMatcher.Settings());
+        assertEquals(1, result.matches.size());
+        assertEquals(1, result.matches.get(0).links().size());
+        assertEquals(1L, result.matches.get(0).links().get(0).veglenkesekvensId());
+    }
+
+    @Test
+    void progressCancelStopsMatching() {
+        List<OsmWayGeom> ways = new java.util.ArrayList<>();
+        for (int i = 0; i < 80; i++) {
+            double x = i * 200;
+            ways.add(way(i, List.of(new Coord(x, 0), new Coord(x + 100, 0)), null));
+        }
+        var links = List.of(link(1, List.of(new Coord(0, 1, 0), new Coord(100, 1, 1))));
+        org.junit.jupiter.api.Assertions.assertThrows(
+                WayMatcher.CancelledException.class,
+                () ->
+                        WayMatcher.match(
+                                ways,
+                                links,
+                                new WayMatcher.Settings(),
+                                (phase, done, total) -> done < 10));
+    }
 }

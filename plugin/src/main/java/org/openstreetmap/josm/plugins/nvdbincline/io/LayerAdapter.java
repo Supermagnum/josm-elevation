@@ -67,13 +67,13 @@ public final class LayerAdapter {
         if (s.contains("mph")) {
             return null;
         }
+        // Values like "signals"/"none" have no digits — avoid split()[0] AIOOBE.
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile("(\\d+)").matcher(s);
+        if (!m.find()) {
+            return null;
+        }
         try {
-            // take leading integer (handles "80", "80;50")
-            String num = s.split("[^0-9]")[0];
-            if (num.isBlank()) {
-                return null;
-            }
-            int v = Integer.parseInt(num);
+            int v = Integer.parseInt(m.group(1));
             return v > 0 && v < 200 ? v : null;
         } catch (NumberFormatException e) {
             return null;

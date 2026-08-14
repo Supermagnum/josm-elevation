@@ -27,9 +27,9 @@ Oriented around “if I need to change X, where do I go.” Paths are relative t
                     │  ReviewModel + InclineAudit         │
                     └─────────────────────────────────────┘
 
-OSM DataSet (active layer)
+OSM DataSet (active layer **or** kommune: local Geofabrik PBF clipped by Kartverket polygon)
   → LayerAdapter.extractWays
-  → NvdbClient (segmentert + vegobjekter 96/570, disk cache)
+  → NvdbClient (segmentert + vegobjekter 96/570, disk cache; kommune= for kommune mode)
   → SuggestionEngine.run + SafetyAnalyzer.analyze
   → ReviewModel.fromEngine
   → ReviewDialog (accept/reject; audit columns)
@@ -37,6 +37,10 @@ OSM DataSet (active layer)
   → JOSM edit layer (undoable; never uploaded by this plugin)
 ```
 
+**Kommune OSM path decision:** extraction uses pure-JVM `osmosis-osm-binary` + protobuf
+(`PbfHighwayExtractor`) — no `osmium-tool` / native deps. Inclusion rule: a highway is
+kept if **any node** lies inside the Kartverket multipolygon. Missing/stale local extract
+fails loudly (no silent OSM-API bbox fallback).
 Gradle modules: `core`, `plugin` (`settings.gradle.kts`). `prototype/` is a separate Python reference CLI, not on the plugin classpath. `tools/` and `tests/fixtures/` are developer/QA assets.
 
 ## Responsibility → location
@@ -46,7 +50,13 @@ Gradle modules: `core`, `plugin` (`settings.gradle.kts`). `prototype/` is a sepa
 | Plugin entry / menu / validator registration | `plugin/.../NvdbInclinePlugin.java` |
 | Menu action orchestration (end-to-end run) | `plugin/.../action/SuggestInclinesAction.java` |
 | OSM layer → `OsmWayGeom` + bbox | `plugin/.../io/LayerAdapter.java` |
-| NVDB HTTP + JSON parse + cache | `plugin/.../io/NvdbClient.java` (Jackson; `java.net.http.HttpClient`) |
+| NVDB HTTP + JSON parse + cache | `plugin/.../io/NvdbClient.java` (Jackson; `java.net.http.HttpClient`; bbox or `kommune=`) |
+| Area selection (layer / bbox / kommune) | `plugin/.../dialog/AreaSelectionDialog.java` + `core/.../area/AreaSelection.java` |
+| Bundled kommune list | `core/.../kommune/KommuneCatalog.java` + resource `kommuner_2024-01-01.json` |
+| Kartverket kommune polygons | `core/.../kommune/KommuneBoundaryCatalog.java` + `kommune_boundaries_2026-01-01.json` |
+| Local Geofabrik Norway extract | `plugin/.../io/GeofabrikNorwayExtract.java` + `LocalDataPaths.norwayExtractPbf()` |
+| PBF→polygon highway clip (pure JVM) | `core/.../osm/PbfHighwayExtractor.java` + `WayPolygonClipper` (any-node-inside rule) |
+| Local kommune completion | `core/.../completion/*` + `plugin/.../io/LocalDataPaths.java` |
 | Pure suggestion pipeline (match → profile → incline tags → chains) | `core/.../SuggestionEngine.java` |
 | OSM↔NVDB way matching | `core/.../match/WayMatcher.java` |
 | Elevation profile along matched links | `core/.../geo/ElevationProfiles.java` |

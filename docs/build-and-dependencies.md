@@ -18,8 +18,10 @@ Modules: `core`, `plugin` (`settings.gradle.kts`). Group/version: `no.nvdbinclin
 
 ### Dependencies (Gradle-managed)
 
-- **core**: JUnit 5 for tests only (no runtime deps).
-- **plugin**: `implementation(project(":core"))`, `packIntoJar(project(":core"))`, `packIntoJar("com.fasterxml.jackson.core:jackson-databind:2.17.2")`, JUnit for tests. JOSM itself comes from the JOSM Gradle plugin.
+- **core**: `osmosis-osm-binary` + `protobuf-java` (PBF schema only; pure JVM). JUnit 5 for tests.
+- **plugin**: `implementation(project(":core"))`, `packIntoJar(project(":core"))`,
+  `packIntoJar` for Jackson, `osmosis-osm-binary`, and `protobuf-java`. JUnit for tests.
+  JOSM itself comes from the JOSM Gradle plugin.
 
 `packIntoJar` matters: JOSM loads the plugin jar in isolation. `:plugin:jar` / `:plugin:dist` depend on `:core:jar` so a clean rebuild does not pack a missing/stale core artifact.
 
@@ -27,11 +29,15 @@ Modules: `core`, `plugin` (`settings.gradle.kts`). Group/version: `no.nvdbinclin
 
 | Use | Dependency | Notes |
 |-----|------------|--------|
-| Building/running the plugin | JDK 17+ only | No native libs |
+| Building/running the plugin | JDK 17+ only | **No** osmium / native PBF tools |
 | `tools/capture_fixtures.py` | Python 3.11+, `requests` | Optional; `pip install requests` (pytest for `tools/tests`) |
+| `tools/refresh_kommune_list.py` | `requests`, `openpyxl` | Bundled kommune names |
+| `tools/refresh_kommune_boundaries.py` | `requests` | Bundled Kartverket polygons |
 | `prototype/` Python CLI | Separate; see `prototype/README.md` | Not required for the JOSM plugin |
 
-Network is required on first Gradle resolve (Maven Central + JOSM artifacts). Afterwards `./gradlew test` can run from the dependency cache. Runtime NVDB calls need network when using the live plugin (cached under JOSM’s cache dir).
+Runtime: NVDB needs network when using the live plugin. **Kommune mode** also needs a
+one-time user-triggered Geofabrik Norway `.osm.pbf` download (~1.3 GB) into the JOSM
+prefs `nvdb_incline/` directory — never auto-downloaded on launch.
 
 ## Commands (verified)
 

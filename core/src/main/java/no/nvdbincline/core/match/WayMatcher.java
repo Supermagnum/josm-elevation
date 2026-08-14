@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import no.nvdbincline.core.ProgressCallback;
 import no.nvdbincline.core.model.MatchConfidence;
 import no.nvdbincline.core.model.MatchResult;
 import no.nvdbincline.core.model.NvdbLink;
@@ -18,6 +19,8 @@ public final class WayMatcher {
         public double hausdorffHighM = 15.0;
         public double hausdorffMediumM = 30.0;
         public double nearestFallbackM = 50.0;
+        /** Grid cell size for candidate pruning (projected metres). */
+        public double spatialCellM = 100.0;
     }
 
     public static final class Result {
@@ -35,9 +38,25 @@ public final class WayMatcher {
         }
     }
 
+    /** Thrown when {@link ProgressCallback} requests cancel. */
+    public static final class CancelledException extends RuntimeException {
+        public CancelledException() {
+            super("matching cancelled");
+        }
+    }
+
     private WayMatcher() {}
 
     public static Result match(List<OsmWayGeom> ways, List<NvdbLink> links, Settings settings) {
+        return match(ways, links, settings, ProgressCallback.NONE);
+    }
+
+    public static Result match(
+            List<OsmWayGeom> ways,
+            List<NvdbLink> links,
+            Settings settings,
+            ProgressCallback progress) {
+        ProgressCallback cb = progress == null ? ProgressCallback.NONE : progress;
         List<NvdbLink> usable = new ArrayList<>();
         Map<String, List<NvdbLink>> byId = new HashMap<>();
         for (NvdbLink lk : links) {
@@ -49,16 +68,25 @@ public final class WayMatcher {
                     .add(lk);
         }
 
+        LinkSpatialIndex index = new LinkSpatialIndex(usable, settings.spatialCellM);
+
         List<MatchResult> matches = new ArrayList<>();
         List<OsmWayGeom> unmatchedOsm = new ArrayList<>();
         Set<String> used = new HashSet<>();
 
-        for (OsmWayGeom way : ways) {
+        int total = ways.size();
+        for (int wi = 0; wi < ways.size(); wi++) {
+            if (wi == 0 || wi == total - 1 || wi % 25 == 0) {
+                if (!cb.onProgress("Matching OSM ways to NVDB…", wi, total)) {
+                    throw new CancelledException();
+                }
+            }
+            OsmWayGeom way = ways.get(wi);
             if (way.line().lengthM() < 1.0) {
                 unmatchedOsm.add(way);
                 continue;
             }
-            MatchResult m = matchOne(way, byId, usable, settings);
+            MatchResult m = matchOne(way, byId, usable, index, settings);
             if (m == null) {
                 unmatchedOsm.add(way);
             } else {
@@ -67,6 +95,9 @@ public final class WayMatcher {
                     used.add(lk.key());
                 }
             }
+        }
+        if (!cb.onProgress("Matching OSM ways to NVDB…", total, total)) {
+            throw new CancelledException();
         }
         List<NvdbLink> unmatchedNvdb = new ArrayList<>();
         for (NvdbLink lk : usable) {
@@ -81,6 +112,7 @@ public final class WayMatcher {
             OsmWayGeom way,
             Map<String, List<NvdbLink>> byId,
             List<NvdbLink> usable,
+            LinkSpatialIndex index,
             Settings settings) {
         if (way.nvdbId().isPresent()) {
             String id = way.nvdbId().get();
@@ -97,7 +129,8 @@ public final class WayMatcher {
             return null;
         }
 
-        List<NvdbLink> overlapping = overlappingLinks(way.line(), usable, settings);
+        List<NvdbLink> candidates = index.queryNear(way.line(), settings.nearestFallbackM);
+        List<NvdbLink> overlapping = overlappingLinks(way.line(), candidates, settings);
         if (overlapping.isEmpty()) {
             return null;
         }
@@ -187,6 +220,9 @@ public final class WayMatcher {
         List<NvdbLink> out = new ArrayList<>();
         for (NvdbLink lk : links) {
             if (isFootLike(lk)) {
+                continue;
+            }
+            if (!way.envelopesWithin(lk.line(), settings.nearestFallbackM)) {
                 continue;
             }
             double frac = lk.line().coverageFraction(way, settings.hausdorffMediumM);

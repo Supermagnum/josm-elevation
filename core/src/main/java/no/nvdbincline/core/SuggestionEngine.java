@@ -46,7 +46,16 @@ public final class SuggestionEngine {
     private SuggestionEngine() {}
 
     public static Output run(List<OsmWayGeom> ways, List<NvdbLink> links, Config config) {
-        WayMatcher.Result matched = WayMatcher.match(ways, links, config.match);
+        return run(ways, links, config, ProgressCallback.NONE);
+    }
+
+    public static Output run(
+            List<OsmWayGeom> ways,
+            List<NvdbLink> links,
+            Config config,
+            ProgressCallback progress) {
+        ProgressCallback cb = progress == null ? ProgressCallback.NONE : progress;
+        WayMatcher.Result matched = WayMatcher.match(ways, links, config.match, cb);
         List<WaySuggestion> suggestions = new ArrayList<>();
         List<WaySuggestion> discrepancies = new ArrayList<>();
         List<ChainPoint> allChain = new ArrayList<>();
@@ -56,7 +65,15 @@ public final class SuggestionEngine {
         splitCfg.spreadPp = config.splitSpreadPp;
         splitCfg.minSegmentM = config.minSegmentM;
 
-        for (MatchResult m : matched.matches) {
+        List<MatchResult> matchList = matched.matches;
+        int total = matchList.size();
+        for (int i = 0; i < matchList.size(); i++) {
+            if (i == 0 || i == total - 1 || i % 25 == 0) {
+                if (!cb.onProgress("Computing inclines…", i, total)) {
+                    throw new WayMatcher.CancelledException();
+                }
+            }
+            MatchResult m = matchList.get(i);
             List<ElevationSample> profile = ElevationProfiles.build(m.way(), m.links());
             if (profile.size() < 2) {
                 continue;
@@ -86,6 +103,9 @@ public final class SuggestionEngine {
             }
             allChain.addAll(
                     ChainAdvisory.advise(profile, m.way().id(), m.links(), config.chain));
+        }
+        if (!cb.onProgress("Computing inclines…", total, Math.max(total, 1))) {
+            throw new WayMatcher.CancelledException();
         }
 
         List<ChainPoint> clustered =

@@ -66,31 +66,39 @@ public class NvdbClient {
         }
     }
 
-    /** Fetch segmented links for a WGS84 bbox. */
+    /** Fetch segmented links for a WGS84 bbox ({@code kartutsnitt}). */
     public List<NvdbLink> fetchSegmentedLinks(
             double minLon, double minLat, double maxLon, double maxLat)
             throws IOException, InterruptedException {
-        double[] a = Utm33.lonLatToUtm(minLon, minLat);
-        double[] b = Utm33.lonLatToUtm(maxLon, maxLat);
-        double minX = Math.min(a[0], b[0]);
-        double minY = Math.min(a[1], b[1]);
-        double maxX = Math.max(a[0], b[0]);
-        double maxY = Math.max(a[1], b[1]);
-        String kartutsnitt =
-                String.format(Locale.ROOT, "%s,%s,%s,%s", minX, minY, maxX, maxY);
+        return fetchSegmentedLinksInternal(areaQueryBbox(minLon, minLat, maxLon, maxLat));
+    }
 
+    /**
+     * Fetch segmented links for one kommune via NVDB's {@code kommune=} filter
+     * (preferred over bbox for kommune mode — exact administrative filter).
+     */
+    public List<NvdbLink> fetchSegmentedLinksByKommune(int kommuneNummer)
+            throws IOException, InterruptedException {
+        if (kommuneNummer <= 0) {
+            throw new IllegalArgumentException("kommunenummer");
+        }
+        return fetchSegmentedLinksInternal("kommune=" + kommuneNummer);
+    }
+
+    private List<NvdbLink> fetchSegmentedLinksInternal(String areaQuery)
+            throws IOException, InterruptedException {
         List<NvdbLink> all = new ArrayList<>();
         String start = null;
         int page = 0;
+        String cacheStem = "segmentert_" + hash(areaQuery);
         while (true) {
             StringBuilder q = new StringBuilder();
-            q.append("srid=5973&antall=1000&inkluderAntall=false&kartutsnitt=")
-                    .append(URLEncoder.encode(kartutsnitt, StandardCharsets.UTF_8));
+            q.append("srid=5973&antall=1000&inkluderAntall=false&").append(areaQuery);
             if (start != null) {
                 q.append("&start=").append(URLEncoder.encode(start, StandardCharsets.UTF_8));
             }
             String url = baseUrl + "/vegnett/api/v4/veglenkesekvenser/segmentert?" + q;
-            JsonNode root = getJson(url, "segmentert_p" + page + "_" + hash(kartutsnitt));
+            JsonNode root = getJson(url, cacheStem + "_p" + page);
             JsonNode objekter = root.get("objekter");
             if (objekter == null || !objekter.isArray() || objekter.isEmpty()) {
                 break;
@@ -121,27 +129,34 @@ public class NvdbClient {
     public List<no.nvdbincline.core.model.NvdbPointFeature> fetchVegobjektPoints(
             long typeId, double minLon, double minLat, double maxLon, double maxLat)
             throws IOException, InterruptedException {
-        double[] a = Utm33.lonLatToUtm(minLon, minLat);
-        double[] b = Utm33.lonLatToUtm(maxLon, maxLat);
-        double minX = Math.min(a[0], b[0]);
-        double minY = Math.min(a[1], b[1]);
-        double maxX = Math.max(a[0], b[0]);
-        double maxY = Math.max(a[1], b[1]);
-        String kartutsnitt =
-                String.format(Locale.ROOT, "%s,%s,%s,%s", minX, minY, maxX, maxY);
+        return fetchVegobjektPointsInternal(
+                typeId, areaQueryBbox(minLon, minLat, maxLon, maxLat));
+    }
 
+    /** Same as {@link #fetchVegobjektPoints} but filtered by NVDB {@code kommune=}. */
+    public List<no.nvdbincline.core.model.NvdbPointFeature> fetchVegobjektPointsByKommune(
+            long typeId, int kommuneNummer) throws IOException, InterruptedException {
+        if (kommuneNummer <= 0) {
+            throw new IllegalArgumentException("kommunenummer");
+        }
+        return fetchVegobjektPointsInternal(typeId, "kommune=" + kommuneNummer);
+    }
+
+    private List<no.nvdbincline.core.model.NvdbPointFeature> fetchVegobjektPointsInternal(
+            long typeId, String areaQuery) throws IOException, InterruptedException {
         List<no.nvdbincline.core.model.NvdbPointFeature> all = new ArrayList<>();
         String start = null;
         int page = 0;
+        String cacheStem = "vegobjekt_" + typeId + "_" + hash(areaQuery);
         while (true) {
             StringBuilder q = new StringBuilder();
-            q.append("srid=5973&antall=1000&inkluderAntall=false&inkluder=egenskaper,geometri&kartutsnitt=")
-                    .append(URLEncoder.encode(kartutsnitt, StandardCharsets.UTF_8));
+            q.append("srid=5973&antall=1000&inkluderAntall=false&inkluder=egenskaper,geometri&")
+                    .append(areaQuery);
             if (start != null) {
                 q.append("&start=").append(URLEncoder.encode(start, StandardCharsets.UTF_8));
             }
             String url = baseUrl + "/vegobjekter/api/v4/vegobjekter/" + typeId + "?" + q;
-            JsonNode root = getJson(url, "vegobjekt_" + typeId + "_p" + page + "_" + hash(kartutsnitt));
+            JsonNode root = getJson(url, cacheStem + "_p" + page);
             JsonNode objekter = root.get("objekter");
             if (objekter == null || !objekter.isArray() || objekter.isEmpty()) {
                 break;
@@ -163,6 +178,18 @@ public class NvdbClient {
             }
         }
         return all;
+    }
+
+    private static String areaQueryBbox(double minLon, double minLat, double maxLon, double maxLat) {
+        double[] a = Utm33.lonLatToUtm(minLon, minLat);
+        double[] b = Utm33.lonLatToUtm(maxLon, maxLat);
+        double minX = Math.min(a[0], b[0]);
+        double minY = Math.min(a[1], b[1]);
+        double maxX = Math.max(a[0], b[0]);
+        double maxY = Math.max(a[1], b[1]);
+        String kartutsnitt =
+                String.format(Locale.ROOT, "%s,%s,%s,%s", minX, minY, maxX, maxY);
+        return "kartutsnitt=" + URLEncoder.encode(kartutsnitt, StandardCharsets.UTF_8);
     }
 
     /** Parse a vegobjekt point (also used by fixture tests). */

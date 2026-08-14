@@ -36,6 +36,31 @@ public final class Polyline {
         return len;
     }
 
+    /** Axis-aligned envelope as {@code [minX, minY, maxX, maxY]}. */
+    public double[] envelope() {
+        double minX = Double.POSITIVE_INFINITY;
+        double minY = Double.POSITIVE_INFINITY;
+        double maxX = Double.NEGATIVE_INFINITY;
+        double maxY = Double.NEGATIVE_INFINITY;
+        for (Coord p : points) {
+            minX = Math.min(minX, p.x());
+            minY = Math.min(minY, p.y());
+            maxX = Math.max(maxX, p.x());
+            maxY = Math.max(maxY, p.y());
+        }
+        return new double[] {minX, minY, maxX, maxY};
+    }
+
+    /** True if envelopes are within {@code padM} (inclusive) of each other. */
+    public boolean envelopesWithin(Polyline other, double padM) {
+        double[] a = envelope();
+        double[] b = other.envelope();
+        return !(a[2] + padM < b[0]
+                || b[2] + padM < a[0]
+                || a[3] + padM < b[1]
+                || b[3] + padM < a[1]);
+    }
+
     public boolean hasZ() {
         for (Coord c : points) {
             if (c.hasZ()) {

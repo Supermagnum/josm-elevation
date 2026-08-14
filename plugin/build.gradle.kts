@@ -10,6 +10,8 @@ dependencies {
     // Must be packed: JOSM loads the plugin jar in isolation (no Gradle runtime classpath).
     packIntoJar(project(":core"))
     packIntoJar("com.fasterxml.jackson.core:jackson-databind:2.17.2")
+    packIntoJar("org.openstreetmap.osmosis:osmosis-osm-binary:0.48.3")
+    packIntoJar("com.google.protobuf:protobuf-java:3.25.5")
 
     testImplementation(platform("org.junit:junit-bom:5.10.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
@@ -20,7 +22,8 @@ josm {
     debugPort = 1731
     josmCompileVersion = "19613"
     manifest {
-        description = "Suggest incline=* and snow-chain advisory points from NVDB elevation (review-only; never uploads)."
+        description =
+            "Suggest incline=* from NVDB (layer / bbox / kommune; review-only; never uploads). Menu: Data and More tools."
         mainClass = "org.openstreetmap.josm.plugins.nvdbincline.NvdbInclinePlugin"
         minJosmVersion = "19067"
         author = "josm-elevation contributors"
