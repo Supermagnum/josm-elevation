@@ -4,6 +4,33 @@ JOSM plugin that helps Norwegian OSM mappers suggest `incline=*` tags, snow-chai
 
 **This plugin never uploads to OpenStreetMap.** Accepted suggestions become ordinary undoable JOSM edits (`ChangePropertyCommand` / `AddCommand`). You only upload if you later use JOSM's own Upload action after review.
 
+## Table of contents
+
+- [Documentation](#documentation)
+- [Modules](#modules)
+- [APIs used](#apis-used)
+- [Requirements](#requirements)
+- [Build (short)](#build-short)
+- [Install into your normal JOSM](#install-into-your-normal-josm)
+- [Screenshots](#screenshots)
+- [Review-before-apply workflow](#review-before-apply-workflow)
+- [Kommune completion tracking (local only)](#kommune-completion-tracking-local-only)
+  - [Existing incline / hazard tags (do not overwrite surveys)](#existing-incline--hazard-tags-do-not-overwrite-surveys)
+- [Applied OSM tags reference](#applied-osm-tags-reference)
+  - [Ways (incline suggestions)](#ways-incline-suggestions)
+  - [Nodes — sign-backed hazard](#nodes--sign-backed-hazard)
+  - [Nodes — snow-chain advisory (implemented)](#nodes--snow-chain-advisory-implemented)
+  - [Nodes — unsigned advisories (implemented; never `hazard=*`)](#nodes--unsigned-advisories-implemented-never-hazard)
+  - [Where confidence / estimate data goes](#where-confidence--estimate-data-goes)
+- [Manual review sample (`test-files/`)](#manual-review-sample-test-files)
+- [OSM `hazard=*` tagging rule](#osm-hazard-tagging-rule)
+- [Validator](#validator)
+- [Tests](#tests)
+- [Safety constraints](#safety-constraints)
+- [Prototype (optional)](#prototype-optional)
+- [Developer tools](#developer-tools)
+- [License](#license)
+
 ## Documentation
 
 | Doc | Contents |
