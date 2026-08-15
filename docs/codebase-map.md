@@ -74,6 +74,7 @@ Gradle modules: `core`, `plugin` (`settings.gradle.kts`). `prototype/` is a sepa
 | Review Swing UI | `plugin/.../dialog/ReviewDialog.java` |
 | Command building / tag application | `plugin/.../command/SuggestionApplier.java` |
 | Validator for unfinished NVDB inclines | `plugin/.../validator/NvdbEstimateValidator.java` |
+| Installable jar packaging + `compiled/` copy | `plugin/build.gradle.kts` (`dist` → `copyJarToCompiled` → `compiled/nvdb_incline.jar`) |
 | UTM33 / WKT helpers | `core/.../geo/Utm33.java`, `WktParser.java` |
 | Domain records | `core/.../model/*` |
 | No-upload source grep | `plugin/.../NoUploadSafetyTest.java` |

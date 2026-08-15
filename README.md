@@ -85,14 +85,19 @@ Details: [`docs/build-and-dependencies.md`](docs/build-and-dependencies.md).
 ```bash
 ./gradlew build
 ./gradlew test
-./gradlew :plugin:dist          # → plugin/build/dist/nvdb_incline.jar
+./gradlew :plugin:dist          # installable jar (also copied to compiled/)
 ./gradlew :plugin:runJosm       # clean temp JOSM with this plugin
 ```
 
+After `:plugin:dist` (or `:plugin:jar` / `./gradlew build`), the installable plugin is written to:
+
+- `plugin/build/dist/nvdb_incline.jar` — Gradle / JOSM plugin packaging output
+- **`compiled/nvdb_incline.jar`** — same file, copied to the repo-root `compiled/` folder for easy find/install
+
 ## Install into your normal JOSM
 
-1. `./gradlew :plugin:dist`
-2. Copy `plugin/build/dist/nvdb_incline.jar` into the JOSM plugins directory (Linux current: `~/.local/share/JOSM/plugins/`; see build doc for macOS/Windows/legacy).
+1. `./gradlew :plugin:dist` (or `./gradlew build`)
+2. Copy **`compiled/nvdb_incline.jar`** (or `plugin/build/dist/nvdb_incline.jar`) into the JOSM plugins directory (Linux current: `~/.local/share/JOSM/plugins/`; see build doc for macOS/Windows/legacy).
 3. Fully restart JOSM; enable **nvdb_incline** if needed.
 4. Open **Data → Suggest inclines from NVDB…** (also under **More tools**; shortcut Alt+Shift+N)
 

@@ -23,7 +23,7 @@ Modules: `core`, `plugin` (`settings.gradle.kts`). Group/version: `no.nvdbinclin
   `packIntoJar` for Jackson, `osmosis-osm-binary`, and `protobuf-java`. JUnit for tests.
   JOSM itself comes from the JOSM Gradle plugin.
 
-`packIntoJar` matters: JOSM loads the plugin jar in isolation. `:plugin:jar` / `:plugin:dist` depend on `:core:jar` so a clean rebuild does not pack a missing/stale core artifact.
+`packIntoJar` matters: JOSM loads the plugin jar in isolation. `:plugin:jar` / `:plugin:dist` depend on `:core:jar` so a clean rebuild does not pack a missing/stale core artifact. `:plugin:dist` (and `:plugin:jar` / `:plugin:build`) also run `copyJarToCompiled`, which writes the same installable jar to repo-root **`compiled/nvdb_incline.jar`**.
 
 ### Non-Gradle / system deps
 
@@ -53,11 +53,13 @@ From the repo root:
 
 # Installable plugin jar (preferred artifact)
 ./gradlew :plugin:dist
-# output: plugin/build/dist/nvdb_incline.jar
+# outputs:
+#   plugin/build/dist/nvdb_incline.jar
+#   compiled/nvdb_incline.jar   (same jar, copied to repo-root compiled/)
 
 # Also produced:
-#   plugin/build/libs/nvdb_incline-0.1.0.jar
-#   (dist packaging is what you should copy into JOSM)
+#   plugin/build/libs/nvdb_incline-<version>.jar
+#   (dist packaging is what you should copy into JOSM; compiled/ is the convenience path)
 
 # Clean JOSM with this plugin only (temporary home under plugin/build/.josm/)
 ./gradlew :plugin:runJosm
@@ -73,7 +75,7 @@ These were run successfully in-repo: `./gradlew test`, `./gradlew :plugin:dist`,
 ## Install the jar into a normal JOSM
 
 1. `./gradlew :plugin:dist`
-2. Copy `plugin/build/dist/nvdb_incline.jar` to the plugins directory (create it if missing):
+2. Copy `compiled/nvdb_incline.jar` (or `plugin/build/dist/nvdb_incline.jar`) to the plugins directory (create it if missing):
 
 | OS | Typical plugins directory |
 |----|---------------------------|

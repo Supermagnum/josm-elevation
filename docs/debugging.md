@@ -18,7 +18,7 @@ Related:
 ./gradlew :plugin:localDist          # local update-site under plugin/build/localDist/
 ```
 
-Manual install into your everyday JOSM is documented in [`build-and-dependencies.md`](build-and-dependencies.md).
+Manual install into your everyday JOSM is documented in [`build-and-dependencies.md`](build-and-dependencies.md). After `./gradlew :plugin:dist`, the installable jar is at **`compiled/nvdb_incline.jar`** (and also `plugin/build/dist/nvdb_incline.jar`).
 
 ## Attach a debugger
 
@@ -103,7 +103,7 @@ Manual end-to-end sample (no Remote Control required): open `test-files/test.osm
 | Signs/accidents missing but inclines work | Non-fatal warn logs in `SuggestInclinesAction`; URL path must be `/vegobjekter/api/v4/vegobjekter/{typeId}` |
 | Zero suggestions | Matching failed (`WayMatcher`); no Z on NVDB geometry; quality gate `SuggestionTags.isInclineEligible` filtered everything; or review model empty |
 | Only low-confidence / high Hausdorff | Inspect `InclineAudit` in dialog or fixture dump; matching method/notes on `MatchResult` |
-| `NoClassDefFoundError` for `core` classes | Plugin jar missing packed core — rebuild with `./gradlew :plugin:dist` (task depends on `:core:jar`); fully restart JOSM after copying the jar |
+| `NoClassDefFoundError` for `core` classes | Plugin jar missing packed core — rebuild with `./gradlew :plugin:dist` (task depends on `:core:jar`, then `copyJarToCompiled`); fully restart JOSM after copying `compiled/nvdb_incline.jar` |
 | Stale behavior after rebuild | Replaced jar while JOSM still running; restart fully (`canLoadAtRuntime` is true but packing/classloader quirks still happen) |
 | Wrong decimal commas in tags | Applied incline values are integer `%` via `InclineTags`; audit decimals use `Locale.ROOT` in `InclineAudit` / dialog |
 | Bookkeeping keys reappear on ways | Must not — `AppliedTags.FORBIDDEN_LEGACY_KEYS` + `SuggestionApplier.sanitizeTags`; add a test if you change apply path |
@@ -113,7 +113,7 @@ Manual end-to-end sample (no Remote Control required): open `test-files/test.osm
 
 ## Quick “is my install the new code?” check
 
-After copying `plugin/build/dist/nvdb_incline.jar` into the plugins directory and restarting:
+After copying `compiled/nvdb_incline.jar` (or `plugin/build/dist/nvdb_incline.jar`) into the plugins directory and restarting:
 
 - Applied tags should use `source:incline` / `source:hazard` (not `incline:source` / `hazard:source`)
 - Review dialog should show Method / H(m) / Proposed / Raw avg/max / Split columns
