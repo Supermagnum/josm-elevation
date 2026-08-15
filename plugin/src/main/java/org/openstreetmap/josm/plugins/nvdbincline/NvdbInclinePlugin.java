@@ -6,9 +6,11 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.MainMenu;
+import org.openstreetmap.josm.gui.preferences.PreferenceSetting;
 import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.plugins.PluginInformation;
 import org.openstreetmap.josm.plugins.nvdbincline.action.SuggestInclinesAction;
+import org.openstreetmap.josm.plugins.nvdbincline.dialog.NvdbInclinePreferenceSetting;
 import org.openstreetmap.josm.plugins.nvdbincline.validator.NvdbEstimateValidator;
 import org.openstreetmap.josm.tools.Logging;
 
@@ -44,5 +46,10 @@ public class NvdbInclinePlugin extends Plugin {
         data.setVisible(true);
         NvdbEstimateValidator.register();
         Logging.info(tr("nvdb_incline: menu registered under More tools and Data"));
+    }
+
+    @Override
+    public PreferenceSetting getPreferenceSetting() {
+        return new NvdbInclinePreferenceSetting();
     }
 }

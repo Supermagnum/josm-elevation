@@ -1,8 +1,10 @@
 package no.nvdbincline.core.review;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 import no.nvdbincline.core.model.MatchConfidence;
+import no.nvdbincline.core.model.SegmentSuggestion;
 import no.nvdbincline.core.model.WaySuggestion;
 import no.nvdbincline.core.tag.AppliedTags;
 import no.nvdbincline.core.tag.InclineTags;
@@ -20,6 +22,8 @@ public final class InclineAudit {
     private final String suggestedIncline;
     private final String suggestedSegments;
     private final boolean splitRecommended;
+    /** Ordered along-way segments (empty when unknown). Used for optional auto-split. */
+    private final List<SegmentSuggestion> segments;
 
     public InclineAudit(
             String matchMethod,
@@ -30,6 +34,28 @@ public final class InclineAudit {
             String suggestedIncline,
             String suggestedSegments,
             boolean splitRecommended) {
+        this(
+                matchMethod,
+                matchConfidence,
+                matchHausdorffM,
+                estimatedAvgPct,
+                estimatedMaxSustainedPct,
+                suggestedIncline,
+                suggestedSegments,
+                splitRecommended,
+                List.of());
+    }
+
+    public InclineAudit(
+            String matchMethod,
+            MatchConfidence matchConfidence,
+            Double matchHausdorffM,
+            double estimatedAvgPct,
+            double estimatedMaxSustainedPct,
+            String suggestedIncline,
+            String suggestedSegments,
+            boolean splitRecommended,
+            List<SegmentSuggestion> segments) {
         this.matchMethod = matchMethod == null ? "" : matchMethod;
         this.matchConfidence = matchConfidence;
         this.matchHausdorffM = matchHausdorffM;
@@ -38,6 +64,7 @@ public final class InclineAudit {
         this.suggestedIncline = suggestedIncline == null ? "" : suggestedIncline;
         this.suggestedSegments = suggestedSegments;
         this.splitRecommended = splitRecommended;
+        this.segments = segments == null ? List.of() : List.copyOf(segments);
     }
 
     public static InclineAudit from(WaySuggestion sug) {
@@ -66,7 +93,8 @@ public final class InclineAudit {
                 sug.stats().maxSustainedPct(),
                 incline,
                 segments,
-                sug.split());
+                sug.split(),
+                sug.segments());
     }
 
     public String matchMethod() {
@@ -99,6 +127,14 @@ public final class InclineAudit {
 
     public boolean splitRecommended() {
         return splitRecommended;
+    }
+
+    /**
+     * Ordered along-way segments from gradient analysis. Empty when not available.
+     * Never written as OSM tags; used by optional automatic way-splitting.
+     */
+    public List<SegmentSuggestion> segments() {
+        return segments;
     }
 
     /** Compact one-line detail for the summary column. */

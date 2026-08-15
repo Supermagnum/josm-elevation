@@ -2,6 +2,8 @@
 
 JOSM plugin that helps Norwegian OSM mappers suggest `incline=*` tags, snow-chain advisory points, and (with strict tagging rules) sharp-curve / accident-cluster advisories, using data from Statens Vegvesen's NVDB API.
 
+**Current plugin version: `0.3.0`.** The installable jar is always at [`compiled/nvdb_incline.jar`](compiled/nvdb_incline.jar).
+
 **This plugin never uploads to OpenStreetMap.** Accepted suggestions become ordinary undoable JOSM edits (`ChangePropertyCommand` / `AddCommand`). You only upload if you later use JOSM's own Upload action after review.
 
 ## Table of contents
@@ -22,7 +24,8 @@ JOSM plugin that helps Norwegian OSM mappers suggest `incline=*` tags, snow-chai
   - [Nodes — sign-backed hazard](#nodes-sign-backed-hazard)
   - [Nodes — snow-chain advisory (implemented)](#nodes-snow-chain-advisory-implemented)
   - [Nodes — unsigned advisories (implemented; never `hazard=*`)](#nodes-unsigned-advisories-implemented-never-hazard)
-  - [Where confidence / estimate data goes](#where-confidence-estimate-data-goes)
+  - [Internal fields — never written to OSM](#internal-fields--never-written-to-osm)
+  - [Optional automatic way-splitting](#optional-automatic-way-splitting)
 - [Data accuracy and limitations](#data-accuracy-and-limitations)
   - [NVDB road geometry accuracy](#nvdb-road-geometry-accuracy)
   - [What this means for suggested `incline=*`](#what-this-means-for-suggested-incline)
@@ -91,17 +94,25 @@ Details: [`docs/build-and-dependencies.md`](docs/build-and-dependencies.md).
 
 After `:plugin:dist` (or `:plugin:jar` / `./gradlew build`), the installable plugin is written to:
 
-- `plugin/build/dist/nvdb_incline.jar` — Gradle / JOSM plugin packaging output
-- **`compiled/nvdb_incline.jar`** — same file, copied to the repo-root `compiled/` folder for easy find/install
+- **[`compiled/nvdb_incline.jar`](compiled/nvdb_incline.jar)** — latest installable plugin; this folder is always updated by the build. Use this file.
+- `plugin/build/dist/nvdb_incline.jar` — same jar from Gradle packaging (keep this as a fallback if you just built locally and `compiled/` is not yet refreshed)
+
+The **latest** plugin jar is always [`compiled/nvdb_incline.jar`](compiled/nvdb_incline.jar). Copy that file into your JOSM plugins directory; you do not need to hunt through `plugin/build/`.
 
 ## Install into your normal JOSM
 
-1. `./gradlew :plugin:dist` (or `./gradlew build`)
-2. Copy **`compiled/nvdb_incline.jar`** (or `plugin/build/dist/nvdb_incline.jar`) into the JOSM plugins directory (Linux current: `~/.local/share/JOSM/plugins/`; see build doc for macOS/Windows/legacy).
+1. `./gradlew :plugin:dist` (or `./gradlew build`) — refreshes [`compiled/nvdb_incline.jar`](compiled/nvdb_incline.jar)
+2. Copy **[`compiled/nvdb_incline.jar`](compiled/nvdb_incline.jar)** into the JOSM plugins directory that your install actually uses (create it if missing):
+   - Linux (common / XDG config): `~/.config/JOSM/plugins/`
+   - Linux (XDG data): `~/.local/share/JOSM/plugins/`
+   - If unsure: in JOSM open **Help → Show Status Report** and search for the plugins path. See [build doc](docs/build-and-dependencies.md#install-the-jar-into-a-normal-josm) for macOS/Windows/legacy.
 3. Fully restart JOSM; enable **nvdb_incline** if needed.
 4. Open **Data → Suggest inclines from NVDB…** (also under **More tools**; shortcut Alt+Shift+N)
+5. Optional auto-split: **Edit → Preferences → NVDB incline** — enable **Automatically split ways with highly variable gradient** (off by default).
 
 ## Screenshots
+
+**Note: these screenshots are outdated.** They show an earlier UI (area dialog layout, review columns, and no auto-split checkbox). The current plugin still follows the same overall flow, but labels, options, and window contents have changed — use them only as a rough visual guide until they are refreshed.
 
 Kommune-mode flow (Ringebu example):
 
@@ -139,7 +150,7 @@ Kommune-mode flow (Ringebu example):
    - NVDB Trafikkulykke (type **570**) for accident clustering
 5. A **review dialog** lists every proposal in sections (inclines, snow chains, curves confirmed by sign, geometry-only curves, accident clusters). Tick only what you accept. Shortcut: “Accept all high-confidence”.
 6. **Apply selected** registers undoable edits using only the tags in [Applied OSM tags](#applied-osm-tags-reference) below. After a kommune run, local completion stats update automatically.
-7. Spot-check against imagery, signs, and local knowledge. Ways that already have human/surveyed `incline=*` are not overwritten (discrepancy notes only). Prior `source:incline=nvdb_estimate` values can appear as **update** suggestions if the estimate changed. Dubious track/path matches and absurd grades are filtered before they reach the review list. When a split is useful, the review dialog shows a **Split suggested** badge — splitting is done with JOSM's own tools, not via OSM tags.
+7. Spot-check against imagery, signs, and local knowledge. Ways that already have human/surveyed `incline=*` are not overwritten (discrepancy notes only). Prior `source:incline=nvdb_estimate` values can appear as **update** suggestions if the estimate changed. Dubious track/path matches and absurd grades are filtered before they reach the review list. When gradient varies too much for one tag, the review dialog shows a **Split suggested** badge. By default that is a hint only (JOSM's own Split Way action); an opt-in setting can split automatically — see [Optional automatic way-splitting](#optional-automatic-way-splitting).
 8. Upload manually from JOSM only after that review. Ctrl+Z undoes plugin edits like any other change.
 
 ## Kommune completion tracking (local only)
@@ -173,7 +184,7 @@ Source of truth: `AppliedTags`, `SuggestionApplier.sanitizeTags`, `SafetyAnalyze
 
 | Tag | Example | When applied | Note |
 |-----|---------|--------------|------|
-| `incline` | `7%`, `-11%` | Accepted **fresh** or **update** way row | Signed integer percent relative to **way node order** ([OSM incline](https://wiki.openstreetmap.org/wiki/Key:incline)); produced by `InclineTags.formatIncline` from NVDB 3D geometry. Split cases still get one whole-way average value. Human-sourced `incline=*` (other/no `source:incline`) is never overwritten — only a discrepancy note. Negative values are normal — see [Why suggestions can be negative](#why-suggestions-can-be-negative-eg-5). |
+| `incline` | `7%`, `-11%` | Accepted **fresh** or **update** way row | Signed integer percent relative to **way node order** ([OSM incline](https://wiki.openstreetmap.org/wiki/Key:incline)); produced by `InclineTags.formatIncline` from NVDB 3D geometry. When a split is recommended and auto-split is **off** (default), the whole way still gets one average value — not omitted solely because variance is high. With auto-split **on**, each resulting sub-way gets its own segment value. Human-sourced `incline=*` (other/no `source:incline`) is never overwritten — only a discrepancy note. Negative values are normal — see [Why suggestions can be negative](#why-suggestions-can-be-negative-eg-5). |
 | `source:incline` | `nvdb_estimate` | Always with a new incline suggestion | OSM **`source:<key>`** prefix convention (“source of this attribute”), not `incline:source`. See [Key:source](https://wiki.openstreetmap.org/wiki/Key:source). Marks a machine estimate from NVDB geometry — see [Data accuracy and limitations](#data-accuracy-and-limitations). |
 | `fixme` | `NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.` | With incline suggestion | English machine-estimate flag so unfinished guesses are hard to miss before upload. |
 | `note` | `Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.` | With incline suggestion | Norwegian mapper-facing hint; same intent as `fixme`. |
@@ -217,13 +228,41 @@ When reviewing: treat the **number** as grade magnitude (comparable to what a si
 | `safety_advisory` | `sharp_curve` or `accident_cluster` | Geometry-only sharp curve, or accident cluster **without** matching skilt | Explicitly **not** `hazard=*`. Count/period for clusters live in `note`, not separate OSM keys. |
 | `note` | Explains advisory + “IKKE hazard=* …” | With `safety_advisory` | Keeps the legal/tagging constraint visible to mappers. |
 
-### Where confidence / estimate data goes
+### Internal fields — never written to OSM
 
-Former bookkeeping tags such as `incline:match_confidence`, `incline:match_method`, `incline:match_hausdorff_m`, `incline:estimated_avg`, `incline:estimated_max_sustained`, `incline:suggested`, `incline:suggested_segments`, and `incline:split_recommended` are **not** written to OSM objects.
+These names are **computed internally** for the review UI (and stored on `InclineAudit`). They are **never** written as tags on any OSM object — not on apply, not as a sidecar file, not as a debug dump. There is currently **no** plugin log file for them ([`docs/debugging.md`](docs/debugging.md)).
 
-They remain available to reviewers as structured `InclineAudit` data on each incline review row and are shown in the review dialog (Method, H(m), Proposed, Raw avg/max, Split columns, plus hover tooltips). There is currently **no** sidecar debug log file for this data — see [`docs/debugging.md`](docs/debugging.md).
+| Internal name (legacy key, never applied) | Meaning | Where it surfaces today |
+|-------------------------------------------|---------|-------------------------|
+| `incline:match_confidence` | OSM↔NVDB match quality (`HIGH` / `MEDIUM` / `LOW`) | Review dialog **Confidence** column; hover tooltip `confidence=` |
+| `incline:match_method` | How the way was matched (e.g. `nvdb:id`, `geometry`) | Review dialog **Method** column; tooltip `method=` |
+| `incline:match_hausdorff_m` | Hausdorff distance in metres between OSM way and NVDB geometry | Review dialog **H(m)** column; tooltip `hausdorff_m=` |
+| `incline:estimated_avg` | Whole-way average grade (percent, unrounded) | Review dialog **Raw avg/max** (left number); tooltip `estimated_avg=` |
+| `incline:estimated_max_sustained` | Max sustained window grade (percent, unrounded) | Review dialog **Raw avg/max** (right number); tooltip `estimated_max_sustained=` |
+| `incline:suggested` | Rounded `incline=*` that would be applied to the **whole** way | Review dialog **Proposed** column; tooltip `suggested=` |
+| `incline:suggested_segments` | Per-segment rounded grades when a split is recommended (e.g. `2%;8%`) | Review dialog **Detail** column when split is recommended; tooltip `suggested_segments=` |
+| `incline:split_recommended` | Gradient spread is too large for one honest whole-way tag | Review dialog **Split** column (`Split suggested` / `Auto-split`); tooltip `split_recommended=yes/no`. Not a log line. |
+
+**Regression tests** (this is not only a documentation promise): `AppliedTags.FORBIDDEN_LEGACY_KEYS` lists these keys; `ReviewModel.Row` construction rejects them; `InclineAuditReviewModelTest` asserts all eight are present on `InclineAudit` and absent from `Row.tags`; `SuggestionApplierTest.appliedInclineTagsAreExactlyAllowlistedKeys` asserts they never appear on the way after apply.
 
 Do not reintroduce `incline:source` / `hazard:source`; use `source:incline` / `source:hazard`.
+
+### Optional automatic way-splitting
+
+Off by default. Enable **Automatically split ways with highly variable gradient** under JOSM **Preferences → NVDB incline**. It is off by default because it changes **way structure** (inserts nodes if needed, then splits), not just tags.
+
+| Setting | What Apply does for a split-recommended incline row |
+|---------|-----------------------------------------------------|
+| **Off (default)** | Unchanged: **Split suggested** badge only. No `SplitWayCommand`. The whole way gets one suggested `incline=*` (the whole-way average). High variance alone does not drop the suggestion. |
+| **On** | Accepting the row inserts nodes at segment boundaries that do not already coincide with an OSM node, then runs JOSM's `SplitWayCommand` (updates route/multipolygon membership), then applies a separate `incline=*` to each resulting sub-way from that segment’s gradient. Multiple split points along one way are supported whenever analysis produced multiple `InclineAudit` segments. |
+
+Enable it in the **choose-area dialog** (checkbox near the bottom) or under **Edit → Preferences → NVDB incline**.
+
+**Relations:** if a way slated for auto-split is a member of any relation, the review dialog shows an explicit warning **before** Apply (`Auto-split (relation)` on the Split column, plus a banner). Splitting inside a route (or similar) is a bigger edit than a tag change.
+
+**Undo:** node inserts, the split, and the per-piece `incline=*` tags are one nested `SequenceCommand` per way, and the whole Apply is itself one `SequenceCommand`. One Ctrl+Z undoes the entire Apply, including restoring the original unsplit way and its tags.
+
+Automatic splitting is **not** used for hazard / curve / chain-advisory suggestions — only the incline-variance case.
 
 ## Data accuracy and limitations
 
@@ -247,7 +286,7 @@ Plugin processing adds further approximation on top of whatever geometry accurac
 
 - Gradients are computed from Z sampled along the matched OSM way (average and max-sustained window statistics).
 - Suggested tags are rounded to a **whole-percent** integer (`InclineTags.formatIncline`).
-- Split cases still publish one whole-way average `incline=*` on apply; segment breakdown stays in the review UI.
+- Split cases publish one whole-way average `incline=*` on apply unless the opt-in auto-split setting is on; segment breakdown always stays in the review UI.
 
 A suggested value such as `8%` should not be read as more precise than the underlying NVDB geometry and these estimation choices support. Field check against signs and terrain remains the rule.
 

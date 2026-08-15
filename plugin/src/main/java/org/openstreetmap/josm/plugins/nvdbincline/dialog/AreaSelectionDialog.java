@@ -33,6 +33,7 @@ import no.nvdbincline.core.completion.KommuneCompletionStore;
 import no.nvdbincline.core.kommune.Kommune;
 import no.nvdbincline.core.kommune.KommuneCatalog;
 import no.nvdbincline.core.kommune.KommuneSearch;
+import org.openstreetmap.josm.plugins.nvdbincline.NvdbInclinePreferences;
 
 /**
  * Area selection before an NVDB suggest run: current layer, custom bbox, or kommune.
@@ -119,6 +120,17 @@ public final class AreaSelectionDialog {
                 new JCheckBox(tr("Dismiss unmatched triage for completion tracking"));
         JButton markDone = new JButton(tr("Mark selected kommune done anyway"));
         JButton reopen = new JButton(tr("Reopen selected kommune"));
+        JCheckBox autoSplitWays =
+                new JCheckBox(
+                        tr("Automatically split ways with highly variable gradient"),
+                        NvdbInclinePreferences.autoSplitVariableGradient());
+        JLabel autoSplitHint =
+                new JLabel(
+                        tr(
+                                "<html><i>Off by default because it changes way structure (may insert"
+                                        + " nodes and run Split Way), not just tags. When off, the review"
+                                        + " dialog only shows a Split suggested badge. Same setting under"
+                                        + " Edit → Preferences → NVDB incline.</i></html>"));
 
         Runnable refreshLocalOsmLabel =
                 () -> {
@@ -417,6 +429,14 @@ public final class AreaSelectionDialog {
         gc.gridy++;
         center.add(downloadOsm, gc);
         gc.gridy++;
+        center.add(autoSplitWays, gc);
+        gc.gridy++;
+        gc.fill = GridBagConstraints.HORIZONTAL;
+        gc.weightx = 1;
+        center.add(autoSplitHint, gc);
+        gc.gridy++;
+        gc.fill = GridBagConstraints.NONE;
+        gc.weightx = 0;
         center.add(note, gc);
 
         final Result[] out = {null};
@@ -448,6 +468,8 @@ public final class AreaSelectionDialog {
                             }
                             sel = AreaSelection.kommune(item.kommune.nummer(), item.kommune.navn());
                         }
+                        NvdbInclinePreferences.setAutoSplitVariableGradient(
+                                autoSplitWays.isSelected());
                         out[0] =
                                 new Result(
                                         sel,
@@ -472,10 +494,13 @@ public final class AreaSelectionDialog {
         buttons.add(ok);
 
         dialog.getContentPane().setLayout(new BorderLayout(8, 8));
-        dialog.getContentPane().add(center, BorderLayout.CENTER);
+        dialog.getContentPane().add(new javax.swing.JScrollPane(center), BorderLayout.CENTER);
         dialog.getContentPane().add(buttons, BorderLayout.SOUTH);
         dialog.pack();
-        dialog.setMinimumSize(dialog.getPreferredSize());
+        java.awt.Dimension pref = dialog.getPreferredSize();
+        dialog.setPreferredSize(
+                new java.awt.Dimension(Math.max(pref.width, 720), Math.max(pref.height, 560)));
+        dialog.setMinimumSize(new java.awt.Dimension(640, 420));
         dialog.setLocationRelativeTo(parent);
         dialog.setVisible(true);
         return out[0];

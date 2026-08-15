@@ -100,4 +100,30 @@ class GradientCalculatorTest {
         assertEquals(1, result.segments.size());
         assertEquals("7%", result.segments.get(0).inclineTag());
     }
+
+    @Test
+    void threeDistinctGradesYieldMultipleSegments() {
+        List<ElevationSample> p = new ArrayList<>();
+        for (int d = 0; d <= 360; d += 10) {
+            double z;
+            if (d <= 120) {
+                z = 100.0;
+            } else if (d <= 240) {
+                z = 100.0 + (d - 120) * 0.08;
+            } else {
+                z = 100.0 + 9.6 + (d - 240) * 0.16;
+            }
+            p.add(new ElevationSample(d, z, d, 0));
+        }
+        GradientCalculator.SplitConfig cfg = new GradientCalculator.SplitConfig();
+        cfg.windowM = 50;
+        cfg.spreadPp = 4;
+        cfg.minSegmentM = 40;
+        cfg.mergePp = 2;
+        var result = GradientCalculator.suggestSegments(p, cfg);
+        assertTrue(result.split);
+        assertTrue(
+                result.segments.size() >= 3,
+                "expected 3+ segments, got " + result.segments.size());
+    }
 }

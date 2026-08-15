@@ -30,6 +30,7 @@ import org.openstreetmap.josm.data.preferences.JosmBaseDirectories;
 import org.openstreetmap.josm.data.preferences.JosmUrls;
 import org.openstreetmap.josm.data.projection.ProjectionRegistry;
 import org.openstreetmap.josm.data.projection.Projections;
+import org.openstreetmap.josm.plugins.nvdbincline.NvdbInclinePreferences;
 import org.openstreetmap.josm.spi.preferences.Config;
 
 /**
@@ -64,6 +65,7 @@ class SuggestionApplierTest {
         way.put("highway", "secondary");
         ds.addPrimitive(way);
         UndoRedoHandler.getInstance().clean();
+        NvdbInclinePreferences.setAutoSplitVariableGradient(false);
     }
 
     private static ReviewModel.Row wayRow(

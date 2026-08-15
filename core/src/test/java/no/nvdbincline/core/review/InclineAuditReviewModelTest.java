@@ -110,6 +110,9 @@ class InclineAuditReviewModelTest {
         assertFalse(a.suggestedIncline().isBlank()); // suggested (rounded proposed)
         assertEquals("2%;8%", a.suggestedSegments()); // suggested_segments
         assertTrue(a.splitRecommended()); // split_recommended
+        assertEquals(2, a.segments().size());
+        assertEquals("2%", a.segments().get(0).inclineTag());
+        assertEquals("8%", a.segments().get(1).inclineTag());
 
         // Applied tags: allowlisted only — none of the eight bookkeeping keys:
         assertEquals(AppliedTags.WAY_INCLINE_KEYS, row.tags.keySet());

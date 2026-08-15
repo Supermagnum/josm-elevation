@@ -14,7 +14,7 @@ Verified against this repo’s Gradle files and by running the commands below on
 | JOSM minimum (manifest) | **19067** | `plugin/build.gradle.kts` → `josm.manifest.minJosmVersion` |
 | JOSM Gradle plugin | `org.openstreetmap.josm` **0.8.2** | `plugin/build.gradle.kts` |
 
-Modules: `core`, `plugin` (`settings.gradle.kts`). Group/version: `no.nvdbincline` / `0.1.0`.
+Modules: `core`, `plugin` (`settings.gradle.kts`). Group/version: `no.nvdbincline` / `0.3.0`.
 
 ### Dependencies (Gradle-managed)
 
@@ -79,12 +79,13 @@ These were run successfully in-repo: `./gradlew test`, `./gradlew :plugin:dist`,
 
 | OS | Typical plugins directory |
 |----|---------------------------|
-| Linux (current / XDG) | `~/.local/share/JOSM/plugins/` |
+| Linux (XDG config — common) | `~/.config/JOSM/plugins/` |
+| Linux (XDG data) | `~/.local/share/JOSM/plugins/` |
 | Linux (legacy) | `~/.josm/plugins/` |
 | macOS | `~/Library/JOSM/plugins/` |
 | Windows | `%APPDATA%\JOSM\plugins\` |
 
-Flatpak/Snap/portable builds may differ — check **Help → Show Status Report** in JOSM for the plugins path.
+Flatpak/Snap/portable builds may differ — check **Help → Show Status Report** in JOSM for the plugins path. If both `~/.config/JOSM/plugins/` and `~/.local/share/JOSM/plugins/` exist, copy into the one Status Report lists (this machine uses `~/.config/JOSM/plugins/`).
 
 3. **Fully restart JOSM** after replacing the jar.
 4. Enable **nvdb_incline** under Edit → Preferences → Plugins if needed.

@@ -7,8 +7,10 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -19,6 +21,8 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import no.nvdbincline.core.review.InclineAudit;
 import no.nvdbincline.core.review.ReviewModel;
+import org.openstreetmap.josm.data.osm.DataSet;
+import org.openstreetmap.josm.plugins.nvdbincline.command.SuggestionApplier;
 
 /**
  * Review UI: every proposed change is listed with an accept checkbox.
@@ -32,14 +36,38 @@ public final class ReviewDialog {
      * @return true if the user confirmed Apply selected
      */
     public static boolean show(Frame parent, ReviewModel model, int matched, int unmatched) {
+        return show(parent, model, matched, unmatched, null, false);
+    }
+
+    /**
+     * @param ds edit layer used to detect relation membership for split warnings
+     * @param autoSplit whether the opt-in automatic way-split setting is on
+     */
+    public static boolean show(
+            Frame parent,
+            ReviewModel model,
+            int matched,
+            int unmatched,
+            DataSet ds,
+            boolean autoSplit) {
         JDialog dialog = new JDialog(parent, tr("Review NVDB suggestions"), true);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-        TableModel tableModel = new TableModel(model.rows());
+        Set<Long> splitRelationIds = new HashSet<>();
+        if (ds != null && autoSplit) {
+            for (var w : SuggestionApplier.splitWaysInRelations(ds, model.rows())) {
+                splitRelationIds.add(w.getUniqueId());
+                if (w.getOsmId() != 0) {
+                    splitRelationIds.add(w.getOsmId());
+                }
+            }
+        }
+
+        TableModel tableModel = new TableModel(model.rows(), autoSplit, splitRelationIds);
         JTable table = new JTable(tableModel);
         table.setFillsViewportHeight(true);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        int[] widths = {55, 110, 90, 90, 90, 70, 70, 110, 100, 360};
+        int[] widths = {55, 110, 90, 90, 90, 70, 70, 110, 140, 360};
         for (int i = 0; i < widths.length && i < table.getColumnModel().getColumnCount(); i++) {
             table.getColumnModel().getColumn(i).setPreferredWidth(widths[i]);
         }
@@ -52,9 +80,19 @@ public final class ReviewDialog {
                                         + "<b>Confirmed by sign</b> rows may suggest <code>hazard=*</code>. "
                                         + "Geometry/accident advisories never get <code>hazard=*</code> "
                                         + "(OSM requires a posted sign). Hover a row for full match/estimate detail. "
-                                        + "Never uploads.</html>",
+                                        + "Never uploads.{2}{3}</html>",
                                 matched,
-                                unmatched));
+                                unmatched,
+                                autoSplit
+                                        ? "<br/><b>Automatic way-splitting is ON.</b> Accepting a split-suggested"
+                                                + " incline will insert nodes if needed and split the way"
+                                                + " (structure change, not just tags). One Ctrl+Z undoes the whole Apply."
+                                        : "",
+                                autoSplit && !splitRelationIds.isEmpty()
+                                        ? "<br/><b>Warning:</b> at least one split-suggested way is a member of a"
+                                                + " relation. Splitting it will change that relation. Rows are marked"
+                                                + " <code>Auto-split (relation)</code> — uncheck them if you do not want that."
+                                        : ""));
 
         JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton acceptHigh = new JButton(tr("Accept all high-confidence"));
@@ -132,6 +170,8 @@ public final class ReviewDialog {
 
     private static final class TableModel extends AbstractTableModel {
         private final List<ReviewModel.Row> rows;
+        private final boolean autoSplit;
+        private final Set<Long> splitRelationIds;
         private final String[] cols = {
             tr("Accept"),
             tr("Section"),
@@ -145,8 +185,10 @@ public final class ReviewDialog {
             tr("Detail")
         };
 
-        TableModel(List<ReviewModel.Row> rows) {
+        TableModel(List<ReviewModel.Row> rows, boolean autoSplit, Set<Long> splitRelationIds) {
             this.rows = rows;
+            this.autoSplit = autoSplit;
+            this.splitRelationIds = splitRelationIds == null ? Set.of() : splitRelationIds;
         }
 
         @Override
@@ -201,10 +243,7 @@ public final class ReviewDialog {
                                         "%.1f%% / %.1f%%",
                                         a.estimatedAvgPct(),
                                         a.estimatedMaxSustainedPct());
-                case 8 ->
-                        r.splitSuggested
-                                ? tr("Split suggested")
-                                : (a != null && a.splitRecommended() ? tr("Split suggested") : "");
+                case 8 -> splitColumnLabel(r, autoSplit, splitRelationIds);
                 case 9 ->
                         a != null && a.suggestedSegments() != null && a.splitRecommended()
                                 ? "id " + r.osmId + ": segments " + a.suggestedSegments()
@@ -230,5 +269,23 @@ public final class ReviewDialog {
                 case ACCIDENTS -> tr("Accident clusters");
             };
         }
+    }
+
+    /** Visible for tests: Split column text including the relation warning. */
+    public static String splitColumnLabel(
+            ReviewModel.Row r, boolean autoSplit, Set<Long> splitRelationIds) {
+        boolean split =
+                r.splitSuggested
+                        || (r.inclineAudit != null && r.inclineAudit.splitRecommended());
+        if (!split) {
+            return "";
+        }
+        if (!autoSplit) {
+            return tr("Split suggested");
+        }
+        boolean inRelation =
+                splitRelationIds != null
+                        && (splitRelationIds.contains(r.osmId));
+        return inRelation ? tr("Auto-split (relation)") : tr("Auto-split");
     }
 }

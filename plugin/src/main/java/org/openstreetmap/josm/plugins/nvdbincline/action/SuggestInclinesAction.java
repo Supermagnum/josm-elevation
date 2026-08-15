@@ -39,6 +39,7 @@ import org.openstreetmap.josm.gui.progress.ProgressMonitor;
 import org.openstreetmap.josm.io.BoundingBoxDownloader;
 import org.openstreetmap.josm.io.OsmApiException;
 import org.openstreetmap.josm.io.OsmTransferException;
+import org.openstreetmap.josm.plugins.nvdbincline.NvdbInclinePreferences;
 import org.openstreetmap.josm.plugins.nvdbincline.command.SuggestionApplier;
 import org.openstreetmap.josm.plugins.nvdbincline.dialog.AreaSelectionDialog;
 import org.openstreetmap.josm.plugins.nvdbincline.dialog.ReviewDialog;
@@ -486,7 +487,12 @@ public class SuggestInclinesAction extends JosmAction {
 
             boolean ok =
                     ReviewDialog.show(
-                            MainApplication.getMainFrame(), reviewModel, matched, unmatched);
+                            MainApplication.getMainFrame(),
+                            reviewModel,
+                            matched,
+                            unmatched,
+                            editDataSet,
+                            NvdbInclinePreferences.autoSplitVariableGradient());
             if (area.isKommune()) {
                 updateCompletion(
                         store,
@@ -501,16 +507,22 @@ public class SuggestInclinesAction extends JosmAction {
             if (!ok) {
                 return;
             }
-            int applied = SuggestionApplier.applyAccepted(editDataSet, reviewModel.acceptedRows());
+            boolean autoSplit = NvdbInclinePreferences.autoSplitVariableGradient();
+            int applied =
+                    SuggestionApplier.applyAccepted(
+                            editDataSet, reviewModel.acceptedRows(), autoSplit);
             JOptionPane.showMessageDialog(
                     MainApplication.getMainFrame(),
                     tr(
                             "Applied {0} suggestion(s) as undoable edits.\n"
                                     + "Check source:incline=nvdb_estimate / source:hazard=nvdb_sign / advisories.\n"
                                     + "hazard=* is only applied when an NVDB warning sign matched.\n"
-                                    + "Split suggestions are review-UI only — split ways yourself in JOSM if needed.\n"
+                                    + "{1}"
                                     + "Upload manually from JOSM if you choose to. This plugin never uploads.",
-                            applied),
+                            applied,
+                            autoSplit
+                                    ? "Split-recommended inclines were split into sub-ways where possible.\n"
+                                    : "Split suggestions are review-UI only — split ways yourself in JOSM if needed.\n"),
                     tr("NVDB incline"),
                     JOptionPane.INFORMATION_MESSAGE);
         }
