@@ -26,6 +26,8 @@ import no.nvdbincline.core.model.OsmWayGeom;
 import no.nvdbincline.core.model.SafetyFinding;
 import no.nvdbincline.core.review.ReviewModel;
 import no.nvdbincline.core.safety.SafetyAnalyzer;
+import no.nvdbincline.core.tag.ExistingTagCoverage;
+import no.nvdbincline.core.tag.ExistingTagPolicy;
 import org.openstreetmap.josm.actions.JosmAction;
 import org.openstreetmap.josm.data.Bounds;
 import org.openstreetmap.josm.data.coor.LatLon;
@@ -115,6 +117,7 @@ public class SuggestInclinesAction extends JosmAction {
         private DataSet editDataSet;
         private OsmDataLayer newLayerToAdd;
         private ReviewModel reviewModel;
+        private ExistingTagCoverage lastCoverage;
         private int matched;
         private int unmatched;
         private String infoMessage;
@@ -414,6 +417,22 @@ public class SuggestInclinesAction extends JosmAction {
             if (stopIfCancelled(progress)) {
                 return;
             }
+
+            ExistingTagCoverage coverage =
+                    ExistingTagCoverage.scanWays(
+                            out.matchResult.matches.stream()
+                                    .map(m -> m.way())
+                                    .toList());
+            if (editDataSet != null) {
+                coverage = mergeNodeTagCoverage(editDataSet, coverage);
+            }
+            lastCoverage = coverage;
+            if (area.isKommune()) {
+                KommuneCompletionRecord withCov =
+                        store.getOrEmpty(area.kommuneNummer()).withCoverage(coverage);
+                store.put(withCov);
+            }
+
             progress.subTask(tr("Analysing signs, curves and accidents…"));
             List<SafetyFinding> safety =
                     SafetyAnalyzer.analyze(ways, signs, accidents, new SafetyAnalyzer.Settings());
@@ -445,6 +464,10 @@ public class SuggestInclinesAction extends JosmAction {
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            if (area.isKommune() && lastCoverage != null) {
+                // Persist coverage even when there are no review rows.
+                persistStore(store);
+            }
             if (infoMessage != null) {
                 JOptionPane.showMessageDialog(
                         MainApplication.getMainFrame(),
@@ -455,6 +478,10 @@ public class SuggestInclinesAction extends JosmAction {
             }
             if (reviewModel == null || editDataSet == null) {
                 return;
+            }
+
+            if (area.isKommune() && lastCoverage != null) {
+                maybeOfferCoverageReviewPrompt(store, area.kommuneNummer(), lastCoverage);
             }
 
             boolean ok =
@@ -848,6 +875,64 @@ public class SuggestInclinesAction extends JosmAction {
                     "NVDB accident fetch failed (continuing without accidents): "
                             + accidentEx.getMessage());
             return List.of();
+        }
+    }
+
+    private static ExistingTagCoverage mergeNodeTagCoverage(
+            DataSet ds, ExistingTagCoverage base) {
+        int hazard = 0;
+        int pluginH = 0;
+        int otherH = 0;
+        int chain = 0;
+        for (org.openstreetmap.josm.data.osm.Node n : ds.getNodes()) {
+            if (!n.isUsable()) {
+                continue;
+            }
+            String hz = n.get("hazard");
+            String src = n.get("source:hazard");
+            var origin = ExistingTagPolicy.classifyHazard(hz, src);
+            if (origin == ExistingTagPolicy.InclineOrigin.PLUGIN_NVDB_ESTIMATE) {
+                hazard++;
+                pluginH++;
+            } else if (origin == ExistingTagPolicy.InclineOrigin.OTHER) {
+                hazard++;
+                otherH++;
+            }
+            if (n.get("chain_advisory") != null && !n.get("chain_advisory").isBlank()) {
+                chain++;
+            }
+        }
+        return base.withNodeTags(hazard, pluginH, otherH, chain);
+    }
+
+    /**
+     * Substantial non-plugin incline coverage on OSM is a different signal from
+     * the personal completion tracker — offer to mark reviewed, never auto-mark.
+     */
+    private static void maybeOfferCoverageReviewPrompt(
+            KommuneCompletionStore store, int kommuneNummer, ExistingTagCoverage coverage) {
+        if (!coverage.suggestsSubstantialOtherCoverage()) {
+            return;
+        }
+        KommuneCompletionRecord rec = store.getOrEmpty(kommuneNummer);
+        if (rec.isDone()) {
+            return;
+        }
+        int choice =
+                JOptionPane.showConfirmDialog(
+                        MainApplication.getMainFrame(),
+                        tr(
+                                "{0}% of matched ways in this kommune already have incline data"
+                                        + " outside this tool (other/surveyed).\n\n"
+                                        + "Mark this kommune as reviewed in the local completion"
+                                        + " tracker? (You can reopen it later.)",
+                                coverage.otherInclinePercent()),
+                        tr("NVDB incline — existing OSM coverage"),
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE);
+        if (choice == JOptionPane.YES_OPTION) {
+            store.put(rec.withManualOverride(true));
+            persistStore(store);
         }
     }
 

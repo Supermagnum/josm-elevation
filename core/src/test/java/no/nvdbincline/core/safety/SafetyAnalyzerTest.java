@@ -12,6 +12,7 @@ import no.nvdbincline.core.model.NvdbPointFeature;
 import no.nvdbincline.core.model.OsmWayGeom;
 import no.nvdbincline.core.model.Polyline;
 import no.nvdbincline.core.model.SafetyFinding;
+import no.nvdbincline.core.tag.AppliedTags;
 import org.junit.jupiter.api.Test;
 
 class SafetyAnalyzerTest {
@@ -82,5 +83,79 @@ class SafetyAnalyzerTest {
             assertEquals("sharp_curve", f.tags().get("safety_advisory"));
             assertEquals(MatchConfidence.LOW, f.confidence());
         }
+    }
+
+    @Test
+    void humanSourcedHazardOnWayBecomesDiscrepancyWithoutTags() {
+        List<Coord> pts = hairpin();
+        Coord mid = pts.get(pts.size() / 2);
+        OsmWayGeom surveyed =
+                new OsmWayGeom(
+                        42,
+                        new Polyline(pts),
+                        "secondary",
+                        "T",
+                        null,
+                        null,
+                        null,
+                        "dangerous_junction",
+                        "survey",
+                        null,
+                        80);
+        NvdbPointFeature sign =
+                new NvdbPointFeature(
+                        SafetyAnalyzer.TYPE_SKILTPLATE,
+                        1,
+                        mid.x() + 5,
+                        mid.y() + 5,
+                        "100.1",
+                        null,
+                        "100.1");
+        SafetyAnalyzer.Settings settings = new SafetyAnalyzer.Settings();
+        settings.curve.minChordM = 5;
+        List<SafetyFinding> findings =
+                SafetyAnalyzer.analyze(List.of(surveyed), List.of(sign), List.of(), settings);
+        SafetyFinding disc =
+                findings.stream()
+                        .filter(f -> f.kind() == SafetyFinding.Kind.CURVE_SIGNED)
+                        .findFirst()
+                        .orElseThrow();
+        assertFalse(disc.signConfirmed());
+        assertFalse(disc.tags().containsKey("hazard"));
+        assertTrue(disc.summary().contains("discrepancy note"));
+    }
+
+    @Test
+    void pluginHazardUnchangedIsDropped() {
+        List<Coord> pts = hairpin();
+        Coord mid = pts.get(pts.size() / 2);
+        OsmWayGeom prior =
+                new OsmWayGeom(
+                        42,
+                        new Polyline(pts),
+                        "secondary",
+                        "T",
+                        null,
+                        null,
+                        null,
+                        "curve",
+                        AppliedTags.HAZARD_SOURCE_VALUE,
+                        null,
+                        80);
+        NvdbPointFeature sign =
+                new NvdbPointFeature(
+                        SafetyAnalyzer.TYPE_SKILTPLATE,
+                        1,
+                        mid.x() + 5,
+                        mid.y() + 5,
+                        "100.1",
+                        null,
+                        "100.1");
+        SafetyAnalyzer.Settings settings = new SafetyAnalyzer.Settings();
+        settings.curve.minChordM = 5;
+        List<SafetyFinding> findings =
+                SafetyAnalyzer.analyze(List.of(prior), List.of(sign), List.of(), settings);
+        assertTrue(
+                findings.stream().noneMatch(f -> f.kind() == SafetyFinding.Kind.CURVE_SIGNED));
     }
 }

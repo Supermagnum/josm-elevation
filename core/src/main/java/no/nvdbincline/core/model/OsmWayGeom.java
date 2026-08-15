@@ -10,6 +10,10 @@ public final class OsmWayGeom {
     private final String name;
     private final String nvdbId;
     private final String existingIncline;
+    private final String existingSourceIncline;
+    private final String existingHazard;
+    private final String existingSourceHazard;
+    private final String existingChainAdvisory;
     private final Integer speedLimitKph;
 
     public OsmWayGeom(
@@ -19,7 +23,7 @@ public final class OsmWayGeom {
             String name,
             String nvdbId,
             String existingIncline) {
-        this(id, line, highway, name, nvdbId, existingIncline, null);
+        this(id, line, highway, name, nvdbId, existingIncline, null, null, null, null, null);
     }
 
     public OsmWayGeom(
@@ -30,6 +34,32 @@ public final class OsmWayGeom {
             String nvdbId,
             String existingIncline,
             Integer speedLimitKph) {
+        this(
+                id,
+                line,
+                highway,
+                name,
+                nvdbId,
+                existingIncline,
+                null,
+                null,
+                null,
+                null,
+                speedLimitKph);
+    }
+
+    public OsmWayGeom(
+            long id,
+            Polyline line,
+            String highway,
+            String name,
+            String nvdbId,
+            String existingIncline,
+            String existingSourceIncline,
+            String existingHazard,
+            String existingSourceHazard,
+            String existingChainAdvisory,
+            Integer speedLimitKph) {
         if (line == null) {
             throw new IllegalArgumentException("line is null");
         }
@@ -39,6 +69,10 @@ public final class OsmWayGeom {
         this.name = name;
         this.nvdbId = nvdbId;
         this.existingIncline = existingIncline;
+        this.existingSourceIncline = existingSourceIncline;
+        this.existingHazard = existingHazard;
+        this.existingSourceHazard = existingSourceHazard;
+        this.existingChainAdvisory = existingChainAdvisory;
         this.speedLimitKph = speedLimitKph;
     }
 
@@ -64,6 +98,22 @@ public final class OsmWayGeom {
 
     public Optional<String> existingIncline() {
         return Optional.ofNullable(existingIncline).filter(s -> !s.isBlank());
+    }
+
+    public Optional<String> existingSourceIncline() {
+        return Optional.ofNullable(existingSourceIncline).filter(s -> !s.isBlank());
+    }
+
+    public Optional<String> existingHazard() {
+        return Optional.ofNullable(existingHazard).filter(s -> !s.isBlank());
+    }
+
+    public Optional<String> existingSourceHazard() {
+        return Optional.ofNullable(existingSourceHazard).filter(s -> !s.isBlank());
+    }
+
+    public Optional<String> existingChainAdvisory() {
+        return Optional.ofNullable(existingChainAdvisory).filter(s -> !s.isBlank());
     }
 
     public Integer speedLimitKph() {

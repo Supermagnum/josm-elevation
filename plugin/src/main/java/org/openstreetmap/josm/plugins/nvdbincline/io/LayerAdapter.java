@@ -54,6 +54,10 @@ public final class LayerAdapter {
                             w.getName(),
                             nvdb,
                             w.get("incline"),
+                            w.get("source:incline"),
+                            w.get("hazard"),
+                            w.get("source:hazard"),
+                            w.get("chain_advisory"),
                             speed));
         }
         return out;

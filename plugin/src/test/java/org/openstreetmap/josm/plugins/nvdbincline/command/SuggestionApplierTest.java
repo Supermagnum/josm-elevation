@@ -243,18 +243,51 @@ class SuggestionApplierTest {
     }
 
     @Test
-    void doesNotOverwriteExistingIncline() {
+    void updateOverwritesPriorPluginIncline() {
         way.put("incline", "5%");
+        way.put(AppliedTags.SOURCE_INCLINE, AppliedTags.INCLINE_SOURCE_VALUE);
         ReviewModel.Row row =
                 wayRow(
                         way.getUniqueId(),
-                        "incline=10%",
+                        "Update: 5% → 10%",
                         MatchConfidence.HIGH,
                         AppliedTags.incline("10%"),
                         true);
-        SuggestionApplier.applyAccepted(ds, List.of(row));
+        List<Command> cmds = SuggestionApplier.buildCommands(ds, List.of(row));
+        assertEquals(1, cmds.size());
+        cmds.get(0).executeCommand();
+        assertEquals("10%", way.get("incline"));
+        assertEquals(AppliedTags.INCLINE_SOURCE_VALUE, way.get(AppliedTags.SOURCE_INCLINE));
+    }
+
+    @Test
+    void discrepancyRowNeverProducesCommandsOrOverwritesSurveyedIncline() {
+        way.put("incline", "5%");
+        way.put(AppliedTags.SOURCE_INCLINE, "survey");
+        ReviewModel.Row disc =
+                new ReviewModel.Row(
+                        ReviewModel.Kind.DISCREPANCY,
+                        ReviewModel.Section.INCLINES,
+                        way.getUniqueId(),
+                        "discrepancy note (not suggested): existing 5% vs NVDB 10%",
+                        MatchConfidence.MEDIUM,
+                        Map.of(),
+                        null,
+                        null,
+                        false,
+                        null,
+                        null,
+                        false,
+                        true);
+        // Even if mistakenly accepted, DISCREPANCY is filtered from acceptedRows and
+        // allowedKeys is empty — never a silent overwrite of surveyed incline.
+        assertTrue(SuggestionApplier.buildCommands(ds, List.of(disc)).isEmpty());
+        ReviewModel model = new ReviewModel();
+        model.rows().add(disc);
+        model.acceptAll();
+        assertTrue(model.acceptedRows().isEmpty());
         assertEquals("5%", way.get("incline"));
-        assertEquals("nvdb_estimate", way.get(AppliedTags.SOURCE_INCLINE));
+        assertEquals("survey", way.get(AppliedTags.SOURCE_INCLINE));
     }
 
     @Test

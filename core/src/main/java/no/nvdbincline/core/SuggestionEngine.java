@@ -13,6 +13,7 @@ import no.nvdbincline.core.model.MatchResult;
 import no.nvdbincline.core.model.NvdbLink;
 import no.nvdbincline.core.model.OsmWayGeom;
 import no.nvdbincline.core.model.WaySuggestion;
+import no.nvdbincline.core.tag.ExistingTagPolicy;
 import no.nvdbincline.core.tag.SuggestionTags;
 
 /** Pure JVM suggestion engine — no JOSM dependency. */
@@ -80,26 +81,83 @@ public final class SuggestionEngine {
             }
             var stats = GradientCalculator.stats(profile, config.rollingWindowM);
             var split = GradientCalculator.suggestSegments(profile, splitCfg);
-            String skip = null;
-            Map<String, String> tags = Map.of();
-            WaySuggestion sug =
+            WaySuggestion draft =
                     new WaySuggestion(
                             m, profile, stats, split.segments, split.split, null, Map.of());
-            if (m.way().existingIncline().isPresent()) {
-                skip = "existing incline=* not overwritten";
-                sug =
-                        new WaySuggestion(
-                                m, profile, stats, split.segments, split.split, skip, Map.of());
-                discrepancies.add(sug);
-                suggestions.add(sug);
-            } else if (!SuggestionTags.isInclineEligible(m, stats)) {
-                // Profile still usable for snow-chain heuristics; no incline review row.
+
+            if (!SuggestionTags.isInclineEligible(m, stats)
+                    && ExistingTagPolicy.classifyIncline(m.way())
+                            == ExistingTagPolicy.InclineOrigin.NONE) {
+                // No incline row; profile still usable for snow-chain heuristics.
             } else {
-                tags = SuggestionTags.forWay(sug);
-                sug =
-                        new WaySuggestion(
-                                m, profile, stats, split.segments, split.split, null, tags);
-                suggestions.add(sug);
+                String proposed =
+                        split.segments.isEmpty()
+                                ? no.nvdbincline.core.tag.InclineTags.formatIncline(
+                                        stats.averagePct())
+                                : split.segments.get(0).inclineTag();
+                // Prefer whole-way tag from SuggestionTags when eligible.
+                Map<String, String> candidateTags = Map.of();
+                if (SuggestionTags.isInclineEligible(m, stats)) {
+                    candidateTags = SuggestionTags.forWay(draft);
+                    if (candidateTags.containsKey("incline")) {
+                        proposed = candidateTags.get("incline");
+                    }
+                }
+
+                ExistingTagPolicy.InclineOrigin origin = ExistingTagPolicy.classifyIncline(m.way());
+                ExistingTagPolicy.InclineDisposition disposition =
+                        ExistingTagPolicy.decideIncline(
+                                origin, m.way().existingIncline().orElse(null), proposed);
+
+                switch (disposition) {
+                    case FRESH -> {
+                        if (!candidateTags.isEmpty()) {
+                            suggestions.add(
+                                    new WaySuggestion(
+                                            m,
+                                            profile,
+                                            stats,
+                                            split.segments,
+                                            split.split,
+                                            null,
+                                            candidateTags,
+                                            ExistingTagPolicy.InclineDisposition.FRESH));
+                        }
+                    }
+                    case UPDATE -> {
+                        if (!candidateTags.isEmpty()) {
+                            suggestions.add(
+                                    new WaySuggestion(
+                                            m,
+                                            profile,
+                                            stats,
+                                            split.segments,
+                                            split.split,
+                                            null,
+                                            candidateTags,
+                                            ExistingTagPolicy.InclineDisposition.UPDATE));
+                        }
+                    }
+                    case DISCREPANCY_NOTE -> {
+                        String skip =
+                                "existing incline=* (non-plugin source) not overwritten";
+                        WaySuggestion sug =
+                                new WaySuggestion(
+                                        m,
+                                        profile,
+                                        stats,
+                                        split.segments,
+                                        split.split,
+                                        skip,
+                                        Map.of(),
+                                        ExistingTagPolicy.InclineDisposition.DISCREPANCY_NOTE);
+                        discrepancies.add(sug);
+                        suggestions.add(sug);
+                    }
+                    case UNCHANGED -> {
+                        // No review row.
+                    }
+                }
             }
             allChain.addAll(
                     ChainAdvisory.advise(profile, m.way().id(), m.links(), config.chain));

@@ -57,6 +57,7 @@ Gradle modules: `core`, `plugin` (`settings.gradle.kts`). `prototype/` is a sepa
 | Local Geofabrik Norway extract | `plugin/.../io/GeofabrikNorwayExtract.java` + `LocalDataPaths.norwayExtractPbf()` |
 | PBF→polygon highway clip (pure JVM) | `core/.../osm/PbfHighwayExtractor.java` + `WayPolygonClipper` (any-node-inside rule) |
 | Local kommune completion | `core/.../completion/*` + `plugin/.../io/LocalDataPaths.java` |
+| Existing OSM tag policy / coverage scan | `core/.../tag/ExistingTagPolicy.java`, `ExistingTagCoverage.java` |
 | Pure suggestion pipeline (match → profile → incline tags → chains) | `core/.../SuggestionEngine.java` |
 | OSM↔NVDB way matching | `core/.../match/WayMatcher.java` |
 | Elevation profile along matched links | `core/.../geo/ElevationProfiles.java` |

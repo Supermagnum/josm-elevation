@@ -530,7 +530,15 @@ public final class AreaSelectionDialog {
                     case IN_PROGRESS -> tr("in progress");
                     case DONE -> tr("done");
                 };
-        return tr("Status: {0}{1}", label, date);
+        String status = tr("Status: {0}{1}", label, date);
+        if (rec.hasCoverage()) {
+            status = status + " — " + rec.formatCoverageLine();
+        }
+        return "<html><body style='width:420px'>" + escapeHtml(status) + "</body></html>";
+    }
+
+    private static String escapeHtml(String s) {
+        return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
     }
 
     /** Combo entry with status prefix. */

@@ -93,7 +93,7 @@ Kommune-mode flow (Ringebu example):
 1. Download an area in JOSM that contains Norwegian `highway=*` ways (many already carry `nvdb:id` from Elveg).
 2. **Data → Suggest inclines from NVDB…** (or **More tools**; Alt+Shift+N)
 3. Choose an **area mode** in the selection dialog (opened from this menu — not from File → Download):
-   - **By kommune** — requires a local Geofabrik Norway `.osm.pbf` (Set up / refresh in the dialog; ~1.3 GB). Clips highways with Kartverket kommune polygons, then fetches NVDB with `kommune=`. Does **not** call the OSM API (avoids 509 bandwidth limits and bbox border leakage).
+   - **By kommune** — requires a local Geofabrik Norway `.osm.pbf` (Set up / refresh in the dialog; ~1.3 GB). Clips highways with Kartverket kommune polygons, then fetches NVDB with `kommune=`. Does **not** call the OSM API (avoids 509 bandwidth limits and bbox border leakage). After extract, the plugin **scans the downloaded ways for existing tags** (`incline=*`, `source:incline=*`, `hazard=*`, `source:hazard=*`, `chain_advisory=*`) so you can see whether that kommune already looks fixed on OSM — from this tool, other mappers, or surveys — before you review new suggestions.
    - **Current edit layer** — existing behaviour (NVDB bbox = layer envelope).
    - **Custom bounding box** — WGS84 min/max; optional OSM download; NVDB queried with `kartutsnitt`.
 4. The plugin fetches (cached under JOSM's cache directory):
@@ -102,7 +102,7 @@ Kommune-mode flow (Ringebu example):
    - NVDB Trafikkulykke (type **570**) for accident clustering
 5. A **review dialog** lists every proposal in sections (inclines, snow chains, curves confirmed by sign, geometry-only curves, accident clusters). Tick only what you accept. Shortcut: “Accept all high-confidence”.
 6. **Apply selected** registers undoable edits using only the tags in [Applied OSM tags](#applied-osm-tags-reference) below. After a kommune run, local completion stats update automatically.
-7. Spot-check against imagery, signs, and local knowledge. Existing `incline=*` is never overwritten (shown as discrepancies only). Dubious track/path matches and absurd grades are filtered before they reach the review list. When a split is useful, the review dialog shows a **Split suggested** badge — splitting is done with JOSM's own tools, not via OSM tags.
+7. Spot-check against imagery, signs, and local knowledge. Ways that already have human/surveyed `incline=*` are not overwritten (discrepancy notes only). Prior `source:incline=nvdb_estimate` values can appear as **update** suggestions if the estimate changed. Dubious track/path matches and absurd grades are filtered before they reach the review list. When a split is useful, the review dialog shows a **Split suggested** badge — splitting is done with JOSM's own tools, not via OSM tags.
 8. Upload manually from JOSM only after that review. Ctrl+Z undoes plugin edits like any other change.
 
 ## Kommune completion tracking (local only)
@@ -111,9 +111,22 @@ When you work **By kommune**, the plugin keeps a personal progress file under th
 
 - Matched / accepted / rejected / pending counts and last-run time for that kommunenummer
 - Optional “dismiss unmatched”, “mark done anyway”, and “reopen”
-- **Never uploaded, never shared** — this does not track what other contributors have done; it is a personal checklist only
+- **Existing-tag check on the download:** after the kommune is clipped from the local Geofabrik extract and matched to NVDB, the plugin counts how many matched ways already carry `incline=*` (and related hazard/chain tags). That tells you whether the kommune looks already fixed on OSM — not only what *this machine* has reviewed. The kommune status line shows e.g. “Existing incline coverage: 34% (12% previously suggested by this tool, 22% other/surveyed)”. Substantial other/surveyed coverage may offer “mark as reviewed?”; it never auto-marks done.
+- **Never uploaded, never shared** — the personal checklist does not track other contributors’ machines; the coverage line above is what is *on the extract*, from any source.
 
 A kommune is treated as done when every matched incline decision is accepted or rejected, unmatched triage is dismissed (or zero), unless you override manually.
+
+### Existing incline / hazard tags (do not overwrite surveys)
+
+After matching, each way is classified:
+
+| Existing tags | Review behaviour |
+|---------------|------------------|
+| No `incline=*` | Fresh suggestion (as before) |
+| `incline=*` + `source:incline=nvdb_estimate` | **Update** suggestion if the new estimate differs meaningfully (“Update: 6% → 8%”) |
+| `incline=*` with other/no `source:incline` | **Discrepancy note** only — never an applyable Command; human/surveyed data is kept |
+
+The same three-way logic applies to `hazard=*` / `source:hazard=*` on ways. Discrepancy notes are informational only.
 
 ## Applied OSM tags reference
 
@@ -123,7 +136,7 @@ Source of truth: `AppliedTags`, `SuggestionApplier.sanitizeTags`, `SafetyAnalyze
 
 | Tag | Example | When applied | Note |
 |-----|---------|--------------|------|
-| `incline` | `7%`, `-11%` | Accepted way row with no existing `incline=*` | Signed integer percent relative to **way node order** ([OSM incline](https://wiki.openstreetmap.org/wiki/Key:incline)); produced by `InclineTags.formatIncline` from NVDB 3D geometry. Split cases still get one whole-way average value. |
+| `incline` | `7%`, `-11%` | Accepted **fresh** or **update** way row | Signed integer percent relative to **way node order** ([OSM incline](https://wiki.openstreetmap.org/wiki/Key:incline)); produced by `InclineTags.formatIncline` from NVDB 3D geometry. Split cases still get one whole-way average value. Human-sourced `incline=*` (other/no `source:incline`) is never overwritten — only a discrepancy note. |
 | `source:incline` | `nvdb_estimate` | Always with a new incline suggestion | OSM **`source:<key>`** prefix convention (“source of this attribute”), not `incline:source`. See [Key:source](https://wiki.openstreetmap.org/wiki/Key:source). |
 | `fixme` | `NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.` | With incline suggestion | English machine-estimate flag so unfinished guesses are hard to miss before upload. |
 | `note` | `Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.` | With incline suggestion | Norwegian mapper-facing hint; same intent as `fixme`. |

@@ -47,6 +47,18 @@ public final class OsmDatasetFromExtract {
                 if (h.incline != null && !h.incline.isBlank()) {
                     way.put("incline", h.incline);
                 }
+                if (h.sourceIncline != null && !h.sourceIncline.isBlank()) {
+                    way.put("source:incline", h.sourceIncline);
+                }
+                if (h.hazard != null && !h.hazard.isBlank()) {
+                    way.put("hazard", h.hazard);
+                }
+                if (h.sourceHazard != null && !h.sourceHazard.isBlank()) {
+                    way.put("source:hazard", h.sourceHazard);
+                }
+                if (h.chainAdvisory != null && !h.chainAdvisory.isBlank()) {
+                    way.put("chain_advisory", h.chainAdvisory);
+                }
                 if (h.maxspeed != null) {
                     way.put("maxspeed", Integer.toString(h.maxspeed));
                 }

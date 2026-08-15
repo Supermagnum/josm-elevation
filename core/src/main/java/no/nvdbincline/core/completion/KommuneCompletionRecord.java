@@ -2,23 +2,22 @@ package no.nvdbincline.core.completion;
 
 import java.time.Instant;
 import java.util.Objects;
+import no.nvdbincline.core.tag.ExistingTagCoverage;
 
 /**
  * Per-kommune bookkeeping for the local completion tracker.
  *
  * <p>This is personal progress on one machine — never uploaded, never shared,
- * never written to OSM objects.
+ * never written to OSM objects. Optional coverage fields reflect the last OSM
+ * extract scan (any source), distinct from review accept/reject counts.
  *
- * @param kommuneNummer key
- * @param matchedWays ways matched to an NVDB link on the most recent run
- * @param accepted suggestions accepted on that run
- * @param rejected suggestions explicitly rejected on that run
- * @param pending suggestions left pending on that run
- * @param unmatched unresolved unmatched OSM ways from that run
- * @param unmatchedDismissed user dismissed unmatched triage for completion
- * @param lastRunEpochMilli timestamp of last recorded run (0 if never)
- * @param manualOverride {@code null} = use calculated status; {@code true} =
- *     force DONE; {@code false} = force reopen (IN_PROGRESS)
+ * @param inclineCoveragePct percent of matched ways with incline=* (-1 unknown)
+ * @param pluginInclinePct percent with source:incline=nvdb_estimate (-1 unknown)
+ * @param otherInclinePct percent with other/surveyed incline (-1 unknown)
+ * @param hazardCount nodes/ways with hazard=* (-1 unknown)
+ * @param pluginHazardCount with source:hazard=nvdb_sign (-1 unknown)
+ * @param otherHazardCount other hazard tags (-1 unknown)
+ * @param chainAdvisoryCount ways/nodes with chain_advisory=* (-1 unknown)
  */
 public record KommuneCompletionRecord(
         int kommuneNummer,
@@ -29,7 +28,14 @@ public record KommuneCompletionRecord(
         int unmatched,
         boolean unmatchedDismissed,
         long lastRunEpochMilli,
-        Boolean manualOverride) {
+        Boolean manualOverride,
+        int inclineCoveragePct,
+        int pluginInclinePct,
+        int otherInclinePct,
+        int hazardCount,
+        int pluginHazardCount,
+        int otherHazardCount,
+        int chainAdvisoryCount) {
 
     public KommuneCompletionRecord {
         if (kommuneNummer <= 0) {
@@ -41,7 +47,8 @@ public record KommuneCompletionRecord(
     }
 
     public static KommuneCompletionRecord empty(int kommuneNummer) {
-        return new KommuneCompletionRecord(kommuneNummer, 0, 0, 0, 0, 0, false, 0L, null);
+        return new KommuneCompletionRecord(
+                kommuneNummer, 0, 0, 0, 0, 0, false, 0L, null, -1, -1, -1, -1, -1, -1, -1);
     }
 
     public KommuneCompletionRecord withManualOverride(Boolean override) {
@@ -54,7 +61,14 @@ public record KommuneCompletionRecord(
                 unmatched,
                 unmatchedDismissed,
                 lastRunEpochMilli,
-                override);
+                override,
+                inclineCoveragePct,
+                pluginInclinePct,
+                otherInclinePct,
+                hazardCount,
+                pluginHazardCount,
+                otherHazardCount,
+                chainAdvisoryCount);
     }
 
     public KommuneCompletionRecord withUnmatchedDismissed(boolean dismissed) {
@@ -67,7 +81,14 @@ public record KommuneCompletionRecord(
                 unmatched,
                 dismissed,
                 lastRunEpochMilli,
-                manualOverride);
+                manualOverride,
+                inclineCoveragePct,
+                pluginInclinePct,
+                otherInclinePct,
+                hazardCount,
+                pluginHazardCount,
+                otherHazardCount,
+                chainAdvisoryCount);
     }
 
     public KommuneCompletionRecord withSession(
@@ -88,7 +109,51 @@ public record KommuneCompletionRecord(
                 unmatchedCount,
                 dismissUnmatched || unmatchedCount == 0,
                 when.toEpochMilli(),
-                manualOverride);
+                manualOverride,
+                inclineCoveragePct,
+                pluginInclinePct,
+                otherInclinePct,
+                hazardCount,
+                pluginHazardCount,
+                otherHazardCount,
+                chainAdvisoryCount);
+    }
+
+    public KommuneCompletionRecord withCoverage(ExistingTagCoverage cov) {
+        Objects.requireNonNull(cov, "cov");
+        return new KommuneCompletionRecord(
+                kommuneNummer,
+                matchedWays,
+                accepted,
+                rejected,
+                pending,
+                unmatched,
+                unmatchedDismissed,
+                lastRunEpochMilli,
+                manualOverride,
+                cov.inclineCoveragePercent(),
+                cov.pluginInclinePercent(),
+                cov.otherInclinePercent(),
+                cov.withHazard,
+                cov.withPluginHazard,
+                cov.withOtherHazard,
+                cov.withChainAdvisory);
+    }
+
+    public boolean hasCoverage() {
+        return inclineCoveragePct >= 0;
+    }
+
+    public String formatCoverageLine() {
+        if (!hasCoverage()) {
+            return "";
+        }
+        return String.format(
+                java.util.Locale.ROOT,
+                "Existing incline coverage: %d%% (%d%% previously suggested by this tool, %d%% other/surveyed)",
+                inclineCoveragePct,
+                pluginInclinePct,
+                otherInclinePct);
     }
 
     public CompletionStatus status() {

@@ -59,13 +59,10 @@ public final class SuggestionApplier {
                 if (prim == null || tags.isEmpty()) {
                     continue;
                 }
-                if (prim.hasKey("incline")) {
-                    tags = new LinkedHashMap<>(tags);
-                    tags.remove("incline");
-                }
-                if (!tags.isEmpty()) {
-                    commands.add(new ChangePropertyCommand(List.of(prim), tags));
-                }
+                // Incline is only present in tags for FRESH and UPDATE rows. DISCREPANCY
+                // rows never reach here. Do not strip incline — updates must overwrite
+                // prior source:incline=nvdb_estimate values.
+                commands.add(new ChangePropertyCommand(List.of(prim), tags));
             } else if (isNodeKind(row.kind)) {
                 Double x = row.x;
                 Double y = row.y;

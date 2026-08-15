@@ -44,6 +44,10 @@ public final class PbfHighwayExtractor {
         public final String name;
         public final String nvdbId;
         public final String incline;
+        public final String sourceIncline;
+        public final String hazard;
+        public final String sourceHazard;
+        public final String chainAdvisory;
         public final Integer maxspeed;
         /** Each entry is {@code [lon, lat]}. */
         public final List<double[]> nodes;
@@ -54,6 +58,10 @@ public final class PbfHighwayExtractor {
                 String name,
                 String nvdbId,
                 String incline,
+                String sourceIncline,
+                String hazard,
+                String sourceHazard,
+                String chainAdvisory,
                 Integer maxspeed,
                 List<double[]> nodes) {
             this.id = id;
@@ -61,6 +69,10 @@ public final class PbfHighwayExtractor {
             this.name = name;
             this.nvdbId = nvdbId;
             this.incline = incline;
+            this.sourceIncline = sourceIncline;
+            this.hazard = hazard;
+            this.sourceHazard = sourceHazard;
+            this.chainAdvisory = chainAdvisory;
             this.maxspeed = maxspeed;
             this.nodes = List.copyOf(nodes);
         }
@@ -72,7 +84,17 @@ public final class PbfHighwayExtractor {
                 utm.add(new Coord(xy[0], xy[1]));
             }
             return new OsmWayGeom(
-                    id, new Polyline(utm), highway, name, nvdbId, incline, maxspeed);
+                    id,
+                    new Polyline(utm),
+                    highway,
+                    name,
+                    nvdbId,
+                    incline,
+                    sourceIncline,
+                    hazard,
+                    sourceHazard,
+                    chainAdvisory,
+                    maxspeed);
         }
     }
 
@@ -223,6 +245,10 @@ public final class PbfHighwayExtractor {
                             pw.name,
                             pw.nvdbId,
                             pw.incline,
+                            pw.sourceIncline,
+                            pw.hazard,
+                            pw.sourceHazard,
+                            pw.chainAdvisory,
                             pw.maxspeed,
                             coords));
         }
@@ -304,6 +330,10 @@ public final class PbfHighwayExtractor {
         String name = null;
         String nvdb = null;
         String incline = null;
+        String sourceIncline = null;
+        String hazard = null;
+        String sourceHazard = null;
+        String chainAdvisory = null;
         Integer maxspeed = null;
         Osmformat.StringTable st = block.getStringtable();
         for (int i = 0; i < way.getKeysCount(); i++) {
@@ -318,6 +348,10 @@ public final class PbfHighwayExtractor {
                     }
                 }
                 case "incline" -> incline = v;
+                case "source:incline" -> sourceIncline = v;
+                case "hazard" -> hazard = v;
+                case "source:hazard" -> sourceHazard = v;
+                case "chain_advisory" -> chainAdvisory = v;
                 case "maxspeed" -> maxspeed = parseMaxspeed(v);
                 default -> {
                     // ignore
@@ -340,7 +374,18 @@ public final class PbfHighwayExtractor {
         if (!anyKnown || refs.size() < 2) {
             return null;
         }
-        return new PendingWay(way.getId(), highway, name, nvdb, incline, maxspeed, refs);
+        return new PendingWay(
+                way.getId(),
+                highway,
+                name,
+                nvdb,
+                incline,
+                sourceIncline,
+                hazard,
+                sourceHazard,
+                chainAdvisory,
+                maxspeed,
+                refs);
     }
 
     private static Integer parseMaxspeed(String raw) {
@@ -384,6 +429,10 @@ public final class PbfHighwayExtractor {
         final String name;
         final String nvdbId;
         final String incline;
+        final String sourceIncline;
+        final String hazard;
+        final String sourceHazard;
+        final String chainAdvisory;
         final Integer maxspeed;
         final List<Long> nodeIds;
 
@@ -393,6 +442,10 @@ public final class PbfHighwayExtractor {
                 String name,
                 String nvdbId,
                 String incline,
+                String sourceIncline,
+                String hazard,
+                String sourceHazard,
+                String chainAdvisory,
                 Integer maxspeed,
                 List<Long> nodeIds) {
             this.id = id;
@@ -400,6 +453,10 @@ public final class PbfHighwayExtractor {
             this.name = name;
             this.nvdbId = nvdbId;
             this.incline = incline;
+            this.sourceIncline = sourceIncline;
+            this.hazard = hazard;
+            this.sourceHazard = sourceHazard;
+            this.chainAdvisory = chainAdvisory;
             this.maxspeed = maxspeed;
             this.nodeIds = nodeIds;
         }

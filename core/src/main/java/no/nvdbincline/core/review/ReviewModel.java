@@ -150,16 +150,18 @@ public final class ReviewModel {
                 String proposed =
                         s.segments().isEmpty() ? "?" : s.segments().get(0).inclineTag();
                 InclineAudit audit = InclineAudit.from(s);
+                String summary =
+                        "discrepancy note (not suggested): existing "
+                                + existing
+                                + " vs NVDB "
+                                + proposed
+                                + " — human/other source kept";
                 model.rows.add(
                         new Row(
                                 Kind.DISCREPANCY,
                                 Section.INCLINES,
                                 s.match().way().id(),
-                                "existing "
-                                        + existing
-                                        + " vs suggested "
-                                        + proposed
-                                        + " (not overwritten)",
+                                summary,
                                 s.match().confidence(),
                                 Map.of(),
                                 null,
@@ -175,15 +177,29 @@ public final class ReviewModel {
             Map<String, String> tags = s.tagsToAdd();
             InclineAudit audit = InclineAudit.from(s);
             String incline = tags.getOrDefault(AppliedTags.INCLINE, "?");
-            String summary =
-                    "incline="
-                            + incline
-                            + " ("
-                            + s.match().confidence().name().toLowerCase(Locale.ROOT)
-                            + ")"
-                            + (s.split() ? " — split suggested" : "")
-                            + "; "
-                            + (audit == null ? "" : audit.summaryLine());
+            String summary;
+            if (s.isUpdate()) {
+                String existing = s.match().way().existingIncline().orElse("?");
+                summary =
+                        "Update: "
+                                + existing
+                                + " → "
+                                + incline
+                                + " (prior nvdb_estimate)"
+                                + (s.split() ? " — split suggested" : "")
+                                + "; "
+                                + (audit == null ? "" : audit.summaryLine());
+            } else {
+                summary =
+                        "incline="
+                                + incline
+                                + " ("
+                                + s.match().confidence().name().toLowerCase(Locale.ROOT)
+                                + ")"
+                                + (s.split() ? " — split suggested" : "")
+                                + "; "
+                                + (audit == null ? "" : audit.summaryLine());
+            }
             model.rows.add(
                     new Row(
                             Kind.WAY_TAGS,

@@ -69,7 +69,15 @@ public final class KommuneCompletionStore {
             } else {
                 sb.append(r.manualOverride());
             }
-            sb.append("\n    }");
+            sb.append(",\n");
+            sb.append("      \"inclineCoveragePct\": ").append(r.inclineCoveragePct()).append(",\n");
+            sb.append("      \"pluginInclinePct\": ").append(r.pluginInclinePct()).append(",\n");
+            sb.append("      \"otherInclinePct\": ").append(r.otherInclinePct()).append(",\n");
+            sb.append("      \"hazardCount\": ").append(r.hazardCount()).append(",\n");
+            sb.append("      \"pluginHazardCount\": ").append(r.pluginHazardCount()).append(",\n");
+            sb.append("      \"otherHazardCount\": ").append(r.otherHazardCount()).append(",\n");
+            sb.append("      \"chainAdvisoryCount\": ").append(r.chainAdvisoryCount()).append("\n");
+            sb.append("    }");
         }
         sb.append("\n  }\n}\n");
         Path parent = file.getParent();
@@ -160,8 +168,30 @@ public final class KommuneCompletionStore {
         boolean dismissed = boolField(obj, "unmatchedDismissed", false);
         long last = longField(obj, "lastRunEpochMilli", 0L);
         Boolean override = nullableBoolField(obj, "manualOverride");
+        int inclinePct = intField(obj, "inclineCoveragePct", -1);
+        int pluginPct = intField(obj, "pluginInclinePct", -1);
+        int otherPct = intField(obj, "otherInclinePct", -1);
+        int hazard = intField(obj, "hazardCount", -1);
+        int pluginH = intField(obj, "pluginHazardCount", -1);
+        int otherH = intField(obj, "otherHazardCount", -1);
+        int chain = intField(obj, "chainAdvisoryCount", -1);
         return new KommuneCompletionRecord(
-                nummer, matched, accepted, rejected, pending, unmatched, dismissed, last, override);
+                nummer,
+                matched,
+                accepted,
+                rejected,
+                pending,
+                unmatched,
+                dismissed,
+                last,
+                override,
+                inclinePct,
+                pluginPct,
+                otherPct,
+                hazard,
+                pluginH,
+                otherH,
+                chain);
     }
 
     private static int intField(String obj, String name, int def) {
