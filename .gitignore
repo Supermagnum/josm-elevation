@@ -21,6 +21,3 @@ prototype/.cache/
 .python-version
 plugin/build/
 core/build/
-# Built plugin jar (refreshed by :plugin:dist / copyJarToCompiled); keep the folder.
-compiled/*.jar
-!compiled/.gitkeep
