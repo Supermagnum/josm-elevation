@@ -87,9 +87,10 @@ These were run successfully in-repo: `./gradlew test`, `./gradlew :plugin:dist`,
 
 Flatpak/Snap/portable builds may differ — check **Help → Show Status Report** in JOSM for the plugins path. If both `~/.config/JOSM/plugins/` and `~/.local/share/JOSM/plugins/` exist, copy into the one Status Report lists (this machine uses `~/.config/JOSM/plugins/`).
 
-3. **Fully restart JOSM** after replacing the jar.
+3. **Fully restart JOSM** after replacing the jar (do not overwrite the jar while JOSM is running).
 4. Enable **nvdb_incline** under Edit → Preferences → Plugins if needed.
-5. Menu: **More tools → Suggest inclines from NVDB…**
+5. Menu: **Data → Suggest inclines from NVDB…** (also under **More tools**; shortcut Alt+Shift+N).
+6. Optional: enable auto-split in the choose-area dialog or under **Edit → Preferences → NVDB incline** (off by default).
 
 ## Troubleshooting first-run failures
 

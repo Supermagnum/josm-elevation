@@ -8,7 +8,7 @@ Practical notes for developing `nvdb_incline`. Commands below were checked again
 ./gradlew :plugin:runJosm
 ```
 
-This starts an independent JOSM **v19613** (`josmCompileVersion`) with temporary prefs/cache/userdata under `plugin/build/.josm/` and the freshly built plugin enabled. It does **not** use your normal `~/.local/share/JOSM` install.
+This starts an independent JOSM **v19613** (`josmCompileVersion`) with temporary prefs/cache/userdata under `plugin/build/.josm/` and the freshly built plugin enabled. It does **not** use your normal everyday JOSM home (`~/.config/JOSM` or `~/.local/share/JOSM`).
 
 Related:
 
@@ -92,7 +92,7 @@ python -m pytest tools/tests -q
 
 Then refresh NVDB JSON for the same bbox into `tests/fixtures/steep_roads/nvdb/` as described in that fixtures README.
 
-Manual end-to-end sample (no Remote Control required): open `test-files/test.osm` in JOSM and run **More tools → Suggest inclines from NVDB…**; compare with `test-files/test-out.osm`.
+Manual end-to-end sample (no Remote Control required): open `test-files/test.osm` in JOSM and run **Data** or **More tools → Suggest inclines from NVDB…**; compare with `test-files/test-out.osm`. That output file was produced with **automatic way-splitting ON**, so expect split sub-ways with per-segment `incline=*`, not tag-only edits.
 
 ## Common failure modes
 
@@ -104,7 +104,7 @@ Manual end-to-end sample (no Remote Control required): open `test-files/test.osm
 | Zero suggestions | Matching failed (`WayMatcher`); no Z on NVDB geometry; quality gate `SuggestionTags.isInclineEligible` filtered everything; or review model empty |
 | Only low-confidence / high Hausdorff | Inspect `InclineAudit` in dialog or fixture dump; matching method/notes on `MatchResult` |
 | `NoClassDefFoundError` for `core` classes | Plugin jar missing packed core — rebuild with `./gradlew :plugin:dist` (task depends on `:core:jar`, then `copyJarToCompiled`); fully restart JOSM after copying `compiled/nvdb_incline.jar` |
-| Stale behavior after rebuild | Replaced jar while JOSM still running; restart fully (`canLoadAtRuntime` is true but packing/classloader quirks still happen) |
+| Stale behavior / `ZipException: invalid LOC header` after rebuild | Replaced jar while JOSM still had it open; **fully quit** JOSM, copy `compiled/nvdb_incline.jar` again, restart (`canLoadAtRuntime` is true but in-place jar replace corrupts open ZipFile handles) |
 | Wrong decimal commas in tags | Applied incline values are integer `%` via `InclineTags`; audit decimals use `Locale.ROOT` in `InclineAudit` / dialog |
 | Bookkeeping keys reappear on ways | Must not — `AppliedTags.FORBIDDEN_LEGACY_KEYS` + `SuggestionApplier.sanitizeTags`; add a test if you change apply path |
 | `hazard=*` without a sign | Blocked in `SafetyFinding` / `ReviewModel.Row` constructors and `sanitizeTags`; see `HazardTagSafetyTest` |
@@ -113,8 +113,11 @@ Manual end-to-end sample (no Remote Control required): open `test-files/test.osm
 
 ## Quick “is my install the new code?” check
 
-After copying `compiled/nvdb_incline.jar` (or `plugin/build/dist/nvdb_incline.jar`) into the plugins directory and restarting:
+After copying `compiled/nvdb_incline.jar` (or `plugin/build/dist/nvdb_incline.jar`) into the plugins directory Status Report lists (`~/.config/JOSM/plugins/` or `~/.local/share/JOSM/plugins/` on Linux) and restarting:
 
+- Plugin version in the jar manifest should be **0.3.0** (`Plugin-Version`)
 - Applied tags should use `source:incline` / `source:hazard` (not `incline:source` / `hazard:source`)
 - Review dialog should show Method / H(m) / Proposed / Raw avg/max / Split columns
+- Choose-area dialog should offer **Automatically split ways with highly variable gradient**; same setting under **Edit → Preferences → NVDB incline**
+- Split column should show `Split suggested` (default) or `Auto-split` / `Auto-split (relation)` when auto-split is on
 - Applied ways should **not** carry `incline:match_*` or `incline:estimated_*`

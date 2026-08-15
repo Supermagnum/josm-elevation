@@ -4,7 +4,7 @@ JOSM plugin that helps Norwegian OSM mappers suggest `incline=*` tags, snow-chai
 
 **Current plugin version: `0.3.0`.** The installable jar is always at [`compiled/nvdb_incline.jar`](compiled/nvdb_incline.jar).
 
-**This plugin never uploads to OpenStreetMap.** Accepted suggestions become ordinary undoable JOSM edits (`ChangePropertyCommand` / `AddCommand`). You only upload if you later use JOSM's own Upload action after review.
+**This plugin never uploads to OpenStreetMap.** Accepted suggestions become ordinary undoable JOSM edits (whole Apply is one `SequenceCommand` of `ChangePropertyCommand` / `AddCommand`, and — when opt-in auto-split is on — node inserts plus `SplitWayCommand`). You only upload if you later use JOSM's own Upload action after review.
 
 ## Table of contents
 
@@ -108,7 +108,7 @@ The **latest** plugin jar is always [`compiled/nvdb_incline.jar`](compiled/nvdb_
    - If unsure: in JOSM open **Help → Show Status Report** and search for the plugins path. See [build doc](docs/build-and-dependencies.md#install-the-jar-into-a-normal-josm) for macOS/Windows/legacy.
 3. Fully restart JOSM; enable **nvdb_incline** if needed.
 4. Open **Data → Suggest inclines from NVDB…** (also under **More tools**; shortcut Alt+Shift+N)
-5. Optional auto-split: **Edit → Preferences → NVDB incline** — enable **Automatically split ways with highly variable gradient** (off by default).
+5. Optional auto-split: enable **Automatically split ways with highly variable gradient** in the **choose-area dialog** (checkbox near the bottom) or under **Edit → Preferences → NVDB incline** (off by default).
 
 ## Screenshots
 
@@ -249,14 +249,12 @@ Do not reintroduce `incline:source` / `hazard:source`; use `source:incline` / `s
 
 ### Optional automatic way-splitting
 
-Off by default. Enable **Automatically split ways with highly variable gradient** under JOSM **Preferences → NVDB incline**. It is off by default because it changes **way structure** (inserts nodes if needed, then splits), not just tags.
+Off by default because it changes **way structure** (inserts nodes if needed, then splits), not just tags. Enable **Automatically split ways with highly variable gradient** in the **choose-area dialog** (checkbox near the bottom) or under **Edit → Preferences → NVDB incline**.
 
 | Setting | What Apply does for a split-recommended incline row |
 |---------|-----------------------------------------------------|
 | **Off (default)** | Unchanged: **Split suggested** badge only. No `SplitWayCommand`. The whole way gets one suggested `incline=*` (the whole-way average). High variance alone does not drop the suggestion. |
 | **On** | Accepting the row inserts nodes at segment boundaries that do not already coincide with an OSM node, then runs JOSM's `SplitWayCommand` (updates route/multipolygon membership), then applies a separate `incline=*` to each resulting sub-way from that segment’s gradient. Multiple split points along one way are supported whenever analysis produced multiple `InclineAudit` segments. |
-
-Enable it in the **choose-area dialog** (checkbox near the bottom) or under **Edit → Preferences → NVDB incline**.
 
 **Relations:** if a way slated for auto-split is a member of any relation, the review dialog shows an explicit warning **before** Apply (`Auto-split (relation)` on the Split column, plus a banner). Splitting inside a route (or similar) is a bigger edit than a tag change.
 
