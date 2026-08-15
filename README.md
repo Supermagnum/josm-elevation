@@ -18,6 +18,7 @@ JOSM plugin that helps Norwegian OSM mappers suggest `incline=*` tags, snow-chai
   - [Existing incline / hazard tags (do not overwrite surveys)](#existing-incline-hazard-tags-do-not-overwrite-surveys)
 - [Applied OSM tags reference](#applied-osm-tags-reference)
   - [Ways (incline suggestions)](#ways-incline-suggestions)
+  - [Why suggestions can be negative (e.g. `-5%`)](#why-suggestions-can-be-negative-eg-5)
   - [Nodes — sign-backed hazard](#nodes-sign-backed-hazard)
   - [Nodes — snow-chain advisory (implemented)](#nodes-snow-chain-advisory-implemented)
   - [Nodes — unsigned advisories (implemented; never `hazard=*`)](#nodes-unsigned-advisories-implemented-never-hazard)
@@ -167,10 +168,25 @@ Source of truth: `AppliedTags`, `SuggestionApplier.sanitizeTags`, `SafetyAnalyze
 
 | Tag | Example | When applied | Note |
 |-----|---------|--------------|------|
-| `incline` | `7%`, `-11%` | Accepted **fresh** or **update** way row | Signed integer percent relative to **way node order** ([OSM incline](https://wiki.openstreetmap.org/wiki/Key:incline)); produced by `InclineTags.formatIncline` from NVDB 3D geometry. Split cases still get one whole-way average value. Human-sourced `incline=*` (other/no `source:incline`) is never overwritten — only a discrepancy note. |
+| `incline` | `7%`, `-11%` | Accepted **fresh** or **update** way row | Signed integer percent relative to **way node order** ([OSM incline](https://wiki.openstreetmap.org/wiki/Key:incline)); produced by `InclineTags.formatIncline` from NVDB 3D geometry. Split cases still get one whole-way average value. Human-sourced `incline=*` (other/no `source:incline`) is never overwritten — only a discrepancy note. Negative values are normal — see [Why suggestions can be negative](#why-suggestions-can-be-negative-eg-5). |
 | `source:incline` | `nvdb_estimate` | Always with a new incline suggestion | OSM **`source:<key>`** prefix convention (“source of this attribute”), not `incline:source`. See [Key:source](https://wiki.openstreetmap.org/wiki/Key:source). Marks a machine estimate from NVDB geometry — see [Data accuracy and limitations](#data-accuracy-and-limitations). |
 | `fixme` | `NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.` | With incline suggestion | English machine-estimate flag so unfinished guesses are hard to miss before upload. |
 | `note` | `Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.` | With incline suggestion | Norwegian mapper-facing hint; same intent as `fixme`. |
+
+### Why suggestions can be negative (e.g. `-5%`)
+
+Norwegian steep-grade **road signs** show a positive percent for how steep the road is in the direction you are driving. They do not display values like `-5%`.
+
+OSM `incline=*` is different. It is defined relative to the **way’s node order** (first node → last node):
+
+| Suggested tag | Meaning along the OSM way |
+|---------------|---------------------------|
+| `incline=5%` | About 5% **uphill** from first node toward last node |
+| `incline=-5%` | About 5% **downhill** from first node toward last node |
+
+The plugin follows that OSM convention on purpose. Emitting only positive percentages (as on skilt) would drop direction and produce incorrect OSM data when the way is drawn downhill in node order. If the way were reversed in JOSM, the sign of `incline=*` should flip and the magnitude should stay the same.
+
+When reviewing: treat the **number** as grade magnitude (comparable to what a sign might show) and the **sign** as up/down along this way’s drawn direction. Field-check magnitude against signs and terrain; do not expect Norwegian signs to show a minus.
 
 ### Nodes — sign-backed hazard
 
