@@ -311,7 +311,7 @@ Real-world Innlandet OSM extract used for end-to-end plugin QA (Friisvegen / Vek
 | File | Contents |
 |------|----------|
 | `test-files/test.osm` | Input layer before suggestions |
-| `test-files/test-out.osm` | Same area after running the plugin and applying selected suggestions (example output only; not authoritative OSM data) |
+| `test-files/test-out.osm` | Same area after running the plugin and applying selected suggestions (example output only; not authoritative OSM data). **Automatic way-splitting was ON** for this export, so many high-variance ways were split into sub-ways with per-segment `incline=*` — not tag-only edits. |
 
 Open `test.osm` in JOSM, run **Suggest inclines from NVDB…**, and optionally compare with `test-out.osm`. Automated coverage remains under `tests/fixtures/steep_roads/` and the unit tests.
 
