@@ -6034,6 +6034,1530 @@
   <node id='13716574470' timestamp='2026-04-08T15:23:49Z' uid='3497659' user='NKA' visible='true' version='1' changeset='181055878' lat='61.5356123' lon='10.1621718' />
   <node id='13716574471' timestamp='2026-04-08T15:23:49Z' uid='3497659' user='NKA' visible='true' version='1' changeset='181055878' lat='61.5357787' lon='10.1622476' />
   <node id='13716574472' timestamp='2026-04-08T15:23:49Z' uid='3497659' user='NKA' visible='true' version='1' changeset='181055878' lat='61.5359022' lon='10.1622698' />
+  <way id='-869' action='modify' visible='true'>
+    <nd ref='7078087131' />
+    <nd ref='7078087132' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='11%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-870' action='modify' visible='true'>
+    <nd ref='7078087132' />
+    <nd ref='7078087133' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='5%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-871' action='modify' visible='true'>
+    <nd ref='7078087133' />
+    <nd ref='7078087134' />
+    <nd ref='7078087135' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='2%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-873' action='modify' visible='true'>
+    <nd ref='7078087196' />
+    <nd ref='7078087197' />
+    <nd ref='7078087198' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='16%' />
+    <tag k='name' v='Granlundsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-874' action='modify' visible='true'>
+    <nd ref='7078087198' />
+    <nd ref='7078087199' />
+    <nd ref='7078087200' />
+    <nd ref='7078087201' />
+    <nd ref='7078087202' />
+    <nd ref='7078087203' />
+    <nd ref='7078087204' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='16%' />
+    <tag k='name' v='Granlundsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-875' action='modify' visible='true'>
+    <nd ref='7078087204' />
+    <nd ref='7078082900' />
+    <nd ref='7078087218' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='14%' />
+    <tag k='name' v='Granlundsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-876' action='modify' visible='true'>
+    <nd ref='7078087218' />
+    <nd ref='7078087219' />
+    <nd ref='7078087220' />
+    <nd ref='7078087221' />
+    <nd ref='7078087222' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='20%' />
+    <tag k='name' v='Granlundsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-877' action='modify' visible='true'>
+    <nd ref='7078087222' />
+    <nd ref='7078087223' />
+    <nd ref='7078087224' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='16%' />
+    <tag k='name' v='Granlundsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-878' action='modify' visible='true'>
+    <nd ref='7078087224' />
+    <nd ref='7078087225' />
+    <nd ref='7078087226' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='11%' />
+    <tag k='name' v='Granlundsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-879' action='modify' visible='true'>
+    <nd ref='7078087226' />
+    <nd ref='3662329271' />
+    <nd ref='7078087227' />
+    <nd ref='7078087228' />
+    <nd ref='7078087229' />
+    <nd ref='7078087230' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='6%' />
+    <tag k='name' v='Granlundsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-880' action='modify' visible='true'>
+    <nd ref='7078087230' />
+    <nd ref='7078087231' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='3%' />
+    <tag k='name' v='Granlundsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-881' action='modify' visible='true'>
+    <nd ref='7078087231' />
+    <nd ref='7078087232' />
+    <nd ref='7078087233' />
+    <nd ref='7078087234' />
+    <nd ref='7078087235' />
+    <nd ref='7078087236' />
+    <nd ref='7078078007' />
+    <nd ref='7078087205' />
+    <nd ref='7078087206' />
+    <nd ref='7078087207' />
+    <nd ref='7078087208' />
+    <nd ref='7078087209' />
+    <nd ref='7078087210' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='7%' />
+    <tag k='name' v='Granlundsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-882' action='modify' visible='true'>
+    <nd ref='7078087210' />
+    <nd ref='7078087211' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='4%' />
+    <tag k='name' v='Granlundsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-883' action='modify' visible='true'>
+    <nd ref='7078087211' />
+    <nd ref='7078087212' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='-4%' />
+    <tag k='name' v='Granlundsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-884' action='modify' visible='true'>
+    <nd ref='7078087212' />
+    <nd ref='7078087213' />
+    <nd ref='7078087214' />
+    <nd ref='7078087215' />
+    <nd ref='7078087216' />
+    <nd ref='7078087217' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='-3%' />
+    <tag k='name' v='Granlundsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-886' action='modify' visible='true'>
+    <nd ref='7078111750' />
+    <nd ref='7078111751' />
+    <nd ref='7078057956' />
+    <nd ref='7078111752' />
+    <nd ref='7078111753' />
+    <nd ref='7078111754' />
+    <nd ref='7078111755' />
+    <nd ref='7078111756' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='7%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Vekkomsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2570' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-887' action='modify' visible='true'>
+    <nd ref='7078111756' />
+    <nd ref='7078111757' />
+    <nd ref='7078111758' />
+    <nd ref='7078087353' />
+    <nd ref='7078111759' />
+    <nd ref='7078111760' />
+    <nd ref='7078111761' />
+    <nd ref='7078111762' />
+    <nd ref='7078111763' />
+    <nd ref='7078067388' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='4%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Vekkomsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2570' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-888' action='modify' visible='true'>
+    <nd ref='7078067388' />
+    <nd ref='7078111764' />
+    <nd ref='7078111765' />
+    <nd ref='7078111766' />
+    <nd ref='7078069926' />
+    <nd ref='7078111767' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='-2%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Vekkomsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2570' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-889' action='modify' visible='true'>
+    <nd ref='7078111767' />
+    <nd ref='7078111768' />
+    <nd ref='7078111769' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='-5%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Vekkomsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2570' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-890' action='modify' visible='true'>
+    <nd ref='7078111769' />
+    <nd ref='7078111770' />
+    <nd ref='7078111771' />
+    <nd ref='7078111772' />
+    <nd ref='7078111773' />
+    <nd ref='7078111774' />
+    <nd ref='7078111775' />
+    <nd ref='7078087352' />
+    <nd ref='7078111776' />
+    <nd ref='7078111777' />
+    <nd ref='7078082962' />
+    <nd ref='7078111778' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='-9%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Vekkomsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2570' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-891' action='modify' visible='true'>
+    <nd ref='7078111778' />
+    <nd ref='7078111779' />
+    <nd ref='7078111780' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='-7%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Vekkomsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2570' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-892' action='modify' visible='true'>
+    <nd ref='7078111780' />
+    <nd ref='7078111781' />
+    <nd ref='7078111782' />
+    <nd ref='7078111783' />
+    <nd ref='7078111784' />
+    <nd ref='7078111785' />
+    <nd ref='7078061705' />
+    <nd ref='7078111786' />
+    <nd ref='7078111787' />
+    <nd ref='7078111788' />
+    <nd ref='7078111789' />
+    <nd ref='7078111790' />
+    <nd ref='7078111791' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='-10%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Vekkomsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2570' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-893' action='modify' visible='true'>
+    <nd ref='7078111791' />
+    <nd ref='7078111792' />
+    <nd ref='7078111793' />
+    <nd ref='3725013149' />
+    <nd ref='7078111794' />
+    <nd ref='7078149435' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='-10%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Vekkomsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2570' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-895' action='modify' visible='true'>
+    <nd ref='7078111830' />
+    <nd ref='7078111831' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='-5%' />
+    <tag k='maxspeed' v='40' />
+    <tag k='name' v='Vekkomsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2570' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-896' action='modify' visible='true'>
+    <nd ref='7078111831' />
+    <nd ref='7078111832' />
+    <nd ref='7078070515' />
+    <nd ref='7078111833' />
+    <nd ref='7078111834' />
+    <nd ref='7078059578' />
+    <nd ref='7078111835' />
+    <nd ref='7078069916' />
+    <nd ref='7078111836' />
+    <nd ref='7078111837' />
+    <nd ref='11070853042' />
+    <nd ref='7078111838' />
+    <nd ref='7078111839' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='-6%' />
+    <tag k='maxspeed' v='40' />
+    <tag k='name' v='Vekkomsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2570' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-897' action='modify' visible='true'>
+    <nd ref='7078111839' />
+    <nd ref='7078111840' />
+    <nd ref='7078111841' />
+    <nd ref='7078111842' />
+    <nd ref='7078111843' />
+    <nd ref='7078111844' />
+    <nd ref='7078111845' />
+    <nd ref='7078111846' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='-10%' />
+    <tag k='maxspeed' v='40' />
+    <tag k='name' v='Vekkomsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2570' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-898' action='modify' visible='true'>
+    <nd ref='7078111846' />
+    <nd ref='7078111847' />
+    <nd ref='7078111848' />
+    <nd ref='7078111849' />
+    <nd ref='7078111850' />
+    <nd ref='7078111851' />
+    <nd ref='7078111852' />
+    <nd ref='7078082861' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='-12%' />
+    <tag k='maxspeed' v='40' />
+    <tag k='name' v='Vekkomsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2570' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-899' action='modify' visible='true'>
+    <nd ref='7078082861' />
+    <nd ref='7078111853' />
+    <nd ref='7078111854' />
+    <nd ref='11070853026' />
+    <nd ref='7078059529' />
+    <nd ref='7078111855' />
+    <nd ref='7078111856' />
+    <nd ref='7078111857' />
+    <nd ref='7078111858' />
+    <nd ref='7078111859' />
+    <nd ref='7078111860' />
+    <nd ref='7078111861' />
+    <nd ref='7078111862' />
+    <nd ref='7078111863' />
+    <nd ref='7078111864' />
+    <nd ref='7078111865' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='-12%' />
+    <tag k='maxspeed' v='40' />
+    <tag k='name' v='Vekkomsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2570' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-900' action='modify' visible='true'>
+    <nd ref='7078111865' />
+    <nd ref='7078111866' />
+    <nd ref='7078111867' />
+    <nd ref='7078111868' />
+    <nd ref='7078111869' />
+    <nd ref='7078111870' />
+    <nd ref='7078111871' />
+    <nd ref='7078111872' />
+    <nd ref='7078111873' />
+    <nd ref='7078111874' />
+    <nd ref='7078058113' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='-15%' />
+    <tag k='maxspeed' v='40' />
+    <tag k='name' v='Vekkomsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2570' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-902' action='modify' visible='true'>
+    <nd ref='7078087288' />
+    <nd ref='7078087289' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='-6%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-903' action='modify' visible='true'>
+    <nd ref='7078087289' />
+    <nd ref='7078087290' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='-4%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-904' action='modify' visible='true'>
+    <nd ref='7078087290' />
+    <nd ref='7078087291' />
+    <nd ref='7078087292' />
+    <nd ref='7078087293' />
+    <nd ref='7078087294' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='2%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-905' action='modify' visible='true'>
+    <nd ref='7078087294' />
+    <nd ref='7078087295' />
+    <nd ref='7078087296' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='2%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-906' action='modify' visible='true'>
+    <nd ref='7078087296' />
+    <nd ref='7078087297' />
+    <nd ref='7078087298' />
+    <nd ref='7078087299' />
+    <nd ref='3662328804' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='7%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-908' action='modify' visible='true'>
+    <nd ref='7078059533' />
+    <nd ref='7078059534' />
+    <nd ref='7078059535' />
+    <nd ref='7078059536' />
+    <nd ref='7078059537' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='residential' />
+    <tag k='incline' v='5%' />
+    <tag k='maxspeed' v='30' />
+    <tag k='name' v='Skalykkja' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-909' action='modify' visible='true'>
+    <nd ref='7078059537' />
+    <nd ref='7078059538' />
+    <nd ref='7078059539' />
+    <nd ref='7078059540' />
+    <nd ref='7078059541' />
+    <nd ref='7078059542' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='residential' />
+    <tag k='incline' v='7%' />
+    <tag k='maxspeed' v='30' />
+    <tag k='name' v='Skalykkja' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-910' action='modify' visible='true'>
+    <nd ref='7078059542' />
+    <nd ref='7078059543' />
+    <nd ref='7078059544' />
+    <nd ref='7078059545' />
+    <nd ref='7078059546' />
+    <nd ref='7078059547' />
+    <nd ref='7078059548' />
+    <nd ref='7078059549' />
+    <nd ref='7078059550' />
+    <nd ref='7078059551' />
+    <nd ref='7078059552' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='residential' />
+    <tag k='incline' v='6%' />
+    <tag k='maxspeed' v='30' />
+    <tag k='name' v='Skalykkja' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-911' action='modify' visible='true'>
+    <nd ref='7078059552' />
+    <nd ref='7078059553' />
+    <nd ref='7078059554' />
+    <nd ref='7078059555' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='residential' />
+    <tag k='incline' v='8%' />
+    <tag k='maxspeed' v='30' />
+    <tag k='name' v='Skalykkja' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-912' action='modify' visible='true'>
+    <nd ref='7078059555' />
+    <nd ref='7078059556' />
+    <nd ref='10602396713' />
+    <nd ref='7078059557' />
+    <nd ref='10602396646' />
+    <nd ref='10602396645' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='residential' />
+    <tag k='incline' v='16%' />
+    <tag k='maxspeed' v='30' />
+    <tag k='name' v='Skalykkja' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-914' action='modify' visible='true'>
+    <nd ref='7078077399' />
+    <nd ref='7078077400' />
+    <nd ref='7078077401' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='-9%' />
+    <tag k='name' v='Nedre Kolstadrovegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-915' action='modify' visible='true'>
+    <nd ref='7078077401' />
+    <nd ref='7078078000' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='-7%' />
+    <tag k='name' v='Nedre Kolstadrovegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-916' action='modify' visible='true'>
+    <nd ref='7078078000' />
+    <nd ref='7078078001' />
+    <nd ref='7078078002' />
+    <nd ref='7078078003' />
+    <nd ref='7078078004' />
+    <nd ref='7078078005' />
+    <nd ref='7078078006' />
+    <nd ref='7078079554' />
+    <nd ref='7078079555' />
+    <nd ref='7078073572' />
+    <nd ref='7078073573' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='-4%' />
+    <tag k='name' v='Nedre Kolstadrovegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-917' action='modify' visible='true'>
+    <nd ref='7078073573' />
+    <nd ref='7078073574' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='0%' />
+    <tag k='name' v='Nedre Kolstadrovegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-918' action='modify' visible='true'>
+    <nd ref='7078073574' />
+    <nd ref='7078073575' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='7%' />
+    <tag k='name' v='Nedre Kolstadrovegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-919' action='modify' visible='true'>
+    <nd ref='7078073575' />
+    <nd ref='7078073576' />
+    <nd ref='7078073577' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='-6%' />
+    <tag k='name' v='Nedre Kolstadrovegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-920' action='modify' visible='true'>
+    <nd ref='7078073577' />
+    <nd ref='7078073578' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='2%' />
+    <tag k='name' v='Nedre Kolstadrovegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-921' action='modify' visible='true'>
+    <nd ref='7078073578' />
+    <nd ref='7078073579' />
+    <nd ref='7078073581' />
+    <nd ref='7078073582' />
+    <nd ref='7078073583' />
+    <nd ref='7078073584' />
+    <nd ref='7078073585' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='2%' />
+    <tag k='name' v='Nedre Kolstadrovegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-922' action='modify' visible='true'>
+    <nd ref='7078073585' />
+    <nd ref='7078073586' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='11%' />
+    <tag k='name' v='Nedre Kolstadrovegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-923' action='modify' visible='true'>
+    <nd ref='7078073586' />
+    <nd ref='7078073587' />
+    <nd ref='7078073588' />
+    <nd ref='7078073589' />
+    <nd ref='2789651347' />
+    <nd ref='7078073590' />
+    <nd ref='7078073591' />
+    <nd ref='7078073592' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='15%' />
+    <tag k='name' v='Nedre Kolstadrovegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-925' action='modify' visible='true'>
+    <nd ref='7078058118' />
+    <nd ref='7078058119' />
+    <nd ref='7078058120' />
+    <nd ref='7078058121' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='residential' />
+    <tag k='incline' v='10%' />
+    <tag k='name' v='Skarven' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-926' action='modify' visible='true'>
+    <nd ref='7078058121' />
+    <nd ref='7078058122' />
+    <nd ref='7078058123' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='residential' />
+    <tag k='incline' v='13%' />
+    <tag k='name' v='Skarven' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-927' action='modify' visible='true'>
+    <nd ref='7078058123' />
+    <nd ref='7078058124' />
+    <nd ref='7078058125' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='residential' />
+    <tag k='incline' v='12%' />
+    <tag k='name' v='Skarven' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-928' action='modify' visible='true'>
+    <nd ref='7078058125' />
+    <nd ref='7078058126' />
+    <nd ref='7078058127' />
+    <nd ref='7078058128' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='residential' />
+    <tag k='incline' v='12%' />
+    <tag k='name' v='Skarven' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-929' action='modify' visible='true'>
+    <nd ref='7078058128' />
+    <nd ref='7078058129' />
+    <nd ref='7078058130' />
+    <nd ref='7078058131' />
+    <nd ref='7078058132' />
+    <nd ref='7078058133' />
+    <nd ref='7078058134' />
+    <nd ref='7078058135' />
+    <nd ref='7078058136' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='residential' />
+    <tag k='incline' v='13%' />
+    <tag k='name' v='Skarven' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-930' action='modify' visible='true'>
+    <nd ref='7078058136' />
+    <nd ref='7078058137' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='residential' />
+    <tag k='incline' v='12%' />
+    <tag k='name' v='Skarven' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-931' action='modify' visible='true'>
+    <nd ref='7078058137' />
+    <nd ref='7078058138' />
+    <nd ref='7078058139' />
+    <nd ref='3662327805' />
+    <nd ref='7078058140' />
+    <nd ref='7078058141' />
+    <nd ref='7078058142' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='residential' />
+    <tag k='incline' v='12%' />
+    <tag k='name' v='Skarven' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-932' action='modify' visible='true'>
+    <nd ref='7078058142' />
+    <nd ref='7078058143' />
+    <nd ref='7078058144' />
+    <nd ref='7078058145' />
+    <nd ref='7078058146' />
+    <nd ref='7078058147' />
+    <nd ref='7078058148' />
+    <nd ref='7078058149' />
+    <nd ref='7078058150' />
+    <nd ref='7078058151' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='residential' />
+    <tag k='incline' v='15%' />
+    <tag k='name' v='Skarven' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-933' action='modify' visible='true'>
+    <nd ref='7078058151' />
+    <nd ref='7078058152' />
+    <nd ref='7078058153' />
+    <nd ref='7078058154' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='residential' />
+    <tag k='incline' v='10%' />
+    <tag k='name' v='Skarven' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-934' action='modify' visible='true'>
+    <nd ref='7078058154' />
+    <nd ref='7078058155' />
+    <nd ref='7078058156' />
+    <nd ref='7078058157' />
+    <nd ref='7078058158' />
+    <nd ref='7078058159' />
+    <nd ref='7078058160' />
+    <nd ref='7078058161' />
+    <nd ref='7078058162' />
+    <nd ref='7078058163' />
+    <nd ref='7078058164' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='residential' />
+    <tag k='incline' v='9%' />
+    <tag k='name' v='Skarven' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-935' action='modify' visible='true'>
+    <nd ref='7078058164' />
+    <nd ref='7078058165' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='residential' />
+    <tag k='incline' v='3%' />
+    <tag k='name' v='Skarven' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-936' action='modify' visible='true'>
+    <nd ref='7078058165' />
+    <nd ref='7078058166' />
+    <nd ref='7078058167' />
+    <nd ref='7078058168' />
+    <nd ref='7078058169' />
+    <nd ref='7078058170' />
+    <nd ref='7078058171' />
+    <nd ref='7078058172' />
+    <nd ref='7078058173' />
+    <nd ref='7078058174' />
+    <nd ref='7078058175' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='residential' />
+    <tag k='incline' v='10%' />
+    <tag k='name' v='Skarven' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-938' action='modify' visible='true'>
+    <nd ref='7078087247' />
+    <nd ref='7078087248' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='7%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-939' action='modify' visible='true'>
+    <nd ref='7078087248' />
+    <nd ref='7078087249' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='-22%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-940' action='modify' visible='true'>
+    <nd ref='7078087249' />
+    <nd ref='7078087250' />
+    <nd ref='7078087251' />
+    <nd ref='7078087252' />
+    <nd ref='7078087253' />
+    <nd ref='7078087254' />
+    <nd ref='7078087255' />
+    <nd ref='7078087256' />
+    <nd ref='7078087257' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='-16%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-942' action='modify' visible='true'>
+    <nd ref='7078087326' />
+    <nd ref='7078087327' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='8%' />
+    <tag k='name' v='Gillebergsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-943' action='modify' visible='true'>
+    <nd ref='7078087327' />
+    <nd ref='7078087328' />
+    <nd ref='7078087329' />
+    <nd ref='7078087330' />
+    <nd ref='7078087331' />
+    <nd ref='7078087332' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='7%' />
+    <tag k='name' v='Gillebergsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-944' action='modify' visible='true'>
+    <nd ref='7078087332' />
+    <nd ref='7078087333' />
+    <nd ref='7078087334' />
+    <nd ref='7078087335' />
+    <nd ref='7078087336' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='4%' />
+    <tag k='name' v='Gillebergsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-945' action='modify' visible='true'>
+    <nd ref='7078087336' />
+    <nd ref='7078087337' />
+    <nd ref='7078087338' />
+    <nd ref='7078087339' />
+    <nd ref='7078087340' />
+    <nd ref='7078087341' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='-12%' />
+    <tag k='name' v='Gillebergsvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-947' action='modify' visible='true'>
+    <nd ref='7078059564' />
+    <nd ref='7078059565' />
+    <nd ref='7078059566' />
+    <nd ref='7078059567' />
+    <nd ref='7078059568' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='residential' />
+    <tag k='incline' v='12%' />
+    <tag k='maxspeed' v='30' />
+    <tag k='name' v='Rognvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-948' action='modify' visible='true'>
+    <nd ref='7078059568' />
+    <nd ref='7078059569' />
+    <nd ref='7078059570' />
+    <nd ref='7078059571' />
+    <nd ref='7078059572' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='residential' />
+    <tag k='incline' v='9%' />
+    <tag k='maxspeed' v='30' />
+    <tag k='name' v='Rognvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-949' action='modify' visible='true'>
+    <nd ref='7078059572' />
+    <nd ref='7078059573' />
+    <nd ref='7078059574' />
+    <nd ref='7078059575' />
+    <nd ref='7078059576' />
+    <nd ref='7078059577' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='residential' />
+    <tag k='incline' v='6%' />
+    <tag k='maxspeed' v='30' />
+    <tag k='name' v='Rognvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-951' action='modify' visible='true'>
+    <nd ref='7078079585' />
+    <nd ref='3662328132' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='12%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-952' action='modify' visible='true'>
+    <nd ref='3662328132' />
+    <nd ref='7078079587' />
+    <nd ref='3662328015' />
+    <nd ref='7078087350' />
+    <nd ref='7078087351' />
+    <nd ref='7078087352' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='11%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-954' action='modify' visible='true'>
+    <nd ref='7078087149' />
+    <nd ref='7078087150' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='-15%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-955' action='modify' visible='true'>
+    <nd ref='7078087150' />
+    <nd ref='7078087151' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='-11%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-956' action='modify' visible='true'>
+    <nd ref='7078087151' />
+    <nd ref='7078087152' />
+    <nd ref='3662328716' />
+    <nd ref='7078087153' />
+    <nd ref='7078087154' />
+    <nd ref='7078087155' />
+    <nd ref='7078087156' />
+    <nd ref='7078087157' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='3%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-958' action='modify' visible='true'>
+    <nd ref='7078115799' />
+    <nd ref='7078115800' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='9%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Friisvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2204' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-959' action='modify' visible='true'>
+    <nd ref='7078115800' />
+    <nd ref='7078115801' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='1%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Friisvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2204' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-960' action='modify' visible='true'>
+    <nd ref='7078115801' />
+    <nd ref='7078115802' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='8%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Friisvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2204' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-961' action='modify' visible='true'>
+    <nd ref='7078115802' />
+    <nd ref='7078115803' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='2%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Friisvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2204' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-962' action='modify' visible='true'>
+    <nd ref='7078115803' />
+    <nd ref='7078115804' />
+    <nd ref='7078115805' />
+    <nd ref='7078115806' />
+    <nd ref='7078082951' />
+    <nd ref='7078115807' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='7%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Friisvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2204' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-963' action='modify' visible='true'>
+    <nd ref='7078115807' />
+    <nd ref='7078115808' />
+    <nd ref='7078115809' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='3%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Friisvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2204' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-964' action='modify' visible='true'>
+    <nd ref='7078115809' />
+    <nd ref='7078115810' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='16%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Friisvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2204' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-965' action='modify' visible='true'>
+    <nd ref='7078115810' />
+    <nd ref='7078115811' />
+    <nd ref='7078115812' />
+    <nd ref='7078115813' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='12%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Friisvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2204' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-966' action='modify' visible='true'>
+    <nd ref='7078115813' />
+    <nd ref='7078087342' />
+    <nd ref='7078115814' />
+    <nd ref='7078115815' />
+    <nd ref='7078115816' />
+    <nd ref='7078115817' />
+    <nd ref='7078115818' />
+    <nd ref='7078087300' />
+    <nd ref='7078115819' />
+    <nd ref='7078082943' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='7%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Friisvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2204' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-967' action='modify' visible='true'>
+    <nd ref='7078082943' />
+    <nd ref='7078115820' />
+    <nd ref='7078087286' />
+    <nd ref='7078115821' />
+    <nd ref='7078115822' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='7%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Friisvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2204' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-968' action='modify' visible='true'>
+    <nd ref='7078115822' />
+    <nd ref='7078115823' />
+    <nd ref='7078115824' />
+    <nd ref='7078115825' />
+    <nd ref='7078115826' />
+    <nd ref='7078115827' />
+    <nd ref='3725013150' />
+    <nd ref='7078115828' />
+    <nd ref='7078115829' />
+    <nd ref='7078115830' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='10%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Friisvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2204' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-969' action='modify' visible='true'>
+    <nd ref='7078115830' />
+    <nd ref='8992375865' />
+    <nd ref='7078115831' />
+    <nd ref='7078115832' />
+    <nd ref='7078115833' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='12%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Friisvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2204' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-970' action='modify' visible='true'>
+    <nd ref='7078115833' />
+    <nd ref='7078115834' />
+    <nd ref='7078115835' />
+    <nd ref='7078115836' />
+    <nd ref='7078115837' />
+    <nd ref='7078115838' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='9%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Friisvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2204' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-971' action='modify' visible='true'>
+    <nd ref='7078115838' />
+    <nd ref='7078115839' />
+    <nd ref='7078115840' />
+    <nd ref='7078115841' />
+    <nd ref='7078115842' />
+    <nd ref='7078115843' />
+    <nd ref='7078115844' />
+    <nd ref='7078115845' />
+    <nd ref='7078115846' />
+    <nd ref='7078087277' />
+    <nd ref='7078115847' />
+    <nd ref='7078082935' />
+    <nd ref='7078115848' />
+    <nd ref='7078115849' />
+    <nd ref='7078115850' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='10%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Friisvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2204' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-972' action='modify' visible='true'>
+    <nd ref='7078115850' />
+    <nd ref='7078115851' />
+    <nd ref='7078115852' />
+    <nd ref='7078115853' />
+    <nd ref='7078115854' />
+    <nd ref='7078078039' />
+    <nd ref='7078115855' />
+    <nd ref='7078115856' />
+    <nd ref='7078115857' />
+    <nd ref='7078115858' />
+    <nd ref='7078115859' />
+    <nd ref='7078115860' />
+    <nd ref='7078115861' />
+    <nd ref='7078115862' />
+    <nd ref='7078115863' />
+    <nd ref='7078115864' />
+    <nd ref='7078115865' />
+    <nd ref='7078115866' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='9%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Friisvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2204' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-973' action='modify' visible='true'>
+    <nd ref='7078115866' />
+    <nd ref='7078115867' />
+    <nd ref='7078115868' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='9%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Friisvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2204' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-974' action='modify' visible='true'>
+    <nd ref='7078115868' />
+    <nd ref='7078115869' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='10%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Friisvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2204' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-975' action='modify' visible='true'>
+    <nd ref='7078115869' />
+    <nd ref='7078115870' />
+    <nd ref='7078115871' />
+    <nd ref='7078115872' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='10%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Friisvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2204' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-976' action='modify' visible='true'>
+    <nd ref='7078115872' />
+    <nd ref='7078115873' />
+    <nd ref='7078115874' />
+    <nd ref='7078115875' />
+    <nd ref='7078115876' />
+    <nd ref='7078115877' />
+    <nd ref='7078115878' />
+    <nd ref='7078087275' />
+    <nd ref='3662270303' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='7%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Friisvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2204' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-977' action='modify' visible='true'>
+    <nd ref='3662270303' />
+    <nd ref='7078115879' />
+    <nd ref='7078115880' />
+    <nd ref='7078115881' />
+    <nd ref='7078058433' />
+    <nd ref='7078115882' />
+    <nd ref='7078115883' />
+    <nd ref='7078115884' />
+    <nd ref='7078115885' />
+    <nd ref='7078115886' />
+    <nd ref='7078149412' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='secondary' />
+    <tag k='incline' v='10%' />
+    <tag k='maxspeed' v='60' />
+    <tag k='name' v='Friisvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='ref' v='2204' />
+    <tag k='source:incline' v='nvdb_estimate' />
+    <tag k='surface' v='asphalt' />
+  </way>
+  <way id='-979' action='modify' visible='true'>
+    <nd ref='10872946396' />
+    <nd ref='10872946395' />
+    <nd ref='10872946394' />
+    <nd ref='10872946393' />
+    <nd ref='10872946392' />
+    <nd ref='10872946391' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='-11%' />
+    <tag k='name' v='Millestuguvegen' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-981' action='modify' visible='true'>
+    <nd ref='7078082902' />
+    <nd ref='7078082903' />
+    <nd ref='7078082904' />
+    <nd ref='7078082905' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='5%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-982' action='modify' visible='true'>
+    <nd ref='7078082905' />
+    <nd ref='7078082906' />
+    <nd ref='7078082907' />
+    <nd ref='7078082908' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='1%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-984' action='modify' visible='true'>
+    <nd ref='7078087449' />
+    <nd ref='7078087450' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='16%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-985' action='modify' visible='true'>
+    <nd ref='7078087450' />
+    <nd ref='7078087451' />
+    <nd ref='7078087452' />
+    <nd ref='7078087453' />
+    <nd ref='7078087454' />
+    <nd ref='7078087455' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='18%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-986' action='modify' visible='true'>
+    <nd ref='7078087455' />
+    <nd ref='7078087456' />
+    <nd ref='7078087457' />
+    <nd ref='7078087458' />
+    <nd ref='7078087459' />
+    <nd ref='7078087460' />
+    <nd ref='7078087461' />
+    <nd ref='7078087462' />
+    <nd ref='7078087463' />
+    <nd ref='7078087464' />
+    <nd ref='7078087465' />
+    <nd ref='7078087466' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='24%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-987' action='modify' visible='true'>
+    <nd ref='7078087466' />
+    <nd ref='7078087467' />
+    <nd ref='7078087468' />
+    <nd ref='7078087469' />
+    <nd ref='7078087470' />
+    <nd ref='7078087471' />
+    <nd ref='7078087472' />
+    <nd ref='7078087473' />
+    <nd ref='7078087474' />
+    <nd ref='7078087475' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='19%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-989' action='modify' visible='true'>
+    <nd ref='7078061709' />
+    <nd ref='7078061710' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='-7%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-990' action='modify' visible='true'>
+    <nd ref='7078061710' />
+    <nd ref='7078061711' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='-12%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-991' action='modify' visible='true'>
+    <nd ref='7078061711' />
+    <nd ref='7078061712' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='-10%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
+  <way id='-992' action='modify' visible='true'>
+    <nd ref='7078061712' />
+    <nd ref='7078061713' />
+    <nd ref='7078061714' />
+    <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
+    <tag k='highway' v='service' />
+    <tag k='incline' v='-5%' />
+    <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
+    <tag k='source:incline' v='nvdb_estimate' />
+  </way>
   <way id='274196250' timestamp='2021-08-09T09:06:26Z' uid='1614136' user='LarsMouland' visible='true' version='3' changeset='109391082'>
     <nd ref='2789561441' />
     <nd ref='2789561458' />
@@ -6221,24 +7745,9 @@
     <nd ref='7078087324' />
     <nd ref='7078087325' />
     <nd ref='7078087326' />
-    <nd ref='7078087327' />
-    <nd ref='7078087328' />
-    <nd ref='7078087329' />
-    <nd ref='7078087330' />
-    <nd ref='7078087331' />
-    <nd ref='7078087332' />
-    <nd ref='7078087333' />
-    <nd ref='7078087334' />
-    <nd ref='7078087335' />
-    <nd ref='7078087336' />
-    <nd ref='7078087337' />
-    <nd ref='7078087338' />
-    <nd ref='7078087339' />
-    <nd ref='7078087340' />
-    <nd ref='7078087341' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
-    <tag k='incline' v='7%' />
+    <tag k='incline' v='12%' />
     <tag k='name' v='Gillebergsvegen' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
     <tag k='source:incline' v='nvdb_estimate' />
@@ -6248,52 +7757,9 @@
     <nd ref='7078087194' />
     <nd ref='7078087195' />
     <nd ref='7078087196' />
-    <nd ref='7078087197' />
-    <nd ref='7078087198' />
-    <nd ref='7078087199' />
-    <nd ref='7078087200' />
-    <nd ref='7078087201' />
-    <nd ref='7078087202' />
-    <nd ref='7078087203' />
-    <nd ref='7078087204' />
-    <nd ref='7078082900' />
-    <nd ref='7078087218' />
-    <nd ref='7078087219' />
-    <nd ref='7078087220' />
-    <nd ref='7078087221' />
-    <nd ref='7078087222' />
-    <nd ref='7078087223' />
-    <nd ref='7078087224' />
-    <nd ref='7078087225' />
-    <nd ref='7078087226' />
-    <nd ref='3662329271' />
-    <nd ref='7078087227' />
-    <nd ref='7078087228' />
-    <nd ref='7078087229' />
-    <nd ref='7078087230' />
-    <nd ref='7078087231' />
-    <nd ref='7078087232' />
-    <nd ref='7078087233' />
-    <nd ref='7078087234' />
-    <nd ref='7078087235' />
-    <nd ref='7078087236' />
-    <nd ref='7078078007' />
-    <nd ref='7078087205' />
-    <nd ref='7078087206' />
-    <nd ref='7078087207' />
-    <nd ref='7078087208' />
-    <nd ref='7078087209' />
-    <nd ref='7078087210' />
-    <nd ref='7078087211' />
-    <nd ref='7078087212' />
-    <nd ref='7078087213' />
-    <nd ref='7078087214' />
-    <nd ref='7078087215' />
-    <nd ref='7078087216' />
-    <nd ref='7078087217' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
-    <tag k='incline' v='8%' />
+    <tag k='incline' v='6%' />
     <tag k='name' v='Granlundsvegen' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
     <tag k='source:incline' v='nvdb_estimate' />
@@ -6301,41 +7767,9 @@
   <way id='361806947' action='modify' timestamp='2023-03-06T21:38:42Z' uid='665677' user='FennecusZerda' visible='true' version='4' changeset='133380649'>
     <nd ref='7078058355' />
     <nd ref='7078077399' />
-    <nd ref='7078077400' />
-    <nd ref='7078077401' />
-    <nd ref='7078078000' />
-    <nd ref='7078078001' />
-    <nd ref='7078078002' />
-    <nd ref='7078078003' />
-    <nd ref='7078078004' />
-    <nd ref='7078078005' />
-    <nd ref='7078078006' />
-    <nd ref='7078079554' />
-    <nd ref='7078079555' />
-    <nd ref='7078073572' />
-    <nd ref='7078073573' />
-    <nd ref='7078073574' />
-    <nd ref='7078073575' />
-    <nd ref='7078073576' />
-    <nd ref='7078073577' />
-    <nd ref='7078073578' />
-    <nd ref='7078073579' />
-    <nd ref='7078073581' />
-    <nd ref='7078073582' />
-    <nd ref='7078073583' />
-    <nd ref='7078073584' />
-    <nd ref='7078073585' />
-    <nd ref='7078073586' />
-    <nd ref='7078073587' />
-    <nd ref='7078073588' />
-    <nd ref='7078073589' />
-    <nd ref='2789651347' />
-    <nd ref='7078073590' />
-    <nd ref='7078073591' />
-    <nd ref='7078073592' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
-    <tag k='incline' v='1%' />
+    <tag k='incline' v='-10%' />
     <tag k='name' v='Nedre Kolstadrovegen' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
     <tag k='source:incline' v='nvdb_estimate' />
@@ -6359,22 +7793,9 @@
     <nd ref='7078059562' />
     <nd ref='7078059563' />
     <nd ref='7078059564' />
-    <nd ref='7078059565' />
-    <nd ref='7078059566' />
-    <nd ref='7078059567' />
-    <nd ref='7078059568' />
-    <nd ref='7078059569' />
-    <nd ref='7078059570' />
-    <nd ref='7078059571' />
-    <nd ref='7078059572' />
-    <nd ref='7078059573' />
-    <nd ref='7078059574' />
-    <nd ref='7078059575' />
-    <nd ref='7078059576' />
-    <nd ref='7078059577' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='residential' />
-    <tag k='incline' v='9%' />
+    <tag k='incline' v='11%' />
     <tag k='maxspeed' v='30' />
     <tag k='name' v='Rognvegen' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
@@ -6386,36 +7807,9 @@
     <nd ref='7078059531' />
     <nd ref='7078059532' />
     <nd ref='7078059533' />
-    <nd ref='7078059534' />
-    <nd ref='7078059535' />
-    <nd ref='7078059536' />
-    <nd ref='7078059537' />
-    <nd ref='7078059538' />
-    <nd ref='7078059539' />
-    <nd ref='7078059540' />
-    <nd ref='7078059541' />
-    <nd ref='7078059542' />
-    <nd ref='7078059543' />
-    <nd ref='7078059544' />
-    <nd ref='7078059545' />
-    <nd ref='7078059546' />
-    <nd ref='7078059547' />
-    <nd ref='7078059548' />
-    <nd ref='7078059549' />
-    <nd ref='7078059550' />
-    <nd ref='7078059551' />
-    <nd ref='7078059552' />
-    <nd ref='7078059553' />
-    <nd ref='7078059554' />
-    <nd ref='7078059555' />
-    <nd ref='7078059556' />
-    <nd ref='10602396713' />
-    <nd ref='7078059557' />
-    <nd ref='10602396646' />
-    <nd ref='10602396645' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='residential' />
-    <tag k='incline' v='5%' />
+    <tag k='incline' v='12%' />
     <tag k='maxspeed' v='30' />
     <tag k='name' v='Skalykkja' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
@@ -6428,67 +7822,9 @@
     <nd ref='7078058116' />
     <nd ref='7078058117' />
     <nd ref='7078058118' />
-    <nd ref='7078058119' />
-    <nd ref='7078058120' />
-    <nd ref='7078058121' />
-    <nd ref='7078058122' />
-    <nd ref='7078058123' />
-    <nd ref='7078058124' />
-    <nd ref='7078058125' />
-    <nd ref='7078058126' />
-    <nd ref='7078058127' />
-    <nd ref='7078058128' />
-    <nd ref='7078058129' />
-    <nd ref='7078058130' />
-    <nd ref='7078058131' />
-    <nd ref='7078058132' />
-    <nd ref='7078058133' />
-    <nd ref='7078058134' />
-    <nd ref='7078058135' />
-    <nd ref='7078058136' />
-    <nd ref='7078058137' />
-    <nd ref='7078058138' />
-    <nd ref='7078058139' />
-    <nd ref='3662327805' />
-    <nd ref='7078058140' />
-    <nd ref='7078058141' />
-    <nd ref='7078058142' />
-    <nd ref='7078058143' />
-    <nd ref='7078058144' />
-    <nd ref='7078058145' />
-    <nd ref='7078058146' />
-    <nd ref='7078058147' />
-    <nd ref='7078058148' />
-    <nd ref='7078058149' />
-    <nd ref='7078058150' />
-    <nd ref='7078058151' />
-    <nd ref='7078058152' />
-    <nd ref='7078058153' />
-    <nd ref='7078058154' />
-    <nd ref='7078058155' />
-    <nd ref='7078058156' />
-    <nd ref='7078058157' />
-    <nd ref='7078058158' />
-    <nd ref='7078058159' />
-    <nd ref='7078058160' />
-    <nd ref='7078058161' />
-    <nd ref='7078058162' />
-    <nd ref='7078058163' />
-    <nd ref='7078058164' />
-    <nd ref='7078058165' />
-    <nd ref='7078058166' />
-    <nd ref='7078058167' />
-    <nd ref='7078058168' />
-    <nd ref='7078058169' />
-    <nd ref='7078058170' />
-    <nd ref='7078058171' />
-    <nd ref='7078058172' />
-    <nd ref='7078058173' />
-    <nd ref='7078058174' />
-    <nd ref='7078058175' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='residential' />
-    <tag k='incline' v='9%' />
+    <tag k='incline' v='11%' />
     <tag k='name' v='Skarven' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
     <tag k='source:incline' v='nvdb_estimate' />
@@ -6532,61 +7868,9 @@
     <nd ref='7078111828' />
     <nd ref='7078111829' />
     <nd ref='7078111830' />
-    <nd ref='7078111831' />
-    <nd ref='7078111832' />
-    <nd ref='7078070515' />
-    <nd ref='7078111833' />
-    <nd ref='7078111834' />
-    <nd ref='7078059578' />
-    <nd ref='7078111835' />
-    <nd ref='7078069916' />
-    <nd ref='7078111836' />
-    <nd ref='7078111837' />
-    <nd ref='11070853042' />
-    <nd ref='7078111838' />
-    <nd ref='7078111839' />
-    <nd ref='7078111840' />
-    <nd ref='7078111841' />
-    <nd ref='7078111842' />
-    <nd ref='7078111843' />
-    <nd ref='7078111844' />
-    <nd ref='7078111845' />
-    <nd ref='7078111846' />
-    <nd ref='7078111847' />
-    <nd ref='7078111848' />
-    <nd ref='7078111849' />
-    <nd ref='7078111850' />
-    <nd ref='7078111851' />
-    <nd ref='7078111852' />
-    <nd ref='7078082861' />
-    <nd ref='7078111853' />
-    <nd ref='7078111854' />
-    <nd ref='11070853026' />
-    <nd ref='7078059529' />
-    <nd ref='7078111855' />
-    <nd ref='7078111856' />
-    <nd ref='7078111857' />
-    <nd ref='7078111858' />
-    <nd ref='7078111859' />
-    <nd ref='7078111860' />
-    <nd ref='7078111861' />
-    <nd ref='7078111862' />
-    <nd ref='7078111863' />
-    <nd ref='7078111864' />
-    <nd ref='7078111865' />
-    <nd ref='7078111866' />
-    <nd ref='7078111867' />
-    <nd ref='7078111868' />
-    <nd ref='7078111869' />
-    <nd ref='7078111870' />
-    <nd ref='7078111871' />
-    <nd ref='7078111872' />
-    <nd ref='7078111873' />
-    <nd ref='7078111874' />
-    <nd ref='7078058113' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='secondary' />
-    <tag k='incline' v='-9%' />
+    <tag k='incline' v='-10%' />
     <tag k='maxspeed' v='40' />
     <tag k='name' v='Vekkomsvegen' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
@@ -6600,18 +7884,9 @@
     <nd ref='7078087147' />
     <nd ref='7078087148' />
     <nd ref='7078087149' />
-    <nd ref='7078087150' />
-    <nd ref='7078087151' />
-    <nd ref='7078087152' />
-    <nd ref='3662328716' />
-    <nd ref='7078087153' />
-    <nd ref='7078087154' />
-    <nd ref='7078087155' />
-    <nd ref='7078087156' />
-    <nd ref='7078087157' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
-    <tag k='incline' v='-6%' />
+    <tag k='incline' v='-18%' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
     <tag k='source:incline' v='nvdb_estimate' />
   </way>
@@ -6619,21 +7894,9 @@
     <nd ref='7078087286' />
     <nd ref='7078087287' />
     <nd ref='7078087288' />
-    <nd ref='7078087289' />
-    <nd ref='7078087290' />
-    <nd ref='7078087291' />
-    <nd ref='7078087292' />
-    <nd ref='7078087293' />
-    <nd ref='7078087294' />
-    <nd ref='7078087295' />
-    <nd ref='7078087296' />
-    <nd ref='7078087297' />
-    <nd ref='7078087298' />
-    <nd ref='7078087299' />
-    <nd ref='3662328804' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
-    <tag k='incline' v='0%' />
+    <tag k='incline' v='-12%' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
     <tag k='source:incline' v='nvdb_estimate' />
   </way>
@@ -6701,19 +7964,9 @@
     <nd ref='7078087245' />
     <nd ref='7078087246' />
     <nd ref='7078087247' />
-    <nd ref='7078087248' />
-    <nd ref='7078087249' />
-    <nd ref='7078087250' />
-    <nd ref='7078087251' />
-    <nd ref='7078087252' />
-    <nd ref='7078087253' />
-    <nd ref='7078087254' />
-    <nd ref='7078087255' />
-    <nd ref='7078087256' />
-    <nd ref='7078087257' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
-    <tag k='incline' v='6%' />
+    <tag k='incline' v='16%' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
     <tag k='source:incline' v='nvdb_estimate' />
   </way>
@@ -6859,15 +8112,9 @@
   <way id='361807302' action='modify' timestamp='2020-03-27T17:25:12Z' uid='7392967' user='FredrikEdler' visible='true' version='5' changeset='82726425'>
     <nd ref='3662328152' />
     <nd ref='7078079585' />
-    <nd ref='3662328132' />
-    <nd ref='7078079587' />
-    <nd ref='3662328015' />
-    <nd ref='7078087350' />
-    <nd ref='7078087351' />
-    <nd ref='7078087352' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
-    <tag k='incline' v='6%' />
+    <tag k='incline' v='1%' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
     <tag k='source:incline' v='nvdb_estimate' />
   </way>
@@ -6976,13 +8223,9 @@
     <nd ref='7078087129' />
     <nd ref='7078087130' />
     <nd ref='7078087131' />
-    <nd ref='7078087132' />
-    <nd ref='7078087133' />
-    <nd ref='7078087134' />
-    <nd ref='7078087135' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
-    <tag k='incline' v='6%' />
+    <tag k='incline' v='13%' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
     <tag k='source:incline' v='nvdb_estimate' />
   </way>
@@ -6990,15 +8233,9 @@
     <nd ref='7078082900' />
     <nd ref='7078082901' />
     <nd ref='7078082902' />
-    <nd ref='7078082903' />
-    <nd ref='7078082904' />
-    <nd ref='7078082905' />
-    <nd ref='7078082906' />
-    <nd ref='7078082907' />
-    <nd ref='7078082908' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
-    <tag k='incline' v='4%' />
+    <tag k='incline' v='8%' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
     <tag k='source:incline' v='nvdb_estimate' />
   </way>
@@ -7037,11 +8274,6 @@
     <nd ref='7078061707' />
     <nd ref='7078061708' />
     <nd ref='7078061709' />
-    <nd ref='7078061710' />
-    <nd ref='7078061711' />
-    <nd ref='7078061712' />
-    <nd ref='7078061713' />
-    <nd ref='7078061714' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
     <tag k='incline' v='-7%' />
@@ -7153,35 +8385,9 @@
     <nd ref='7078087447' />
     <nd ref='7078087448' />
     <nd ref='7078087449' />
-    <nd ref='7078087450' />
-    <nd ref='7078087451' />
-    <nd ref='7078087452' />
-    <nd ref='7078087453' />
-    <nd ref='7078087454' />
-    <nd ref='7078087455' />
-    <nd ref='7078087456' />
-    <nd ref='7078087457' />
-    <nd ref='7078087458' />
-    <nd ref='7078087459' />
-    <nd ref='7078087460' />
-    <nd ref='7078087461' />
-    <nd ref='7078087462' />
-    <nd ref='7078087463' />
-    <nd ref='7078087464' />
-    <nd ref='7078087465' />
-    <nd ref='7078087466' />
-    <nd ref='7078087467' />
-    <nd ref='7078087468' />
-    <nd ref='7078087469' />
-    <nd ref='7078087470' />
-    <nd ref='7078087471' />
-    <nd ref='7078087472' />
-    <nd ref='7078087473' />
-    <nd ref='7078087474' />
-    <nd ref='7078087475' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
-    <tag k='incline' v='16%' />
+    <tag k='incline' v='13%' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
     <tag k='source:incline' v='nvdb_estimate' />
   </way>
@@ -7198,62 +8404,9 @@
     <nd ref='7078111748' />
     <nd ref='7078111749' />
     <nd ref='7078111750' />
-    <nd ref='7078111751' />
-    <nd ref='7078057956' />
-    <nd ref='7078111752' />
-    <nd ref='7078111753' />
-    <nd ref='7078111754' />
-    <nd ref='7078111755' />
-    <nd ref='7078111756' />
-    <nd ref='7078111757' />
-    <nd ref='7078111758' />
-    <nd ref='7078087353' />
-    <nd ref='7078111759' />
-    <nd ref='7078111760' />
-    <nd ref='7078111761' />
-    <nd ref='7078111762' />
-    <nd ref='7078111763' />
-    <nd ref='7078067388' />
-    <nd ref='7078111764' />
-    <nd ref='7078111765' />
-    <nd ref='7078111766' />
-    <nd ref='7078069926' />
-    <nd ref='7078111767' />
-    <nd ref='7078111768' />
-    <nd ref='7078111769' />
-    <nd ref='7078111770' />
-    <nd ref='7078111771' />
-    <nd ref='7078111772' />
-    <nd ref='7078111773' />
-    <nd ref='7078111774' />
-    <nd ref='7078111775' />
-    <nd ref='7078087352' />
-    <nd ref='7078111776' />
-    <nd ref='7078111777' />
-    <nd ref='7078082962' />
-    <nd ref='7078111778' />
-    <nd ref='7078111779' />
-    <nd ref='7078111780' />
-    <nd ref='7078111781' />
-    <nd ref='7078111782' />
-    <nd ref='7078111783' />
-    <nd ref='7078111784' />
-    <nd ref='7078111785' />
-    <nd ref='7078061705' />
-    <nd ref='7078111786' />
-    <nd ref='7078111787' />
-    <nd ref='7078111788' />
-    <nd ref='7078111789' />
-    <nd ref='7078111790' />
-    <nd ref='7078111791' />
-    <nd ref='7078111792' />
-    <nd ref='7078111793' />
-    <nd ref='3725013149' />
-    <nd ref='7078111794' />
-    <nd ref='7078149435' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='secondary' />
-    <tag k='incline' v='-1%' />
+    <tag k='incline' v='11%' />
     <tag k='maxspeed' v='60' />
     <tag k='name' v='Vekkomsvegen' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
@@ -8028,110 +9181,9 @@
     <nd ref='7078115797' />
     <nd ref='7078115798' />
     <nd ref='7078115799' />
-    <nd ref='7078115800' />
-    <nd ref='7078115801' />
-    <nd ref='7078115802' />
-    <nd ref='7078115803' />
-    <nd ref='7078115804' />
-    <nd ref='7078115805' />
-    <nd ref='7078115806' />
-    <nd ref='7078082951' />
-    <nd ref='7078115807' />
-    <nd ref='7078115808' />
-    <nd ref='7078115809' />
-    <nd ref='7078115810' />
-    <nd ref='7078115811' />
-    <nd ref='7078115812' />
-    <nd ref='7078115813' />
-    <nd ref='7078087342' />
-    <nd ref='7078115814' />
-    <nd ref='7078115815' />
-    <nd ref='7078115816' />
-    <nd ref='7078115817' />
-    <nd ref='7078115818' />
-    <nd ref='7078087300' />
-    <nd ref='7078115819' />
-    <nd ref='7078082943' />
-    <nd ref='7078115820' />
-    <nd ref='7078087286' />
-    <nd ref='7078115821' />
-    <nd ref='7078115822' />
-    <nd ref='7078115823' />
-    <nd ref='7078115824' />
-    <nd ref='7078115825' />
-    <nd ref='7078115826' />
-    <nd ref='7078115827' />
-    <nd ref='3725013150' />
-    <nd ref='7078115828' />
-    <nd ref='7078115829' />
-    <nd ref='7078115830' />
-    <nd ref='8992375865' />
-    <nd ref='7078115831' />
-    <nd ref='7078115832' />
-    <nd ref='7078115833' />
-    <nd ref='7078115834' />
-    <nd ref='7078115835' />
-    <nd ref='7078115836' />
-    <nd ref='7078115837' />
-    <nd ref='7078115838' />
-    <nd ref='7078115839' />
-    <nd ref='7078115840' />
-    <nd ref='7078115841' />
-    <nd ref='7078115842' />
-    <nd ref='7078115843' />
-    <nd ref='7078115844' />
-    <nd ref='7078115845' />
-    <nd ref='7078115846' />
-    <nd ref='7078087277' />
-    <nd ref='7078115847' />
-    <nd ref='7078082935' />
-    <nd ref='7078115848' />
-    <nd ref='7078115849' />
-    <nd ref='7078115850' />
-    <nd ref='7078115851' />
-    <nd ref='7078115852' />
-    <nd ref='7078115853' />
-    <nd ref='7078115854' />
-    <nd ref='7078078039' />
-    <nd ref='7078115855' />
-    <nd ref='7078115856' />
-    <nd ref='7078115857' />
-    <nd ref='7078115858' />
-    <nd ref='7078115859' />
-    <nd ref='7078115860' />
-    <nd ref='7078115861' />
-    <nd ref='7078115862' />
-    <nd ref='7078115863' />
-    <nd ref='7078115864' />
-    <nd ref='7078115865' />
-    <nd ref='7078115866' />
-    <nd ref='7078115867' />
-    <nd ref='7078115868' />
-    <nd ref='7078115869' />
-    <nd ref='7078115870' />
-    <nd ref='7078115871' />
-    <nd ref='7078115872' />
-    <nd ref='7078115873' />
-    <nd ref='7078115874' />
-    <nd ref='7078115875' />
-    <nd ref='7078115876' />
-    <nd ref='7078115877' />
-    <nd ref='7078115878' />
-    <nd ref='7078087275' />
-    <nd ref='3662270303' />
-    <nd ref='7078115879' />
-    <nd ref='7078115880' />
-    <nd ref='7078115881' />
-    <nd ref='7078058433' />
-    <nd ref='7078115882' />
-    <nd ref='7078115883' />
-    <nd ref='7078115884' />
-    <nd ref='7078115885' />
-    <nd ref='7078115886' />
-    <nd ref='7078149412' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='secondary' />
-    <tag k='incline' v='7%' />
+    <tag k='incline' v='10%' />
     <tag k='maxspeed' v='60' />
     <tag k='name' v='Friisvegen' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
@@ -11045,14 +12097,9 @@
     <nd ref='10872946398' />
     <nd ref='10872946397' />
     <nd ref='10872946396' />
-    <nd ref='10872946395' />
-    <nd ref='10872946394' />
-    <nd ref='10872946393' />
-    <nd ref='10872946392' />
-    <nd ref='10872946391' />
     <tag k='fixme' v='NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.' />
     <tag k='highway' v='service' />
-    <tag k='incline' v='-7%' />
+    <tag k='incline' v='-4%' />
     <tag k='name' v='Millestuguvegen' />
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
     <tag k='source:incline' v='nvdb_estimate' />
@@ -13308,7 +14355,7 @@
     <tag k='note' v='Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.' />
     <tag k='source:incline' v='nvdb_estimate' />
   </way>
-  <relation id='1244991' timestamp='2026-07-25T15:33:38Z' uid='103253' user='gormur' visible='true' version='587' changeset='186352863'>
+  <relation id='1244991' action='modify' timestamp='2026-07-25T15:33:38Z' uid='103253' user='gormur' visible='true' version='587' changeset='186352863'>
     <member type='way' ref='211348430' role='' />
     <member type='way' ref='125446038' role='' />
     <member type='way' ref='722994920' role='' />
@@ -13449,6 +14496,18 @@
     <member type='way' ref='1171481739' role='' />
     <member type='way' ref='29348702' role='' />
     <member type='way' ref='764390360' role='' />
+    <member type='way' ref='-936' role='' />
+    <member type='way' ref='-935' role='' />
+    <member type='way' ref='-934' role='' />
+    <member type='way' ref='-933' role='' />
+    <member type='way' ref='-932' role='' />
+    <member type='way' ref='-931' role='' />
+    <member type='way' ref='-930' role='' />
+    <member type='way' ref='-929' role='' />
+    <member type='way' ref='-928' role='' />
+    <member type='way' ref='-927' role='' />
+    <member type='way' ref='-926' role='' />
+    <member type='way' ref='-925' role='' />
     <member type='way' ref='361807000' role='' />
     <member type='way' ref='764390362' role='' />
     <member type='way' ref='767989231' role='' />
@@ -14212,7 +15271,7 @@
     <tag k='type' v='superroute' />
     <tag k='website' v='http://www.eurovelo.com/en/eurovelos/eurovelo-3/countries/norway' />
   </relation>
-  <relation id='5659125' timestamp='2026-05-05T15:28:01Z' uid='665490' user='Odiz' visible='true' version='95' changeset='182255213'>
+  <relation id='5659125' action='modify' timestamp='2026-05-05T15:28:01Z' uid='665490' user='Odiz' visible='true' version='95' changeset='182255213'>
     <member type='way' ref='125454974' role='' />
     <member type='way' ref='1123896272' role='' />
     <member type='way' ref='377828760' role='' />
@@ -14430,6 +15489,18 @@
     <member type='way' ref='767989229' role='' />
     <member type='way' ref='29348702' role='' />
     <member type='way' ref='764390360' role='' />
+    <member type='way' ref='-936' role='' />
+    <member type='way' ref='-935' role='' />
+    <member type='way' ref='-934' role='' />
+    <member type='way' ref='-933' role='' />
+    <member type='way' ref='-932' role='' />
+    <member type='way' ref='-931' role='' />
+    <member type='way' ref='-930' role='' />
+    <member type='way' ref='-929' role='' />
+    <member type='way' ref='-928' role='' />
+    <member type='way' ref='-927' role='' />
+    <member type='way' ref='-926' role='' />
+    <member type='way' ref='-925' role='' />
     <member type='way' ref='361807000' role='' />
     <member type='way' ref='764390362' role='' />
     <member type='way' ref='767989232' role='' />
