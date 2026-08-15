@@ -22,6 +22,10 @@ JOSM plugin that helps Norwegian OSM mappers suggest `incline=*` tags, snow-chai
   - [Nodes — snow-chain advisory (implemented)](#nodes-snow-chain-advisory-implemented)
   - [Nodes — unsigned advisories (implemented; never `hazard=*`)](#nodes-unsigned-advisories-implemented-never-hazard)
   - [Where confidence / estimate data goes](#where-confidence-estimate-data-goes)
+- [Data accuracy and limitations](#data-accuracy-and-limitations)
+  - [NVDB road geometry accuracy](#nvdb-road-geometry-accuracy)
+  - [What this means for suggested `incline=*`](#what-this-means-for-suggested-incline)
+  - [Considered and deferred: Mapterhorn / Kartverket 1 m DTM](#considered-and-deferred-mapterhorn-kartverket-1-m-dtm)
 - [Manual review sample (`test-files/`)](#manual-review-sample-test-files)
 - [OSM `hazard=*` tagging rule](#osm-hazard-tagging-rule)
 - [Validator](#validator)
@@ -164,7 +168,7 @@ Source of truth: `AppliedTags`, `SuggestionApplier.sanitizeTags`, `SafetyAnalyze
 | Tag | Example | When applied | Note |
 |-----|---------|--------------|------|
 | `incline` | `7%`, `-11%` | Accepted **fresh** or **update** way row | Signed integer percent relative to **way node order** ([OSM incline](https://wiki.openstreetmap.org/wiki/Key:incline)); produced by `InclineTags.formatIncline` from NVDB 3D geometry. Split cases still get one whole-way average value. Human-sourced `incline=*` (other/no `source:incline`) is never overwritten — only a discrepancy note. |
-| `source:incline` | `nvdb_estimate` | Always with a new incline suggestion | OSM **`source:<key>`** prefix convention (“source of this attribute”), not `incline:source`. See [Key:source](https://wiki.openstreetmap.org/wiki/Key:source). |
+| `source:incline` | `nvdb_estimate` | Always with a new incline suggestion | OSM **`source:<key>`** prefix convention (“source of this attribute”), not `incline:source`. See [Key:source](https://wiki.openstreetmap.org/wiki/Key:source). Marks a machine estimate from NVDB geometry — see [Data accuracy and limitations](#data-accuracy-and-limitations). |
 | `fixme` | `NVDB-estimated incline; verify in field before keeping. Source is NVDB 3D geometry, not a survey.` | With incline suggestion | English machine-estimate flag so unfinished guesses are hard to miss before upload. |
 | `note` | `Maskinelt NVDB-estimat, ikke feltverifisert. Kontroller mot skilt/terreng.` | With incline suggestion | Norwegian mapper-facing hint; same intent as `fixme`. |
 
@@ -199,6 +203,46 @@ Former bookkeeping tags such as `incline:match_confidence`, `incline:match_metho
 They remain available to reviewers as structured `InclineAudit` data on each incline review row and are shown in the review dialog (Method, H(m), Proposed, Raw avg/max, Split columns, plus hover tooltips). There is currently **no** sidecar debug log file for this data — see [`docs/debugging.md`](docs/debugging.md).
 
 Do not reintroduce `incline:source` / `hazard:source`; use `source:incline` / `source:hazard`.
+
+## Data accuracy and limitations
+
+This section sets expectations for anyone reading suggested `incline=*` tags or reviewing related changes. Figures below are taken from NVDB / Kartverket product documentation; they are not measurements produced by this plugin.
+
+### NVDB road geometry accuracy
+
+Elevation along road links comes from **NVDB’s own captured 3D road geometry**, not from a separate national terrain model.
+
+NVDB product documentation for the road network describes detailed data that is mostly registered **photogrammetrically** from aerial imagery with image resolution between **7 and 25 cm**. Stated positional accuracy (**stedfestingsnøyaktighet**) varies from about **±0.10 m to ±2 m**, depending on object type, area type, and capture method — a range, not a single fixed tolerance. (See e.g. [NVDB Rutedatasett produktspesifikasjon](https://dokument.geonorge.no/produktspesifikasjoner/nvdb-rutedatasett/Versjon%202.0/Rutedatasett.html), sections on detaljnivå / stedfestingsnøyaktighet.)
+
+NVDB’s data model can carry per-feature quality metadata (for example height accuracy in centimetres and capture method, as in SOSI / FKB-style `Posisjonskvalitet` fields such as `nøyaktighetHøyde` and `datafangstmetode`). **This plugin does not fetch or surface that metadata today.** `NvdbClient.parseLink` keeps WKT geometry, `medium`, positions, and a few type fields on `NvdbLink`; there is no accuracy field on the model and nothing in matching / review UI that reports per-link height accuracy. Treating that as unused input would be wrong — it is simply not read.
+
+Rural and mountain roads (this plugin’s most relevant use case) are **plausibly** toward the coarser end of NVDB’s stated accuracy range, but that has **not** been independently confirmed here. Treat it as a caveat when reviewing steep passes, not as a measured fact.
+
+### What this means for suggested `incline=*`
+
+Every incline suggestion is an **estimate** derived from that geometry. That is why applied tags use `source:incline=nvdb_estimate` plus `fixme=*` / `note=*`, not a surveyed claim.
+
+Plugin processing adds further approximation on top of whatever geometry accuracy the link has:
+
+- Gradients are computed from Z sampled along the matched OSM way (average and max-sustained window statistics).
+- Suggested tags are rounded to a **whole-percent** integer (`InclineTags.formatIncline`).
+- Split cases still publish one whole-way average `incline=*` on apply; segment breakdown stays in the review UI.
+
+A suggested value such as `8%` should not be read as more precise than the underlying NVDB geometry and these estimation choices support. Field check against signs and terrain remains the rule.
+
+### Considered and deferred: Mapterhorn / Kartverket 1 m DTM
+
+[Kartverket’s national 1 m DTM](https://kartverket.no/api-og-data/terrengdata) (also redistributed for web use via the [Mapterhorn](https://mapterhorn.com/) open terrain-tile project, which lists Norway country-wide at 1 m) is a **terrain** product based largely on airborne laser scanning, with image-matching (bildematching) used in some areas. Where laser was used, FKB-Laser product classes such as **DTM10** (a common NDH ordering level) target **0.10 m** systematic deviation for absolute height accuracy on hard, well-defined horizontal control surfaces — tighter than NVDB’s worst-case road-geometry tolerance of ±2 m. That made a DTM cross-check worth considering as an independent check on suggested grades.
+
+It was **not adopted**. Reasons, recorded so they are not re-litigated from scratch or forgotten:
+
+1. **Weakest exactly where most needed.** Kartverket documents that over larger contiguous areas above the treeline (little vegetation), height data for the national detailed elevation model was produced with **bildematching** rather than laser, specifically because laser coverage was not funded there; accuracy is described as somewhat poorer than laser, though judged adequate for mountain areas. ([Status høydemodell](https://kartverket.no/geodataarbeid/nasjonal-detaljert-hoydemodell/status-hoydemodell).) This plugin’s steepest, highest-value roads sit in that regime — so the DTM’s accuracy advantage over NVDB’s own photogrammetric road geometry narrows or disappears on exactly those mountain passes.
+
+2. **Terrain ≠ road surface.** A DTM is bare-earth elevation. On bridges, in tunnels, on embankments, and in cuttings, the road’s real elevation can legitimately diverge from the terrain under/around it. A naive Z cross-check would flag false anomalies on those segments unless tunnel/bridge (and similar) cases were explicitly excluded — real complexity for a still-unproven benefit.
+
+3. **New dependency for unconfirmed payoff.** Using the DTM would mean adding raster / GeoTIFF (or tile) reading to a `core` module that currently has **no** such dependency, before there is concrete evidence (for example a measured rate of unmatched ways or systematically wrong NVDB grades) that a second source is needed.
+
+**Revisit if** real-world use shows either (a) a meaningful share of ways failing to match any NVDB link (where a DTM-based fallback estimate might help), or (b) NVDB-derived gradients wrong often enough in practice to justify a second independent source plus tunnel/bridge exclusion work. Until then this stays a **documented option**, not an open task. Mapterhorn / Kartverket DTM data is **not** used by the plugin today.
 
 ## Manual review sample (`test-files/`)
 
